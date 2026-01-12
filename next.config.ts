@@ -1,14 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  typescript: {
-    // Disable type checking during build/dev for faster startup
-    ignoreBuildErrors: false,
-  },
-  eslint: {
-    // Disable ESLint during builds for faster startup
-    ignoreDuringBuilds: true,
-  },
+  // ESLint is handled separately, no need to configure here
 };
 
 export default nextConfig;
