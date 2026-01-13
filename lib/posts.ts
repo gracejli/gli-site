@@ -7,6 +7,7 @@ const postsDir = path.join(process.cwd(), "content/posts");
 export interface BlogPost {
   slug: string;
   image?: string;
+  alt?: string; 
   type?: 'link' | 'dropdown' | 'text';
   summary: string;
   url?: string;
@@ -34,6 +35,7 @@ export function getAllPosts(): BlogPost[] {
         slug,
         title: (data.title as string) || "",
         date: (data.date as string) || "",
+        alt: (data.alt as string) || "",
         description: (data.description as string) || "",
         summary: (data.summary as string) || (data.description as string) || (data.title as string) || "",
         image: (data.image as string) || "",

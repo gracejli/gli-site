@@ -3,6 +3,7 @@ title: Hello world
 date: 2026-01-12
 summary: first post
 image: /images/pixel-apple.png
+alt: "this is another apple"
 type: dropdown
 ---
 
