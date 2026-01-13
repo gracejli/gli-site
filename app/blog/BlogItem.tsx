@@ -10,23 +10,23 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
   // Common styling for the image and text layout
   const CardContent = () => (
     <div className="group flex flex-row gap-4 cursor-pointer items-start">
-      {/* Image Container */}
-      <div className="shrink-0 w-12 h-12 overflow-hidden rounded-md bg-gray-100">
-        {post.image ? (
-          <img 
-            src={post.image} 
-            alt={post.alt}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div className="w-full h-full bg-gray-200" />
-        )}
+      {/* Image Container - Updated to w-12 to match your snippet */}
+      <div className="shrink-0 w-12 h-12 overflow-hidden rounded-md bg-gray-100 relative">
+        <img 
+          src={post.image} 
+          alt={post.alt}
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            (e.target as HTMLImageElement).style.display = 'none'; 
+            (e.target as HTMLImageElement).parentElement!.style.backgroundColor = '#e5e7eb';
+          }}
+        />
       </div>
       
       {/* Content Side */}
       <div className="flex-1 flex justify-between items-start pt-1">
         <div className="flex flex-col gap-1">
-          <p className="text-base text-gray-800 font-medium group-hover:text-blue-600 transition-colors">
+          <p className="text-sm text-gray-700 leading-relaxed group-hover:text-blue-600 transition-colors">
             {post.summary}
           </p>
         </div>
@@ -63,6 +63,10 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
                 src={post.image} 
                 alt={post.alt}
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none'; 
+                    (e.target as HTMLImageElement).parentElement!.style.backgroundColor = '#e5e7eb';
+                }}
               />
             ) : (
               <div className="w-full h-full bg-gray-200" />
@@ -72,7 +76,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
           {/* Content Side */}
           <div className="flex-1 flex flex-col gap-2 pt-1">
             {post.summary && (
-              <p className="text-base text-gray-800 font-medium">
+              <p className="text-gray-700 text-sm leading-relaxed">
                 {post.summary}
               </p>
             )}
@@ -101,17 +105,22 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
       <div 
         className={`
           overflow-hidden transition-all duration-300 ease-in-out
-          ${isOpen ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'}
+          ${isOpen ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0 mt-0'}
         `}
       >
-        {post.body && (
-              <div className="text-gray-700 text-sm leading-relaxed">
-                {post.body}
-              </div>
-            )}
+        {/* ALIGNMENT FIX:
+           Image is w-12 (3rem) + gap-4 (1rem) = 4rem offset needed.
+           ml-16 is exactly 4rem. 
+        */}
+        <div className="text-gray-700 text-sm leading-relaxed ml-16">
+          {post.body}
+        </div>
       </div>
     </div>
   );
 };
 
+
 export default BlogItem;
+
+

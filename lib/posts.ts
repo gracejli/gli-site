@@ -13,7 +13,6 @@ export interface BlogPost {
   summary: string;
   url?: string;
   body?: string;
-  title?: string;
   date?: string;
   description?: string;
 }
@@ -34,7 +33,6 @@ export function getAllPosts(): BlogPost[] {
       
       return {
         slug,
-        title: (data.title as string) || "",
         date: (data.date as string) || "",
         alt: (data.alt as string) || "",
         isPublished: (data.isPublished as boolean) || true,

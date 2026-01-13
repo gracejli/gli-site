@@ -1,11 +1,10 @@
 ---
-title: Hello world
 date: 2026-01-12
-summary: first post
+summary: first post dropdown text
 image: /images/pixel-apple.png
 alt: "this is another apple"
 type: dropdown
-isPublished: True
+isPublished: true
 ---
 
 This is my first post on this website. I am trying to develop a very simple blog page - almost twitter-like 

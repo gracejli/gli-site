@@ -7,7 +7,9 @@ import BlogItem from "./BlogItem";
 export default async function BlogPage() {
   
   // Determines if it has the isPublished flag set to true
-  const posts = getAllPosts().filter((post) => post.isPublished);
+  // Add 'await' if your library function is async
+  const allPosts = await getAllPosts(); 
+  const posts = getAllPosts().filter((post) => post.isPublished !== false);
 
   return (
     <div className="min-h-screen bg-white py-20 px-4">
