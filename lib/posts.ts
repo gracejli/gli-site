@@ -18,6 +18,11 @@ export interface BlogPost {
 }
 
 export function getAllPosts(): BlogPost[] {
+  // Safety check: ensure the directory exists before trying to read it
+  if (!fs.existsSync(postsDir)) {
+    return [];
+  }
+
   const files = fs.readdirSync(postsDir);
 
   return files
@@ -30,16 +35,18 @@ export function getAllPosts(): BlogPost[] {
 
       // Determine type based on frontmatter or default to 'dropdown'
       const type = (data.type as 'link' | 'dropdown' | 'text') || 'dropdown';
-      
+
       return {
         slug,
         date: (data.date as string) || "",
         alt: (data.alt as string) || "",
-        isPublished: (data.isPublished as boolean) || true,
+        isPublished: data.isPublished !== false,
         description: (data.description as string) || "",
         summary: (data.summary as string) || (data.description as string) || (data.title as string) || "",
         image: (data.image as string) || "",
         type: type,
+        
+        // Logic for URL and Body based on type
         url: (data.url as string) || (type === 'link' ? `/${slug}` : undefined),
         body: (type === 'dropdown' || type === 'text') ? (content.trim() || (data.body as string) || "") : undefined,
       };
