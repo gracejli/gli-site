@@ -3,7 +3,7 @@ title: Hello world
 date: 2026-01-12
 summary: second post
 type: text
-image: /images/pixel-apple.png
+image: "/images/pixel-apple.png"
 ---
 
 This is my first post on this website. I am trying to develop a very simple blog page - almost twitter-like 

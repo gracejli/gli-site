@@ -17,7 +17,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
         {post.image ? (
           <img 
             src={post.image} 
-            alt={post.summary}
+            alt={post.alt}
             className="w-full h-full object-cover"
           />
         ) : (
@@ -63,7 +63,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
             {post.image ? (
               <img 
                 src={post.image} 
-                alt={post.summary}
+                alt={post.alt}
                 className="w-full h-full object-cover"
               />
             ) : (

@@ -2,7 +2,7 @@
 title: Hello world
 date: 2026-01-12
 summary: first post
-image: https://www.walmart.com/ip/Fresh-Red-Delicious-Apple-Each/45912954
+image: /images/pixel-apple.png
 type: dropdown
 ---
 
