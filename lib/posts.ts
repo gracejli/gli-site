@@ -9,6 +9,7 @@ export interface BlogPost {
   image?: string;
   alt?: string; 
   type?: 'link' | 'dropdown' | 'text';
+  isPublished?: boolean; 
   summary: string;
   url?: string;
   body?: string;
@@ -36,6 +37,7 @@ export function getAllPosts(): BlogPost[] {
         title: (data.title as string) || "",
         date: (data.date as string) || "",
         alt: (data.alt as string) || "",
+        isPublished: (data.isPublished as boolean) || true,
         description: (data.description as string) || "",
         summary: (data.summary as string) || (data.description as string) || (data.title as string) || "",
         image: (data.image as string) || "",

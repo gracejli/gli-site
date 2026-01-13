@@ -4,8 +4,6 @@ import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, ArrowUpRight } from 'lucide-react';
 import type { BlogPost } from "@/lib/posts";
 
-// --- CLIENT COMPONENT ---
-// This component handles the interactivity (state), so it must be a Client Component
 const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -13,7 +11,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
   const CardContent = () => (
     <div className="group flex flex-row gap-4 cursor-pointer items-start">
       {/* Image Container */}
-      <div className="shrink-0 w-24 h-24 overflow-hidden rounded-md bg-gray-100">
+      <div className="shrink-0 w-12 h-12 overflow-hidden rounded-md bg-gray-100">
         {post.image ? (
           <img 
             src={post.image} 
@@ -44,7 +42,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
     </div>
   );
 
-  // SCENARIO A: It is a Link
+  // SCENARIO A: The blog post is referring to a link to another page 
   if (post.type === 'link' && post.url) {
     return (
       <a href={post.url} className="block mb-12">
@@ -59,7 +57,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
       <div className="mb-12">
         <div className="flex flex-row gap-4 items-start">
           {/* Image Container */}
-          <div className="shrink-0 w-24 h-24 overflow-hidden rounded-md bg-gray-100">
+          <div className="shrink-0 w-12 h-12 overflow-hidden rounded-md bg-gray-100">
             {post.image ? (
               <img 
                 src={post.image} 
@@ -106,9 +104,11 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
           ${isOpen ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'}
         `}
       >
-        <div className="bg-gray-50 p-6 rounded-md text-gray-700 text-sm leading-relaxed border border-gray-100 ml-28">
-          {post.body}
-        </div>
+        {post.body && (
+              <div className="text-gray-700 text-sm leading-relaxed">
+                {post.body}
+              </div>
+            )}
       </div>
     </div>
   );
