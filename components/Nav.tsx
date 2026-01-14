@@ -9,14 +9,15 @@ export default function Nav() {
         home
       </Link>
       <Link className="underline underline-offset-4 font-rasterGrotesk" href="/blog">
-        blog
-      </Link>
-      <Link className="underline underline-offset-4 font-rasterGrotesk" href="/links">
-        links
+        brainforest
       </Link>
       <Link className="underline underline-offset-4 font-rasterGrotesk" href="/projects">
-        projects
+        my projects
       </Link>
+      <Link className="underline underline-offset-4 font-rasterGrotesk" href="/links">
+        awesome links
+      </Link>
+      
     </nav>
   );
 }

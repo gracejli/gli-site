@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ExternalLink, ArrowRight } from 'lucide-react';
 import PROJECTS from '@/content/projects/projects.json'
+// TODO: version 1 is the list, version 2 is the dynamic version
 
 //- TYPES 
 interface Project {

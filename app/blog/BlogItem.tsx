@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown'; 
 import { ChevronDown, ChevronUp, ArrowUpRight } from 'lucide-react';
 import type { BlogPost } from "@/lib/posts";
+import { ShootingStarCursor } from '@/components/shooting-star-cursor';
 
 const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -100,12 +101,12 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
           {/* Content Side */}
           <div className="flex-1 flex flex-col gap-2 pt-1">
             {post.summary && (
-              <p className="text-gray-700 text-sm leading-relaxed">
+              <p className="text-sm leading-relaxed">
                 {post.summary}
               </p>
             )}
             {post.body && (
-              <div className="text-gray-700 text-sm font-doto leading-relaxed whitespace-pre-wrap">
+              <div className="text-sm leading-relaxed whitespace-pre-wrap">
                 <ReactMarkdown components={markdownComponents}>{post.body}</ReactMarkdown>
               </div>
             )}
@@ -132,11 +133,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
           ${isOpen ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0 mt-0'}
         `}
       >
-        {/* ALIGNMENT FIX:
-           Image is w-12 (3rem) + gap-4 (1rem) = 4rem offset needed.
-           ml-16 is exactly 4rem. 
-        */}
-        <div className="text-gray-700 text-sm leading-relaxed ml-16 whitespace-pre-wrap">
+        <div className="text-sm leading-relaxed ml-16 whitespace-pre-wrap">
           <ReactMarkdown components={markdownComponents}>{post.body}</ReactMarkdown>
         </div>
       </div>

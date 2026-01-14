@@ -7,8 +7,8 @@ sharpie style work that I always do in my drawings*/
 
 /* ---------- CSS variables ---------- */
 :root {
-  --background: #332d48;
-  --foreground: #cab5b5;
+  --background: #f0bae6;
+  --foreground: #353f99;
 }
 
 /* Dark mode\ via system preference */
@@ -21,7 +21,7 @@ sharpie style work that I always do in my drawings*/
 
 @font-face {
   font-family: RasterGrotesk; 
-  font-style: normal; 
+  font-style: bold; 
   font-weight: 200 700; 
   src: url("./FKRasterGrotesk-Smooth.woff");
 }
@@ -29,7 +29,7 @@ sharpie style work that I always do in my drawings*/
 @theme {
   --font-rasterGrotesk: "RasterGrotesk", sans-serif;
   --font-doto: "Doto", sans-serif; 
-  --color-primary: #ff5733; 
+  --color-primary: #353f99; 
   --color-secondary: #00fff; 
 }
 
