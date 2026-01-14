@@ -14,6 +14,9 @@ export default function Nav() {
       <Link className="underline underline-offset-4 font-rasterGrotesk" href="/links">
         links
       </Link>
+      <Link className="underline underline-offset-4 font-rasterGrotesk" href="/projects">
+        projects
+      </Link>
     </nav>
   );
 }

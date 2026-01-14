@@ -16,10 +16,10 @@ export default async function BlogPage() {
       <div className="max-w-md mx-auto">
         <header className="mb-16">
           <h1 className="text-3xl tracking-tight text-gray-900 mb-2 font-rasterGrotesk">
-            Blog
+            brainforest
           </h1>
           <p className="text-gray-500 font-rasterGrotesk">
-            non-dated posts to log
+            personal notes
           </p>
         </header>
 

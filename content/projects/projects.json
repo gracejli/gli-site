@@ -1,0 +1,14 @@
+[
+    {
+      "id": "triumvirate arena",
+      "title": "triumvirate arena",
+      "category": "game dev",
+      "year": "2022",
+      "image": "/images/triumvirate-arena.gif",
+      "description": "2D Game Coded with Vulkan Graphics", 
+      "body": "Turn taking card game made in group of 3",
+      "link": "gracejli.com/triumvirate",
+      "linkText": "link to description"
+    }
+  ]
+  

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown'; 
 import { ChevronDown, ChevronUp, ArrowUpRight } from 'lucide-react';
 import type { BlogPost } from "@/lib/posts";
 
@@ -42,6 +43,29 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
     </div>
   );
 
+   // --- MARKDOWN CONFIGURATION ---
+  // This tells ReactMarkdown how to render specific HTML elements.
+  // We use it to make links blue and underlined without needing external plugins.
+  const markdownComponents = {
+    // Styles links to be always underlined and blue
+    a: ({ href, children }: any) => (
+      <a 
+        href={href} 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="text-blue-600 underline hover:text-blue-800 transition-colors"
+        // Stop propagation so clicking a link doesn't toggle the dropdown (if inside one)
+        onClick={(e) => e.stopPropagation()} 
+      >
+        {children}
+      </a>
+    ),
+    // Optional: Add basic styling for lists if you use them
+    ul: ({ children }: any) => <ul className="list-disc ml-4 my-2">{children}</ul>,
+    ol: ({ children }: any) => <ol className="list-decimal ml-4 my-2">{children}</ol>,
+  };
+
+
   // SCENARIO A: The blog post is referring to a link to another page 
   if (post.type === 'link' && post.url) {
     return (
@@ -81,8 +105,8 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
               </p>
             )}
             {post.body && (
-              <div className="text-gray-700 text-sm font-doto leading-relaxed">
-                {post.body}
+              <div className="text-gray-700 text-sm font-doto leading-relaxed whitespace-pre-wrap">
+                <ReactMarkdown components={markdownComponents}>{post.body}</ReactMarkdown>
               </div>
             )}
           </div>
@@ -112,8 +136,8 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
            Image is w-12 (3rem) + gap-4 (1rem) = 4rem offset needed.
            ml-16 is exactly 4rem. 
         */}
-        <div className="text-gray-700 text-sm leading-relaxed ml-16">
-          {post.body}
+        <div className="text-gray-700 text-sm leading-relaxed ml-16 whitespace-pre-wrap">
+          <ReactMarkdown components={markdownComponents}>{post.body}</ReactMarkdown>
         </div>
       </div>
     </div>
