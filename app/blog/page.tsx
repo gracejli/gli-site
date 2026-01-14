@@ -12,13 +12,13 @@ export default async function BlogPage() {
   const posts = getAllPosts().filter((post) => post.isPublished !== false);
 
   return (
-    <div className="min-h-screen bg-white py-20 px-4">
+    <div className="min-h-screen background py-20 px-4">
       <div className="max-w-md mx-auto">
         <header className="mb-16">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-2">
+          <h1 className="text-3xl tracking-tight text-gray-900 mb-2 font-rasterGrotesk">
             Blog
           </h1>
-          <p className="text-gray-500">
+          <p className="text-gray-500 font-rasterGrotesk">
             non-dated posts to log
           </p>
         </header>

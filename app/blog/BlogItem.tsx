@@ -81,7 +81,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
               </p>
             )}
             {post.body && (
-              <div className="text-gray-700 text-sm leading-relaxed">
+              <div className="text-gray-700 text-sm font-doto leading-relaxed">
                 {post.body}
               </div>
             )}

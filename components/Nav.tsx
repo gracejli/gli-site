@@ -5,13 +5,13 @@ import Link from "next/link";
 export default function Nav() {
   return (
     <nav className="flex flex-col gap-2">
-      <Link className="underline underline-offset-4" href="/">
+      <Link className="underline underline-offset-4 font-rasterGrotesk" href="/">
         home
       </Link>
-      <Link className="underline underline-offset-4" href="/blog">
+      <Link className="underline underline-offset-4 font-rasterGrotesk" href="/blog">
         blog
       </Link>
-      <Link className="underline underline-offset-4" href="/links">
+      <Link className="underline underline-offset-4 font-rasterGrotesk" href="/links">
         links
       </Link>
     </nav>

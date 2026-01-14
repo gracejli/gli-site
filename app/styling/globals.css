@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap');
+@import "tailwindcss";
+
+
+/*Could also create a font with the tool saved in the are.na page, using gemini - bold
+sharpie style work that I always do in my drawings*/
+
+/* ---------- CSS variables ---------- */
+:root {
+  --background: #f2b6e2;
+  --foreground: #171717;
+}
+
+/* Dark mode\ via system preference */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #c79191;
+    --foreground: #c79191;
+  }
+}
+
+@font-face {
+  font-family: RasterGrotesk; 
+  font-style: normal; 
+  font-weight: 200 700; 
+  src: url("./FKRasterGrotesk-Smooth.woff");
+}
+
+@theme {
+  --font-rasterGrotesk: "RasterGrotesk", sans-serif;
+  --font-doto: "Doto", sans-serif; 
+  --color-primary: #ff5733; 
+  --color-secondary: #00fff; 
+}
+
+
+/* ---------- Global element styles ---------- */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji",
+    "Segoe UI Emoji";
+}
