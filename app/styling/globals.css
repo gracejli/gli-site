@@ -7,14 +7,14 @@ sharpie style work that I always do in my drawings*/
 
 /* ---------- CSS variables ---------- */
 :root {
-  --background: #f2b6e2;
-  --foreground: #171717;
+  --background: #332d48;
+  --foreground: #cab5b5;
 }
 
 /* Dark mode\ via system preference */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #c79191;
+    --background: #e0cccc;
     --foreground: #c79191;
   }
 }

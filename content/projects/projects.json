@@ -9,6 +9,18 @@
       "body": "Turn taking card game made in group of 3",
       "link": "gracejli.com/triumvirate",
       "linkText": "link to description"
-    }
+    }, 
+    {
+        "id": "3d room model",
+        "title": "triumvirate arena",
+        "category": "game dev",
+        "year": "2023",
+        "image": "/images/triumvirate-arena.gif",
+        "description": "2D Game Coded with Vulkan Graphics", 
+        "body": "Turn taking card game made in group of 3",
+        "link": "gracejli.com/triumvirate",
+        "linkText": "link to description"
+      }
+
   ]
   
