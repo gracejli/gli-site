@@ -24,7 +24,7 @@ export default async function BlogPage() {
   const posts = getAllPosts().filter((post) => post.isPublished !== false);
 
   return (
-    <div className="min-h-screen background py-20 px-4">
+    <div className="min-h-screen background py-12 px-4">
       <ShootingStarCursor/>
       <div className="max-w-md mx-auto">
         <div className="flex flex-col">

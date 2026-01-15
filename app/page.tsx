@@ -3,6 +3,7 @@ import React from 'react';
 import { ShootingStarCursor } from "@/components/shooting-star-cursor"
 import Carousel from "@/components/Carousel"
 
+// bg-[url(/images/star-pixels.png)]
 export default function App() {
   const myImages = [
     '/images/2022-dorm-room.png',
@@ -11,10 +12,8 @@ export default function App() {
   ];
 
   return (
-    // FIX 1: Move min-h-screen, flex, and padding to the <main> tag
-    // FIX 2: Add 'overflow-hidden' to strictly prevent scrollbars/extra space
-    // FIX 3: Added a background color (bg-slate-950) so your slate-400 text is visible
-    <main className="relative w-full overflow-hidden flex flex-col items-center justify-center p-8">
+    <main 
+    className="relative w-full overflow-hidden flex flex-col items-center justify-center p-8">
       <ShootingStarCursor />
       {/* Content Wrapper */}
       <div className="z-10 text-center pointer-events-auto">
@@ -41,6 +40,9 @@ export default function App() {
         <Carousel images={myImages} />
         <p className="text-lg font-doto">
           my bedroom over the years 
+        </p>
+        <p>
+          grace li is currently sleeping right now. location: los angeles. background is pixelated version of the sky at her lat/longitude using nasa api
         </p>
       </div>
     </main>
