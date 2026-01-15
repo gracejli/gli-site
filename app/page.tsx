@@ -27,16 +27,16 @@ export default function App() {
           {/* Bio Box */}
           <div className="p-8 border-2 border-dashed border-slate-700 rounded-xl transition-all duration-300 hover:border-amber-400 hover:bg-amber-400/5 cursor-none text-left">
             <p className="text-sm font-bold font-doto mb-2">
-              grace li is a technical artist at riot games working on teamfight tactics
+              grace li
             </p>
             <p className="text-sm font-bold font-doto mb-2">
-              she has worked at columbia records as an art direction intern
+              tinkerer in los angeles, from a small town in michigan.
             </p>
             <p className="text-sm font-bold font-doto mb-2">
-              and microsoft as a software engineer
+              currently: i'm a technical artist at riot games working on making the game teamfight tactics as delightul as possible for players
             </p>
             <p className="text-sm font-bold font-doto mb-2">
-              she likes making things with code
+              previously: at microsoft and at columbia records 
             </p>
             <p className ="text-sm font-bold font-doto mt-4 text-amber-400/80">
               welcome to my internet room

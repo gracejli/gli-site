@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ExternalLink, ArrowRight } from 'lucide-react';
 import PROJECTS from '@/content/projects/projects.json'
-// TODO: version 1 is the list, version 2 is the dynamic version
+// TODO: version 1 is the list, version 2 is the dynamic
 
 //- TYPES 
 interface Project {
@@ -31,8 +31,8 @@ interface ImageStageProps {
 // --- COMPONENTS ---
 
 const Header = () => (
-    <header className="mb-12 pt-8 font-doto">
-      <h1 className="text-xl md:text-2xl font-normal tracking-tight">
+    <header className="mb-12 pt-8 font-rasterGrotesk">
+      <h1 className="text-xl md:text-2xl tracking-tight">
         <a href="/" className="hover:underline">Grace Li</a>{' '}
       </h1>
     </header>
@@ -68,13 +68,13 @@ const Header = () => (
           onMouseEnter={() => onHover(project.image)}
           onMouseLeave={() => onHover(null)}
         >
-          <td className="py-4 pr-4 align-top font-medium text-lg w-1/2 group-hover:pl-2 transition-all">
+          <td className="py-4 pr-4 align-top font-medium text-white font-doto text-lg w-1/2 group-hover:pl-2 transition-all">
             {project.title}
           </td>
-          <td className="py-4 px-2 align-top text-gray-600 w-1/4">
+          <td className="py-4 px-2 align-top font-doto text-white font-bold w-1/4">
             {project.category}
           </td>
-          <td className="py-4 pl-4 align-top text-right text-gray-500 w-1/4 font-mono text-sm">
+          <td className="py-4 pl-4 align-top text-right text-white font-doto w-1/4 text-sm">
             {project.year}
           </td>
         </tr>
@@ -87,11 +87,11 @@ const Header = () => (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Text Content */}
                   <div className="space-y-6">
-                    <div className="text-lg font-medium leading-relaxed">
+                    <div className="text-lg font-rasterGrotesk font-bold leading-relaxed">
                       {project.description}
                     </div>
                     
-                    <div className="text-gray-600 leading-relaxed text-sm md:text-base">
+                    <div className="text-gray-600 font-doto leading-relaxed text-sm md:text-base">
                       {project.body}
                     </div>
   
@@ -158,10 +158,10 @@ const Header = () => (
           <div className="relative z-20 --background">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b-2 border-black text-xs uppercase tracking-widest text-gray-400">
-                  <th className="py-2 font-normal w-1/2">Project</th>
-                  <th className="py-2 px-2 font-normal w-1/4">Category</th>
-                  <th className="py-2 text-right font-normal w-1/4">Year</th>
+                <tr className="border-b-2 border-white text-xs uppercase tracking-widest text-white">
+                  <th className="py-2 font-rasterGrotesk w-1/2">Project</th>
+                  <th className="py-2 px-2 font-rasterGrotesk w-1/4">Category</th>
+                  <th className="py-2 text-right font-rasterGrotesk w-1/4">Year</th>
                 </tr>
               </thead>
               <tbody>
