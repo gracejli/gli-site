@@ -45,6 +45,9 @@ sharpie style work that I always do in my drawings*/
   font-style: normal; 
   font-weight: 400; 
   src: url("./fonts/EditorialNew_regular.otf"); 
+  font-variation-settings:
+    "ROND" 0;
+  font-optical-sizing: auto;
 }
 
 @theme {

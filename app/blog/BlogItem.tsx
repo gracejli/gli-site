@@ -54,7 +54,7 @@ const CardContent = ({ post, isOpen }: { post: BlogPost; isOpen?: boolean }) => 
     <PostImage src={post.image} alt={post.alt} />
     <div className="flex-1 flex justify-between items-start pt-1">
       <div className="flex flex-col gap-1">
-        <p className="text-sm font-doto underline underline-offset-4 leading-relaxed transition-colors">
+        <p className="text-sm font-doto font-bold underline underline-offset-4 leading-relaxed transition-colors">
           {post.summary}
         </p>
       </div>
@@ -90,7 +90,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
               </p>
             )}
             {post.body && (
-              <div className="text-sm font-doto leading-relaxed whitespace-pre-wrap">
+              <div className="text-sm font-doto font-bold leading-relaxed whitespace-pre-wrap">
                 <ReactMarkdown components={markdownComponents}>{post.body}</ReactMarkdown>
               </div>
             )}
@@ -121,7 +121,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
             onClick={() => setIsOpen(!isOpen)} 
             className="w-full text-left flex justify-between items-start gap-2 focus:outline-none"
           >
-            <span className="text-sm font-doto underline underline-offset-4 leading-relaxed transition-colors 
+            <span className="text-sm font-doto font-bold underline underline-offset-4 leading-relaxed transition-colors 
             transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]">
               {post.summary}
             </span>
@@ -134,7 +134,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
               ${isOpen ? 'opacity-100 mt-2' : 'max-h-0 opacity-0 mt-0'}
             `}
           >
-            <div className="text-sm font-doto leading-relaxed whitespace-pre-wrap">
+            <div className="text-sm font-doto font-bold leading-relaxed whitespace-pre-wrap">
               <ReactMarkdown components={markdownComponents}>{post.body || ''}</ReactMarkdown>
             </div>
           </div>
