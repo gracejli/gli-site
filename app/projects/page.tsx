@@ -31,7 +31,7 @@ interface ImageStageProps {
 // --- COMPONENTS ---
 
 const Header = () => (
-    <header className="mb-12 pt-8 font-rasterGrotesk">
+    <header className="mb-12 pt-8 font-rasterGrotesk text-white">
       <h1 className="text-xl md:text-2xl tracking-tight">
         <a href="/" className="hover:underline">Grace Li</a>{' '}
       </h1>
@@ -68,10 +68,10 @@ const Header = () => (
           onMouseEnter={() => onHover(project.image)}
           onMouseLeave={() => onHover(null)}
         >
-          <td className="py-4 pr-4 align-top font-medium text-white font-doto text-lg w-1/2 group-hover:pl-2 transition-all">
+          <td className="py-4 pr-4 align-top text-sm text-white font-doto w-1/2 group-hover:pl-2 transition-all">
             {project.title}
           </td>
-          <td className="py-4 px-2 align-top font-doto text-white font-bold w-1/4">
+          <td className="py-4 px-2 align-top font-doto text-white font-bold text-sm w-1/4">
             {project.category}
           </td>
           <td className="py-4 pl-4 align-top text-right text-white font-doto w-1/4 text-sm">

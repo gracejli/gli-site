@@ -2,6 +2,7 @@
 import React from 'react';
 import { ShootingStarCursor } from "@/components/shooting-star-cursor"
 import Carousel from "@/components/Carousel"
+import ArenaCarousel from '@/components/arena-carousel';
 
 export default function App() {
   const myImages = [
@@ -49,6 +50,7 @@ export default function App() {
              <p className="text-sm font-doto mt-2 text-slate-400">
                my bedroom over the years 
              </p>
+             <ArenaCarousel channelSlug={"/gli/together-twos"}/>
           </div>
         </div>
 
@@ -61,6 +63,7 @@ export default function App() {
               <li><a href="https://www.are.na/gli/index" className="hover:text-amber-300 underline">are.na</a></li>
               <li><a href="https://www.instagram.com/gracejli/" className="hover:text-amber-300 underline">some of my favorite photos</a></li>
               <li><a href="https://www.yourworldoftext.com/%7Egracejli/" className="hover:text-amber-300 underline">guestbook</a></li>
+              <li><a href="https://www.gracejli.com" className="hover:text-amber-300 underline">my old, currently live project website</a></li>
             </ul>
           </div>
         </div>
