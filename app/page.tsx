@@ -50,7 +50,6 @@ export default function App() {
              <p className="text-sm font-doto mt-2 text-slate-400">
                my bedroom over the years 
              </p>
-             <ArenaCarousel channelSlug={"/gli/together-twos"}/>
           </div>
         </div>
 
@@ -60,10 +59,10 @@ export default function App() {
             <h2 className="text-lg font-bold font-doto mb-4 text-amber-400">links</h2>
             {/* Placeholder for your links */}
             <ul className="space-y-2 font-doto text-sm">
-              <li><a href="https://www.are.na/gli/index" className="hover:text-amber-300 underline">are.na</a></li>
-              <li><a href="https://www.instagram.com/gracejli/" className="hover:text-amber-300 underline">some of my favorite photos</a></li>
-              <li><a href="https://www.yourworldoftext.com/%7Egracejli/" className="hover:text-amber-300 underline">guestbook</a></li>
-              <li><a href="https://www.gracejli.com" className="hover:text-amber-300 underline">my old, currently live project website</a></li>
+              <li><a href="https://www.are.na/gli/index" className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)">are.na</a></li>
+              <li><a href="https://www.instagram.com/gracejli/" className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)">some of my favorite photos</a></li>
+              <li><a href="https://www.yourworldoftext.com/%7Egracejli/" className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)">guestbook</a></li>
+              <li><a href="https://www.gracejli.com" className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)">my old, currently live project website</a></li>
             </ul>
           </div>
         </div>
