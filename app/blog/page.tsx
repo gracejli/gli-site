@@ -7,19 +7,7 @@ import { ShootingStarCursor } from "@/components/shooting-star-cursor";
 // Posts are read from markdown files in /content/posts using fs.readdirSync() and gray-matter
 export default async function BlogPage() {
   
-  // Determines if it has the isPublished flag set to true
-  // Add 'await' if your library function is async
-  /*
-  <header className="mb-16">
-          <h1 className="text-3xl tracking-tight mb-2 font-rasterGrotesk">
-            brainforest
-          </h1>
-          <p className="font-rasterGrotesk">
-            personal notes
-          </p>
-        </header>
-
-  */
+  
   const allPosts = await getAllPosts(); 
   const posts = getAllPosts().filter((post) => post.isPublished !== false);
 

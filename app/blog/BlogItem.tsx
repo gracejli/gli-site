@@ -28,7 +28,7 @@ const markdownComponents = {
 
 // HELPER: Shared Image Component
 const PostImage = ({ src, alt }: { src?: string, alt?: string }) => (
-  <div className="shrink-0 w-20 h-20 border-2 border-dashed overflow-hidden rounded-xl relative">
+  <div className="shrink-0 w-32 h-32 md:w-20 md:h-20 border-2 border-dashed border-[#e6dfa8] overflow-hidden rounded-xl relative transition-all duration-300">
     {src ? (
       <img 
         src={src} 
@@ -50,7 +50,7 @@ const PostImage = ({ src, alt }: { src?: string, alt?: string }) => (
 // HELPER: Reusable Card Content for Link/Static modes
 // (Note: Scenario C uses a split version of this to fix the alignment)
 const CardContent = ({ post, isOpen }: { post: BlogPost; isOpen?: boolean }) => (
-  <div className="group flex flex-row gap-4 cursor-pointer items-start">
+  <div className="group flex flex-col md:flex-row gap-4 cursor-pointer items-start">
     <PostImage src={post.image} alt={post.alt} />
     <div className="flex-1 flex justify-between items-start pt-1">
       <div className="flex flex-col gap-1">
@@ -79,7 +79,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
   if (post.type === 'text') {
     return (
       <div className="mb-12">
-        <div className="flex flex-row gap-4 items-start">
+        <div className="flex flex-col md:flex-row gap-4 items-start">
           <PostImage src={post.image} alt={post.alt} />
           
           
@@ -104,7 +104,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
   // We manually reconstruct the flex layout here so the body text sits inside the right column.
   return (
     <div className="mb-12">
-      <div className="flex flex-row gap-4 items-start group">
+      <div className="flex flex-col md:flex-row gap-4 items-start group">
         
         {/* Left Column: Image (Clickable) */}
         <button 
