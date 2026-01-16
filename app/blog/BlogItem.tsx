@@ -2,19 +2,15 @@
 
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown'; 
-import { ChevronDown, ChevronUp, ArrowUpRight } from 'lucide-react';
 import type { BlogPost } from "@/lib/posts";
-//group-hover:text-blue-600
+
 // MARKDOWN CONFIGURATION
-// Styles links to be always underlined and blue
 const markdownComponents = {
   a: ({ href, children }: any) => (
     <a 
       href={href} 
       target="_blank" 
       rel="noopener noreferrer" 
-      // previous underline transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]"
-      //underline hover:text-white transition-colors
       className="underline transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]"
       onClick={(e) => e.stopPropagation()} 
     >
@@ -47,9 +43,8 @@ const PostImage = ({ src, alt }: { src?: string, alt?: string }) => (
   </div>
 );
 
-// HELPER: Reusable Card Content for Link/Static modes
-// (Note: Scenario C uses a split version of this to fix the alignment)
-const CardContent = ({ post, isOpen }: { post: BlogPost; isOpen?: boolean }) => (
+// HELPER: Reusable Card Content
+const CardContent = ({ post }: { post: BlogPost; isOpen?: boolean }) => (
   <div className="group flex flex-col md:flex-row gap-4 cursor-pointer items-start">
     <PostImage src={post.image} alt={post.alt} />
     <div className="flex-1 flex justify-between items-start pt-1">
@@ -69,7 +64,14 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
   // SCENARIO A: Link
   if (post.type === 'link' && post.url) {
     return (
-      <a href={post.url} target="_blank" rel="noopener noreferrer" className="block mb-12">
+      // Added id={post.slug} to enable anchor linking (e.g. #my-link)
+      <a 
+        id={post.slug} 
+        href={post.url} 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="block mb-12 scroll-mt-24 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]"
+      >
         <CardContent post={post} />
       </a>
     );
@@ -78,10 +80,10 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
   // SCENARIO B: Text (Static)
   if (post.type === 'text') {
     return (
-      <div className="mb-12">
+      // Added id={post.slug} to enable anchor linking
+      <div id={post.slug} className="mb-12 scroll-mt-24">
         <div className="flex flex-col md:flex-row gap-4 items-start">
           <PostImage src={post.image} alt={post.alt} />
-          
           
           <div className="flex-1 flex flex-col gap-2 pt-1">
             {post.summary && (
@@ -100,10 +102,10 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
     );
   }
 
-  // SCENARIO C: Dropdown (Refactored for Right-Column Alignment)
-  // We manually reconstruct the flex layout here so the body text sits inside the right column.
+  // SCENARIO C: Dropdown
   return (
-    <div className="mb-12">
+    // Added id={post.slug} to enable anchor linking
+    <div id={post.slug} className="mb-12 scroll-mt-24">
       <div className="flex flex-col md:flex-row gap-4 items-start group">
         
         {/* Left Column: Image (Clickable) */}
@@ -115,7 +117,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
         </button>
 
         {/* Right Column: Content */}
-        <div className="flex-1 flex flex-col pt-1">
+        <div className="flex-1 flex flex-col pt-1 w-full">
           {/* Header Row: Summary + Chevron */}
           <button 
             onClick={() => setIsOpen(!isOpen)} 
@@ -146,5 +148,3 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
 };
 
 export default BlogItem;
-
-

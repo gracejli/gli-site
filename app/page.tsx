@@ -58,7 +58,7 @@ export default function App() {
           <div className="h-full p-8 border-2 border-dashed border-slate-700 rounded-xl transition-all duration-300 hover:border-amber-400 hover:bg-amber-400/5">
             <h2 className="text-lg font-bold font-doto mb-4 text-amber-400">links</h2>
             {/* Placeholder for your links */}
-            <ul className="space-y-2 font-doto text-sm">
+            <ul className="space-y-2 font-doto text-sm font-bold">
               <li><a href="https://www.are.na/gli/index" className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)">are.na</a></li>
               <li><a href="https://www.instagram.com/gracejli/" className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)">some of my favorite photos</a></li>
               <li><a href="https://www.yourworldoftext.com/%7Egracejli/" className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)">guestbook</a></li>

@@ -28,10 +28,16 @@ export function getAllPosts(): BlogPost[] {
   return files
     .filter((f) => f.endsWith(".md"))
     .map((filename) => {
-      const slug = filename.replace(/\.md$/, "");
       const filePath = path.join(postsDir, filename);
       const raw = fs.readFileSync(filePath, "utf8");
       const { data, content } = matter(raw);
+
+      // --- KEY CHANGE HERE ---
+      // 1. Prefer the 'slug' defined in frontmatter.
+      // 2. Fallback to filename (removing .md) if no slug is provided.
+      // Note: We remove leading slashes from data.slug to ensure consistency if user types "/my-slug"
+      const rawSlug = (data.slug as string) || filename.replace(/\.md$/, "");
+      const slug = rawSlug.startsWith('/') ? rawSlug.slice(1) : rawSlug;
 
       // Determine type based on frontmatter or default to 'dropdown'
       const type = (data.type as 'link' | 'dropdown' | 'text') || 'dropdown';
@@ -46,9 +52,16 @@ export function getAllPosts(): BlogPost[] {
         image: (data.image as string) || "",
         type: type,
         
-        // Logic for URL and Body based on type
+        // --- KEY CHANGE HERE ---
+        // Logic for URL:
+        // 1. If 'url' is explicitly in frontmatter, use it exactly as is.
+        // 2. If type is 'link', default to `/${slug}` (this handles internal links if no URL is given).
+        // 3. Otherwise undefined.
         url: (data.url as string) || (type === 'link' ? `/${slug}` : undefined),
-        body: (type === 'dropdown' || type === 'text') ? (content.trim() || (data.body as string) || "") : undefined,
+        
+        // Logic for Body:
+        // Return body for dropdown/text types OR if it's a link (so the destination page can render it)
+        body: content.trim() || (data.body as string) || "",
       };
     })
     .sort((a, b) => {
@@ -61,8 +74,18 @@ export function getAllPosts(): BlogPost[] {
 }
 
 export function getPostBySlug(slug: string) {
-  const filePath = path.join(postsDir, `${slug}.md`);
-  const raw = fs.readFileSync(filePath, "utf8");
-  const { data, content } = matter(raw);
-  return { slug, frontmatter: data, content };
+  // Note: Finding a file by "custom slug" is trickier because we don't know the filename.
+  // We have to iterate all files to find the one matching the slug.
+  const allPosts = getAllPosts();
+  const post = allPosts.find((p) => p.slug === slug);
+  
+  if (!post) {
+    throw new Error(`Post with slug "${slug}" not found`);
+  }
+
+  return { 
+    slug: post.slug, 
+    frontmatter: post, 
+    content: post.body || "" 
+  };
 }
