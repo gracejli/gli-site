@@ -1,11 +1,13 @@
-//HOMEPAGE 
+import ArenaCarousel from '@/components/arena-carousel';
 
 export default function Links() {
-    return (
-      <div>
-        <h1>Links page</h1>
-        <p>Page of links that I really like (TODO: explore json here for new links instead) TODO: add guestbook
-        </p>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <p>suggested links: 
+      </p>
+      <p>/together-twos</p>
+      <p>/i am a perfect t shirt</p>
+      <ArenaCarousel/>
+    </div>
+  );
+}

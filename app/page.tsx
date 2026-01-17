@@ -51,6 +51,7 @@ export default function App() {
                my bedroom over the years 
              </p>
           </div>
+          
         </div>
 
         {/* RIGHT COLUMN: Links (40%) */}
@@ -66,7 +67,6 @@ export default function App() {
             </ul>
           </div>
         </div>
-
       </div>
     </main>
   );
