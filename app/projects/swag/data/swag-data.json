@@ -1,0 +1,92 @@
+[
+    {
+      "id": "1",
+      "name": "creative department hoodie",
+      "company": "riot games",
+      "description": "super high quality hoodie designed in house, screenprinted, embroidered, and puffy paint texture elements",
+      "photoUrl": "/images/vercel-hoodie.jpg",
+      "usefulness": 0.9,
+      "creativity": 0.2
+    },
+    {
+      "id": "2",
+      "name": "creative department sweatpants",
+      "company": "riot games",
+      "description": "Plastic spinner that broke after 2 days.",
+      "photoUrl": "/images/spinner.jpg",
+      "usefulness": -0.8,
+      "creativity": -0.5
+    },
+    {
+      "id": "3",
+      "name": "outdoor blanket",
+      "company": "microsoft",
+      "description": "Actually charges my phone, very handy for camping.",
+      "photoUrl": "/images/powerbank.jpg",
+      "usefulness": 1.0,
+      "creativity": 0.8
+    }, 
+    {
+      "id": "4",
+      "name": "glass die",
+      "company": "riot games",
+      "description": "end of year party gift for 2026. super well made, each one represents a game riot has",
+      "photoUrl": "/images/powerbank.jpg",
+      "usefulness": 1.0,
+      "creativity": 0.8
+    }, 
+    {
+      "id": "5",
+      "name": "2025 tft hoodie (pink)",
+      "company": "riot games",
+      "description": "end of year party gift for 2026. super well made, each one represents a game riot has",
+      "photoUrl": "/images/powerbank.jpg",
+      "usefulness": 1.0,
+      "creativity": 0.8
+    }, 
+    {
+      "id": "6",
+      "name": "2025 tft hoodie (black)",
+      "company": "riot games",
+      "description": "end of year party gift for 2026. super well made, each one represents a game riot has",
+      "photoUrl": "/images/powerbank.jpg",
+      "usefulness": 1.0,
+      "creativity": 0.8
+    }, 
+    {
+      "id": "7",
+      "name": "2024 tft hoodie",
+      "company": "riot games",
+      "description": "celebrating our end of year macau tft open! ",
+      "photoUrl": "/images/powerbank.jpg",
+      "usefulness": 1.0,
+      "creativity": 0.8
+    }, 
+    {
+      "id": "8",
+      "name": "thunderdome charging bank",
+      "company": "riot games",
+      "description": "celebrating our end of year macau tft open! ",
+      "photoUrl": "/images/powerbank.jpg",
+      "usefulness": 1.0,
+      "creativity": 0.8
+    }, 
+    {
+      "id": "9",
+      "name": "2025 thunderdome socks",
+      "company": "riot games",
+      "description": "celebrating our end of year macau tft open! ",
+      "photoUrl": "/images/powerbank.jpg",
+      "usefulness": 1.0,
+      "creativity": 0.8
+    }, 
+    {
+      "id": "10",
+      "name": "2025 thunderdome pin",
+      "company": "riot games",
+      "description": "celebrating our end of year macau tft open! ",
+      "photoUrl": "/images/powerbank.jpg",
+      "usefulness": 1.0,
+      "creativity": 0.8
+    }
+  ]

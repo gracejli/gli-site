@@ -29,7 +29,7 @@ export const ShootingStarCursor = () => {
         x: number; y: number; size: number; color: string; vx: number; vy: number; life: number; decay: number;
         constructor(x: number, y: number) {
             this.x = x; this.y = y;
-            this.size = Math.random() * 2 + 1; // Random size
+            this.size = Math.random() * 3 + 1; // Random size
             
             const hues = [50, 40, 60];
             const hue = hues[Math.floor(Math.random() * hues.length)];

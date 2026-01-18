@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Code, AlertCircle, ExternalLink, FileText, Image as ImageIcon, Link as LinkIcon, Loader2 } from 'lucide-react';
 
+// todo: the photos populate the entire screen with thoughts and things 
+// explodes onto the
 export default function App() {
   const [slug, setSlug] = useState('together-twos');
   const [channelData, setChannelData] = useState(null);
