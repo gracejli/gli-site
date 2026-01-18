@@ -4,6 +4,17 @@ import { Search, Code, AlertCircle, ExternalLink, FileText, Image as ImageIcon, 
 
 // todo: the photos populate the entire screen with thoughts and things 
 // explodes onto the
+
+{/* <button
+onClick={() => setShowJson(!showJson)}
+className={`flex-1 sm:flex-none justify-center px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-2 transition-colors ${
+  showJson ? 'bg-neutral-200' : 'border border-neutral-300 hover:bg-neutral-50'
+}`}
+>
+<Code className="w-4 h-4" />
+{showJson ? 'Hide JSON' : 'Show JSON'}
+</button> */}
+
 export default function App() {
   const [slug, setSlug] = useState('together-twos');
   const [channelData, setChannelData] = useState(null);
@@ -63,7 +74,7 @@ export default function App() {
         {/* Header & Controls */}
         <div className="space-y-6">
 
-          <div className="p-6 rounded-xl shadow-sm border border-neutral-200">
+          <div className="p-6 rounded-xl shadow-sm border border-dashed">
             <form onSubmit={fetchChannel} className="flex flex-col md:flex-row gap-4 items-end">
               <div className="flex-1 w-full">
                 <label className="block text-sm font-medium mb-1">
@@ -122,36 +133,22 @@ export default function App() {
           <div className="space-y-6">
             
             {/* Channel Info Header */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-neutral-200 pb-4 gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b pb-4 gap-4">
               <div>
-                <h2 className="text-2xl font-semibold">{channelData.title}</h2>
+                <h2 className="text-2xl font-bold font-rasterGrotesk">{channelData.title}</h2>
                 <div className="flex flex-wrap items-center gap-x-2 text-sm mt-1">
                   <span>by {channelData.user?.full_name}</span>
                   <span>•</span>
                   <span>{channelData.length} blocks</span>
                   <span>•</span>
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                    channelData.status === 'public' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
-                  }`}>
-                    {channelData.status}
-                  </span>
                 </div>
               </div>
               <div className="flex gap-2 w-full sm:w-auto">
-                <button
-                  onClick={() => setShowJson(!showJson)}
-                  className={`flex-1 sm:flex-none justify-center px-3 py-1.5 rounded-md text-sm font-medium flex items-center gap-2 transition-colors ${
-                    showJson ? 'bg-neutral-200' : 'border border-neutral-300 hover:bg-neutral-50'
-                  }`}
-                >
-                  <Code className="w-4 h-4" />
-                  {showJson ? 'Hide JSON' : 'Show JSON'}
-                </button>
                 <a 
                   href={`https://www.are.na/channel/${channelData.slug}`} 
                   target="_blank" 
                   rel="noreferrer"
-                  className="flex-1 sm:flex-none justify-center px-3 py-1.5 border border-neutral-300 rounded-md text-sm font-medium hover:bg-neutral-50 flex items-center gap-2"
+                  className="flex-1 sm:flex-none border-dashed justify-center px-3 py-1.5 border rounded-md text-sm font-medium hover:bg-neutral-50 flex items-center gap-2"
                 >
                   <ExternalLink className="w-4 h-4" />
                   Open on Are.na
