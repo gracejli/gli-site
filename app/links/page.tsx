@@ -1,4 +1,4 @@
-import ArenaCarousel from '@/components/arena-carousel';
+// import ArenaCarousel from '@/components/arena-carousel';
 
 export default function Links() {
   return (
@@ -7,7 +7,6 @@ export default function Links() {
       </p>
       <p>/together-twos</p>
       <p>/i am a perfect t shirt</p>
-      <ArenaCarousel/>
     </div>
   );
 }

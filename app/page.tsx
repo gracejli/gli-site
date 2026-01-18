@@ -2,7 +2,6 @@
 import React from 'react';
 import { ShootingStarCursor } from "@/components/shooting-star-cursor"
 import Carousel from "@/components/Carousel"
-import ArenaCarousel from '@/components/arena-carousel';
 
 export default function App() {
   const myImages = [

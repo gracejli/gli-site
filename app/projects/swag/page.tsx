@@ -1,4 +1,12 @@
 // "use client";
+//import ArenaCarousel from '@/components/arena-carousel';
+
+export default function Links() {
+    return (
+      <div>
+      </div>
+    );
+  }
 
 // import { useState } from "react";
 // import { SwagTable } from "@/app/projects/swag/components/swag-table"
