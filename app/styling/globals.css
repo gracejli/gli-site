@@ -6,11 +6,15 @@
 sharpie style work that I always do in my drawings*/
 
 /* ---------- CSS variables ---------- */
-
+:root {
+  --background: #292341;
+  --foreground: #e7d274;
+}
+/* 
 :root {
   --background: #f6b9da;
   --foreground: #ce2160;
-}
+} */
 /* Dark mode\ via system preference */
 @media (prefers-color-scheme: dark) {
   :root {

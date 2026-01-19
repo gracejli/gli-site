@@ -38,7 +38,7 @@ export default function App() {
             <p className="text-sm font-bold font-doto mb-2">
               previously: at microsoft and at columbia records 
             </p>
-            <p className ="text-sm font-bold font-doto mt-4">
+            <p className ="text-sm font-bold font-doto mt-4 text-amber-300">
               welcome to my internet room
             </p>
           </div>
@@ -56,7 +56,7 @@ export default function App() {
         {/* RIGHT COLUMN: Links (40%) */}
         <div className="w-full md:w-[40%] flex flex-col h-full">
           <div className="h-full p-8 border-2 border-dashed rounded-xl transition-all duration-300 hover:border-amber-400 hover:bg-amber-400/5">
-            <h2 className="text-lg font-bold font-bianzhidai mb-4">links</h2>
+            <h2 className="text-lg font-bold font-bianzhidai mb-4 text-amber-300">links</h2>
             {/* Placeholder for your links */}
             <ul className="space-y-2 font-doto text-sm font-bold">
               <li><a href="https://www.are.na/gli/index" className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)">are.na</a></li>
