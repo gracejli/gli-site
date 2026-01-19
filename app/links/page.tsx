@@ -3,10 +3,12 @@
 export default function Links() {
   return (
     <div>
-      <p>suggested links: 
+      <p>things that I have been collecting: 
       </p>
-      <p>/together-twos</p>
-      <p>/i am a perfect t shirt</p>
+      <h2>/together-twos</h2>
+      <p>photos of you and one other thing</p>
+      <h2>/i am a perfect t shirt</h2>
+      <p>copy and photos from companies and their advertisement of perfect regular t shirts</p>
     </div>
   );
 }
