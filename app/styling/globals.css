@@ -16,12 +16,12 @@ sharpie style work that I always do in my drawings*/
   --foreground: #ce2160;
 }
 /* Dark mode\ via system preference */
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #292341;
     --foreground: #e7d274;
   }
-}
+} */
 
 @font-face {
   font-family: RasterGrotesk; 
@@ -54,12 +54,27 @@ sharpie style work that I always do in my drawings*/
   font-optical-sizing: auto;
 }
 
+@font-face {
+  font-family: FEReg; 
+  src: url('./fonts/FluxischElse-Regular.woff');
+}
+@font-face {
+  font-family: FELight;
+  src: url('./fonts/FluxischElse-Light.woff');
+}
+/* @font-face {
+  font-family: FEBold; 
+  src: url('./fonts/FluxischElse-Bold.woff') format('woff');
+} */
+
 @theme {
   --font-rasterGrotesk: "RasterGrotesk", sans-serif;
   --font-doto: "Doto", sans-serif; 
   --font-bianzhidai: "BianZhi", sans-serif; 
   --font-louize: "Louize", sans-serif; 
-  --font-editorial: "Editorial", sans-serif
+  --font-editorial: "Editorial", sans-serif;
+  --font-fe: "FELight", sans-serif;
+  --font-febold: "FEReg"; 
   --color-primary: #353f99; 
   --color-secondary: #00fff; 
 }
