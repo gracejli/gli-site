@@ -24,7 +24,7 @@ const markdownComponents = {
 
 // HELPER: Shared Image Component
 const PostImage = ({ src, alt }: { src?: string, alt?: string }) => (
-  <div className="shrink-0 w-32 h-32 md:w-20 md:h-20 border-2 border-dashed border-[#e6dfa8] overflow-hidden rounded-xl relative transition-all duration-300">
+  <div className="shrink-0 w-32 h-32 md:w-25 md:h-25 border-2 border-dashed border-[#e6dfa8] overflow-hidden rounded-xl relative transition-all duration-300">
     {src ? (
       <img 
         src={src} 
