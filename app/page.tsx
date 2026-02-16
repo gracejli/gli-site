@@ -30,13 +30,13 @@ export default function App() {
               grace li
             </p>
             <p className="text-sm font-bold font-fe mb-2">
-              tinkerer in los angeles, from a small town in michigan.
+              tinkerer in los angeles, from a small town in michigan. 
             </p>
             <p className="text-sm font-bold font-fe mb-2">
-              currently: i'm a technical artist at riot games working on making the game teamfight tactics as delightul as possible for players
+              currently: i'm technical artist at riot games working on making the game teamfight tactics as delightul as possible for players
             </p>
             <p className="text-sm font-bold font-fe mb-2">
-              previously: at microsoft and at columbia records 
+              previously: at microsoft and at columbia records. b.a. in computer science and art from pomona college
             </p>
             <p className ="text-sm font-bold font-febold mt-4 ">
               welcome to my internet room
