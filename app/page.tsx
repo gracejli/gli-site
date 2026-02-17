@@ -60,6 +60,7 @@ export default function App() {
             {/* Placeholder for your links */}
             <ul className="space-y-2 font-fe text-sm font-bold">
               <li><a href="https://www.are.na/gli/index" className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)">are.na</a></li>
+              <li><a href="https://docs.google.com/document/d/1WdBJDExZ1Qv5_9O9CWMckTeZ0aHClaSxNFT-jAPfEQk/edit?tab=t.0" className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)">my google doc cv</a></li>
               <li><a href="https://www.instagram.com/gracejli/" className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)">some of my favorite photos</a></li>
               <li><a href="https://www.yourworldoftext.com/%7Egracejli/" className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)">guestbook</a></li>
               <li><a href="https://www.gracejli.com" className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)">my old, currently live project website</a></li>
