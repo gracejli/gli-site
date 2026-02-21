@@ -10,11 +10,22 @@ sharpie style work that I always do in my drawings*/
   --background: #292341;
   --foreground: #e7d274;
 } */
-
+/* Pinks
 :root {
   --background: #f6b9da;
   --foreground: #ce2160;
+} */
+
+:root {
+  --background: #6c000d;
+  --foreground: #ff882d;
 }
+
+/* 
+:root {
+  --background: #3e003f; 
+  --foreground: #7bc3c2;
+} */
 /* Dark mode\ via system preference */
 /* @media (prefers-color-scheme: dark) {
   :root {
