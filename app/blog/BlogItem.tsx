@@ -19,12 +19,13 @@ const markdownComponents = {
   ),
   ul: ({ children }: any) => <ul className="list-disc ml-4 my-2">{children}</ul>,
   ol: ({ children }: any) => <ol className="list-decimal ml-4 my-2">{children}</ol>,
-  p: ({ children }: any) => <p className="mb-2 last:mb-0">{children}</p>,
+  p: ({ children }: any) => <p className="mb-2 last:mb-0 w-full">{children}</p>,
 };
 
 // HELPER: Shared Image Component
 const PostImage = ({ src, alt }: { src?: string, alt?: string }) => (
-  <div className="shrink-0 w-32 h-32 md:w-25 md:h-25 border-2 border-dashed border-[#e6dfa8] overflow-hidden rounded-xl relative transition-all duration-300">
+  // Changed md:w-25 to standard md:w-24 to give the text block slightly more horizontal room on desktop
+  <div className="shrink-0 w-32 h-32 md:w-24 md:h-24 border-2 border-dashed border-[#e6dfa8] overflow-hidden rounded-xl relative transition-all duration-300">
     {src ? (
       <img 
         src={src} 
@@ -45,11 +46,11 @@ const PostImage = ({ src, alt }: { src?: string, alt?: string }) => (
 
 // HELPER: Reusable Card Content
 const CardContent = ({ post }: { post: BlogPost; isOpen?: boolean }) => (
-  <div className="group flex flex-col md:flex-row gap-4 cursor-pointer items-start">
+  <div className="group flex flex-col md:flex-row gap-4 cursor-pointer items-start w-full">
     <PostImage src={post.image} alt={post.alt} />
-    <div className="flex-1 flex justify-between items-start pt-1">
-      <div className="flex flex-col gap-1">
-        <p className="text-sm font-fe font-bold underline underline-offset-4 leading-relaxed transition-colors">
+    <div className="flex-1 flex justify-between items-start pt-1 w-full">
+      <div className="flex flex-col gap-1 w-full">
+        <p className="text-sm font-fe font-bold underline underline-offset-4 leading-relaxed transition-colors w-full">
           {post.summary}
         </p>
       </div>
@@ -64,13 +65,12 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
   // SCENARIO A: Link
   if (post.type === 'link' && post.url) {
     return (
-      // Added id={post.slug} to enable anchor linking (e.g. #my-link)
       <a 
         id={post.slug} 
         href={post.url} 
         target="_blank" 
         rel="noopener noreferrer" 
-        className="block mb-12 scroll-mt-24 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]"
+        className="block mb-12 scroll-mt-24 w-full transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]"
       >
         <CardContent post={post} />
       </a>
@@ -80,19 +80,18 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
   // SCENARIO B: Text (Static)
   if (post.type === 'text') {
     return (
-      // Added id={post.slug} to enable anchor linking
-      <div id={post.slug} className="mb-12 scroll-mt-24">
-        <div className="flex flex-col md:flex-row gap-4 items-start">
+      <div id={post.slug} className="mb-12 scroll-mt-24 w-full">
+        <div className="flex flex-col md:flex-row gap-4 items-start w-full">
           <PostImage src={post.image} alt={post.alt} />
           
-          <div className="flex-1 flex flex-col gap-2 pt-1">
+          <div className="flex-1 flex flex-col gap-2 pt-1 w-full">
             {post.summary && (
-              <p className="text-sm leading-relaxed font-medium">
+              <p className="text-sm leading-relaxed font-medium w-full">
                 {post.summary}
               </p>
             )}
             {post.body && (
-              <div className="text-sm font-fe font-bold leading-relaxed whitespace-pre-wrap">
+              <div className="text-sm font-fe font-bold leading-relaxed whitespace-pre-wrap w-full max-w-full break-words">
                 <ReactMarkdown components={markdownComponents}>{post.body}</ReactMarkdown>
               </div>
             )}
@@ -104,9 +103,8 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
 
   // SCENARIO C: Dropdown
   return (
-    // Added id={post.slug} to enable anchor linking
-    <div id={post.slug} className="mb-12 scroll-mt-24">
-      <div className="flex flex-col md:flex-row gap-4 items-start group">
+    <div id={post.slug} className="mb-12 scroll-mt-24 w-full">
+      <div className="flex flex-col md:flex-row gap-4 items-start group w-full">
         
         {/* Left Column: Image (Clickable) */}
         <button 
@@ -123,8 +121,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
             onClick={() => setIsOpen(!isOpen)} 
             className="w-full text-left flex justify-between items-start gap-2 focus:outline-none"
           >
-            <span className="text-sm font-fe font-bold underline underline-offset-4 leading-relaxed transition-colors 
-            transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]">
+            <span className="text-sm font-fe font-bold underline underline-offset-4 leading-relaxed transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)] w-full block">
               {post.summary}
             </span>
           </button>
@@ -132,11 +129,11 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
           {/* Body Row: Dropdown Content */}
           <div 
             className={`
-              overflow-hidden transition-all duration-300 ease-in-out
+              overflow-hidden transition-all duration-300 ease-in-out w-full
               ${isOpen ? 'opacity-100 mt-2' : 'max-h-0 opacity-0 mt-0'}
             `}
           >
-            <div className="text-sm font-fe font-bold leading-relaxed whitespace-pre-wrap">
+            <div className="text-sm font-fe font-bold leading-relaxed whitespace-pre-wrap w-full max-w-full break-words">
               <ReactMarkdown components={markdownComponents}>{post.body || ''}</ReactMarkdown>
             </div>
           </div>
