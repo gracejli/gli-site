@@ -52,12 +52,12 @@ export function getAllPosts(): BlogPost[] {
         image: (data.image as string) || "",
         type: type,
         
-        // --- KEY CHANGE HERE ---
-        // Logic for URL:
+        // --- URL handling ---
         // 1. If 'url' is explicitly in frontmatter, use it exactly as is.
-        // 2. If type is 'link', default to `/${slug}` (this handles internal links if no URL is given).
+        // 2. If type is 'link', default to `/blog/${slug}` so link-style posts
+        //    automatically point at their dynamic slug page under /blog/[slug].
         // 3. Otherwise undefined.
-        url: (data.url as string) || (type === 'link' ? `/${slug}` : undefined),
+        url: (data.url as string) || (type === 'link' ? `/blog/${slug}` : undefined),
         
         // Logic for Body:
         // Return body for dropdown/text types OR if it's a link (so the destination page can render it)

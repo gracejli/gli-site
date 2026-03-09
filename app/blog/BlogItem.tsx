@@ -82,7 +82,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
     return (
       <div id={post.slug} className="mb-12 scroll-mt-24 w-full">
         <div className="flex flex-col md:flex-row gap-4 items-start w-full">
-          <PostImage src={post.image} alt={post.alt} />
+          <PostImage src={post.image} alt={post.alt} date={post.date} />
           
           <div className="flex-1 flex flex-col gap-2 pt-1 w-full">
             {post.summary && (
