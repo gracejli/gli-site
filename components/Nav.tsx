@@ -4,9 +4,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 // Define your navigation items here
+// const navItems = [
+//   { name: "grace li", href: "/" }, 
+//   { name: "blog", href: "/blog" }, 
+//   { name: "work", href: "/work" }, 
+//   { name: "all", href: "/all" }, 
+// ];
+
 const navItems = [
   { name: "grace li", href: "/" }, 
-  { name: "blog", href: "/blog" }
+  { name: "blog", href: "/blog" },
 ];
 
 /*  { name: "my projects", href: "/projects" },
@@ -33,7 +40,7 @@ export default function Navbar() {
               )}
               <Link
                 href={item.href}
-                className={`underline underline-offset-2 ftransition-all duration-200 hover:text-white hover:drop-shadow-[0_0_8px_rgba(253,224,71,0.8)]'
+                className={`underline underline-offset-2 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_8px_rgba(253,224,71,0.8)]
                   ${
                     isActive
                       ? "border-[#e6dfa8]" // Active colors

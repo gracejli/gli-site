@@ -1,0 +1,77 @@
+import Link from "next/link";
+import { getAllPosts } from "@/lib/posts";
+import BlogItem from "@/app/blog/BlogItem";
+import ProjectItem from "@/components/ProjectItem";
+import { longFormProjects, shortFormToys } from "@/content/projects/data";
+import { ShootingStarCursor } from "@/components/shooting-star-cursor";
+
+type AllPageProps = {
+  searchParams?: Promise<{ filter?: string }>;
+};
+
+export default async function AllPage({ searchParams }: AllPageProps) {
+  const allPosts = getAllPosts().filter((post) => post.isPublished !== false);
+
+  const params = searchParams ? await searchParams : {};
+  const filter = params?.filter === "links" ? "links" : "all";
+  const isLinksView = filter === "links";
+  const blogPosts =
+    filter === "links"
+      ? allPosts.filter((post) => post.type === "link")
+      : allPosts;
+
+  return (
+    <div className="min-h-screen background py-12 px-4">
+      <ShootingStarCursor />
+      <div className="max-w-2xl mx-auto">
+        <div className="space-y-24">
+          {/* Projects Section */}
+          <section>
+            <div className="flex items-baseline gap-2 mb-8">
+              <h2 className="text-lg font-bold font-bianzhidai">projects</h2>
+              <span className="text-sm font-fe font-bold opacity-70 italic">long form</span>
+            </div>
+            <div>
+              {longFormProjects.map((p) => (
+                <ProjectItem key={p.id} project={p} />
+              ))}
+            </div>
+          </section>
+
+          {/* Toys Section */}
+          <section>
+            <div className="flex items-baseline gap-2 mb-8">
+              <h2 className="text-lg font-bold font-bianzhidai">toys</h2>
+              <span className="text-sm font-fe font-bold opacity-70 italic">short form experiments</span>
+            </div>
+            <div>
+              {shortFormToys.map((p) => (
+                <ProjectItem key={p.id} project={p} />
+              ))}
+            </div>
+          </section>
+
+          {/* Blog Posts Section */}
+          <section className="pb-32">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-lg font-bold font-bianzhidai">blog posts</h2>
+              <Link
+                href={isLinksView ? "/all" : "/all?filter=links"}
+                className="text-xs uppercase tracking-wide underline underline-offset-4 hover:text-white transition-colors"
+              >
+                {isLinksView ? "view all" : "view links"}
+              </Link>
+            </div>
+            <div className="flex flex-col">
+              {blogPosts.length === 0 ? (
+                <p className="font-fe font-bold opacity-70">No posts yet.</p>
+              ) : (
+                blogPosts.map((post) => <BlogItem key={post.slug} post={post} />)
+              )}
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+}

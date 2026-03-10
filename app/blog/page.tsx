@@ -4,17 +4,16 @@ import BlogItem from "./BlogItem";
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
 
 type BlogPageProps = {
-  searchParams?: {
-    filter?: string;
-  };
+  searchParams?: Promise<{ filter?: string }>;
 };
 
 // --- MAIN PAGE ---
 // Server Component that can filter posts via ?filter=links|all
-export default function BlogPage({ searchParams }: BlogPageProps) {
+export default async function BlogPage({ searchParams }: BlogPageProps) {
   const allPosts = getAllPosts().filter((post) => post.isPublished !== false);
 
-  const filter = searchParams?.filter === "links" ? "links" : "all";
+  const params = searchParams ? await searchParams : {};
+  const filter = params?.filter === "links" ? "links" : "all";
   const isLinksView = filter === "links";
 
   const posts =
@@ -31,7 +30,7 @@ export default function BlogPage({ searchParams }: BlogPageProps) {
             href={isLinksView ? "/blog" : "/blog?filter=links"}
             className="text-xs uppercase tracking-wide underline underline-offset-4 hover:text-white transition-colors"
           >
-            {isLinksView ? "all" : "links"}
+            {isLinksView ? "view all" : "view links"}
           </Link>
         </div>
 

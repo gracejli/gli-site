@@ -62,14 +62,12 @@ const CardContent = ({ post }: { post: BlogPost; isOpen?: boolean }) => (
 const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  // SCENARIO A: Link
+  // SCENARIO A: Link (opens in same page)
   if (post.type === 'link' && post.url) {
     return (
       <a 
         id={post.slug} 
         href={post.url} 
-        target="_blank" 
-        rel="noopener noreferrer" 
         className="block mb-12 scroll-mt-24 w-full transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]"
       >
         <CardContent post={post} />
@@ -82,7 +80,7 @@ const BlogItem: React.FC<{ post: BlogPost }> = ({ post }) => {
     return (
       <div id={post.slug} className="mb-12 scroll-mt-24 w-full">
         <div className="flex flex-col md:flex-row gap-4 items-start w-full">
-          <PostImage src={post.image} alt={post.alt} date={post.date} />
+          <PostImage src={post.image} alt={post.alt} />
           
           <div className="flex-1 flex flex-col gap-2 pt-1 w-full">
             {post.summary && (
