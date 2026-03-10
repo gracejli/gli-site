@@ -32,15 +32,27 @@ export function getAllPosts(): BlogPost[] {
       const raw = fs.readFileSync(filePath, "utf8");
       const { data, content } = matter(raw);
 
-      // --- KEY CHANGE HERE ---
-      // 1. Prefer the 'slug' defined in frontmatter.
-      // 2. Fallback to filename (removing .md) if no slug is provided.
-      // Note: We remove leading slashes from data.slug to ensure consistency if user types "/my-slug"
+      // Prefer the 'slug' defined in frontmatter; fall back to filename (without .md).
+      // Keep a copy of the raw slug (may start with "/") so we can detect
+      // when the author intends to link to a specific internal route.
       const rawSlug = (data.slug as string) || filename.replace(/\.md$/, "");
       const slug = rawSlug.startsWith('/') ? rawSlug.slice(1) : rawSlug;
 
       // Determine type based on frontmatter or default to 'dropdown'
       const type = (data.type as 'link' | 'dropdown' | 'text') || 'dropdown';
+
+      // --- URL handling ---
+      // 1. If 'url' is explicitly in frontmatter, use it exactly as is.
+      // 2. If type is 'link' and the frontmatter slug starts with "/",
+      //    treat that slug as the desired internal route (e.g. "/projects").
+      // 3. Otherwise, for link posts, default to `/blog/${slug}` so they
+      //    point at their dynamic slug page under /blog/[slug].
+      let url: string | undefined;
+      if (typeof data.url === "string" && data.url.length > 0) {
+        url = data.url as string;
+      } else if (type === "link") {
+        url = rawSlug.startsWith("/") ? rawSlug : `/blog/${slug}`;
+      }
 
       return {
         slug,
@@ -51,13 +63,7 @@ export function getAllPosts(): BlogPost[] {
         summary: (data.summary as string) || (data.description as string) || (data.title as string) || "",
         image: (data.image as string) || "",
         type: type,
-        
-        // --- URL handling ---
-        // 1. If 'url' is explicitly in frontmatter, use it exactly as is.
-        // 2. If type is 'link', default to `/blog/${slug}` so link-style posts
-        //    automatically point at their dynamic slug page under /blog/[slug].
-        // 3. Otherwise undefined.
-        url: (data.url as string) || (type === 'link' ? `/blog/${slug}` : undefined),
+        url,
         
         // Logic for Body:
         // Return body for dropdown/text types OR if it's a link (so the destination page can render it)
