@@ -3,18 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// Define your navigation items here
-// const navItems = [
-//   { name: "grace li", href: "/" }, 
-//   { name: "blog", href: "/blog" }, 
-//   { name: "work", href: "/work" }, 
-//   { name: "all", href: "/all" }, 
-// ];
-
 const navItems = [
   { name: "grace li", href: "/" }, 
-  { name: "blog", href: "/blog" },
+  { name: "blog", href: "/blog" }, 
+  { name: "work", href: "/work" }, 
+  // { name: "all", href: "/all" }, 
 ];
+
+// const navItems = [
+//   { name: "grace li", href: "/" }, 
+//   { name: "blog", href: "/blog" },
+// ];
 
 /*  { name: "my projects", href: "/projects" },
   { name: "awesome links", href: "/links" },*/
