@@ -121,8 +121,21 @@ export default function App() {
   };
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center p-8">
-      <BackgroundVideo source={currentVideo} />
+    <main className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center p-8 bg-black md:bg-transparent">
+      {/* Mobile static background image */}
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-black md:hidden">
+        <img
+          src="/images/2025-los-feliz-room.png"
+          alt="background"
+          className="h-full w-full object-cover"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
+      </div>
+
+      {/* Desktop / tablet video background */}
+      <div className="hidden md:block">
+        <BackgroundVideo source={currentVideo} />
+      </div>
       <ShootingStarCursor />
 
       {/* Main Layout Container 
@@ -218,8 +231,8 @@ export default function App() {
         </div>
       </div>
 
-      {/* Bottom-right shuffle + caption */}
-      <div className="pointer-events-none fixed bottom-4 right-4 z-20 flex max-w-xs flex-col items-end gap-2 text-right">
+      {/* Bottom-right shuffle + caption (desktop / tablet only) */}
+      <div className="pointer-events-none fixed bottom-4 right-4 z-20 hidden max-w-xs flex-col items-end gap-2 text-right md:flex">
         {currentVideo ? (
           <p className="pointer-events-none text-xs font-fe text-amber-100/80 drop-shadow">
             {currentVideo.caption}
@@ -232,7 +245,7 @@ export default function App() {
               i
             </div>
             <div className="pointer-events-none absolute bottom-7 right-0 w-52 translate-y-1 rounded-lg border border-amber-200/60 bg-black/90 p-3 text-left text-[11px] font-fe leading-snug text-amber-50 opacity-0 shadow-xl backdrop-blur-sm transition-opacity duration-150 group-hover:translate-y-0 group-hover:opacity-100">
-              i have so many videos of 5 second moments of where i've been. here are some of these space <3
+              "i have so many videos of 5 second moments of where i've been. here are some of these spaces"
             </div>
           </div>
           <button

@@ -22,7 +22,7 @@ export const backgroundVideos: BackgroundVideoSource[] = [
   {
     type: "youtube",
     url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    caption: "a youtube memory that feels like late-night internet",
+    caption: "gotchu",
   },
   {
     type: "youtube",
