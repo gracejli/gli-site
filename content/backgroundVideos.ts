@@ -39,5 +39,23 @@ export const backgroundVideos: BackgroundVideoSource[] = [
     url: "https://youtu.be/TixYismCp0U",
     caption: "3 am in an airbnb with friends",
   },
+  {
+    type: "youtube",
+    url: "https://youtu.be/QfKiQ7uiS-w",
+    caption: "my first frame by frame animation",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/F_qfGXidmDo",
+    caption: "europe vacation with friends 2019",
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/-h9Cfx43iGk",
+    caption: "me surfing the web, after effects",
+  }, 
+  
+
+
 ];
 
