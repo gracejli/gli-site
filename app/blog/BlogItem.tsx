@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown'; 
+import Image from "next/image";
 import type { BlogPost } from "@/lib/posts";
 
 // MARKDOWN CONFIGURATION
@@ -27,15 +28,15 @@ const PostImage = ({ src, alt }: { src?: string, alt?: string }) => (
   // Changed md:w-25 to standard md:w-24 to give the text block slightly more horizontal room on desktop
   <div className="shrink-0 w-32 h-32 md:w-24 md:h-24 border-2 border-dashed border-[#e6dfa8] overflow-hidden rounded-xl relative transition-all duration-300">
     {src ? (
-      <img 
-        src={src} 
-        alt={alt || "Post image"}
-        className="w-full h-full object-cover"
-        onError={(e) => {
-          (e.target as HTMLImageElement).style.display = 'none'; 
-          (e.target as HTMLImageElement).parentElement!.style.backgroundColor = '#e5e7eb';
-        }}
-      />
+      <div className="relative w-full h-full">
+        <Image 
+          src={src} 
+          alt={alt || "Post image"}
+          fill
+          sizes="96px"
+          className="object-cover"
+        />
+      </div>
     ) : (
       <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs text-center p-1">
         Img

@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 type Project = {
   id: number;
   title: string;
@@ -11,9 +13,11 @@ export default function ProjectItem({ project }: { project: Project }) {
   return (
     <div className="flex gap-4 mb-6 group cursor-pointer items-start">
       <div className="w-12 h-12 border-2 border-dashed border-[#e6dfa8] flex-shrink-0 overflow-hidden rounded-xl">
-        <img
+        <Image
           src={project.img}
           alt={project.title}
+          width={48}
+          height={48}
           className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
         />
       </div>

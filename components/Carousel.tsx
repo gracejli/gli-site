@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Image from "next/image";
 
 // Define the shape of our props
 interface CarouselProps {
@@ -30,13 +31,16 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {images.map((src, index) => (
-          <img
-            key={index}
-            src={src}
-            alt={`Slide ${index}`}
-            // Image: Full size, prevent shrinking, cover fit
-            className="h-full w-full shrink-0 object-cover"
-          />
+          <div key={index} className="relative h-full w-full shrink-0">
+            <Image
+              src={src}
+              alt={`Slide ${index}`}
+              fill
+              sizes="(max-width: 768px) 16rem, 20rem"
+              className="object-cover"
+              priority={index === 0}
+            />
+          </div>
         ))}
       </div>
       
