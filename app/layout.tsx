@@ -1,7 +1,23 @@
-import "@/app/styling/globals.css"
+"use client";
+
+import "@/app/styling/globals.css";
 import Nav from "@/components/Nav";
+import { usePathname } from "next/navigation";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  if (isHome) {
+    return (
+      <html lang="en">
+        <body className="min-h-screen w-screen overflow-hidden font-serif">
+          {children}
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html lang="en">
       <body className="max-w-[1400px] mx-auto px-8 md:px-12 font-serif">

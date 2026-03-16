@@ -14,15 +14,30 @@ export type BackgroundVideoSource =
 
 // Edit this list to control which videos can play in the homepage background.
 export const backgroundVideos: BackgroundVideoSource[] = [
-  {
-    type: "file",
-    src: "/videos/sample-room.mp4",
-    caption: "a quiet evening in my los feliz room",
-  },
+  // {
+  //   type: "file",
+  //   src: "/videos/sample-room.mp4",
+  //   caption: "a quiet evening in my los feliz room",
+  // },
   {
     type: "youtube",
     url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     caption: "a youtube memory that feels like late-night internet",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/l9wLJL_0NQ0",
+    caption: "trip with the metro to LA in 2019",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/hufoS41ifnI",
+    caption: "my dorm room in 2019",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/TixYismCp0U",
+    caption: "3 am in an airbnb with friends",
   },
 ];
 
