@@ -1,16 +1,21 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 type Project = {
   id: number;
   title: string;
   desc: string;
   img?: string;
+  link?: string; // full URL or path
+  newTab?: boolean; // open link in a new tab
 };
 
 export default function ProjectItem({ project }: { project: Project }) {
-  return (
+  const href = project.link;
+
+  const content = (
     <div className="flex gap-4 mb-6 group cursor-pointer items-start">
       <div className="w-12 h-12 border-2 border-dashed border-[#e6dfa8] flex-shrink-0 overflow-hidden rounded-xl">
         {project.img && (
@@ -30,5 +35,21 @@ export default function ProjectItem({ project }: { project: Project }) {
         <p className="text-sm mt-0.5 font-fe font-bold opacity-80">{project.desc}</p>
       </div>
     </div>
+  );
+
+  if (href) {
+    const isExternal = project.newTab === true;
+    return (
+      <Link
+        href={href}
+        {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
+      >
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    content
   );
 }

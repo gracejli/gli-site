@@ -8,6 +8,15 @@ import {
   type BackgroundVideoSource,
 } from "@/content/backgroundVideos";
 
+function shuffled<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function getYouTubeId(url: string): string | null {
   try {
     const u = new URL(url);
@@ -91,32 +100,55 @@ export default function App() {
     "/images/2024-silverlake-room.png",
   ];
 
-  const [currentIndex, setCurrentIndex] = useState<number | null>(
-    backgroundVideos.length ? 0 : null,
-  );
+  const [bgState, setBgState] = useState<{
+    currentIndex: number | null;
+    remaining: number[];
+  }>(() => {
+    if (!backgroundVideos.length) {
+      return { currentIndex: null, remaining: [] };
+    }
+
+    const currentIndex = 0;
+    const remaining = shuffled(
+      backgroundVideos.map((_, i) => i).filter((i) => i !== currentIndex),
+    );
+
+    return { currentIndex, remaining };
+  });
 
   const currentVideo = useMemo<BackgroundVideoSource | null>(() => {
-    if (currentIndex === null) return null;
-    return backgroundVideos[currentIndex] ?? null;
-  }, [currentIndex]);
+    if (bgState.currentIndex === null) return null;
+    return backgroundVideos[bgState.currentIndex] ?? null;
+  }, [bgState.currentIndex]);
 
   const handleShuffle = () => {
     if (!backgroundVideos.length) return;
 
     if (backgroundVideos.length === 1) {
-      setCurrentIndex(0);
+      setBgState({ currentIndex: 0, remaining: [] });
       return;
     }
 
-    setCurrentIndex((prev) => {
-      const prevIndex =
-        prev === null || prev < 0 || prev >= backgroundVideos.length ? 0 : prev;
+    setBgState((prev) => {
+      const currentIndex =
+        prev.currentIndex === null ||
+        prev.currentIndex < 0 ||
+        prev.currentIndex >= backgroundVideos.length
+          ? 0
+          : prev.currentIndex;
 
-      let next = prevIndex;
-      while (next === prevIndex) {
-        next = Math.floor(Math.random() * backgroundVideos.length);
+      let remaining = prev.remaining.filter(
+        (i) => i >= 0 && i < backgroundVideos.length && i !== currentIndex,
+      );
+
+      if (remaining.length === 0) {
+        remaining = shuffled(
+          backgroundVideos.map((_, i) => i).filter((i) => i !== currentIndex),
+        );
       }
-      return next;
+
+      const [next, ...rest] = remaining;
+      return { currentIndex: next ?? currentIndex, remaining: rest };
     });
   };
 
@@ -245,7 +277,7 @@ export default function App() {
               i
             </div>
             <div className="pointer-events-none absolute bottom-7 right-0 w-52 translate-y-1 rounded-lg border border-amber-200/60 bg-black/90 p-3 text-left text-[11px] font-fe leading-snug text-amber-50 opacity-0 shadow-xl backdrop-blur-sm transition-opacity duration-150 group-hover:translate-y-0 group-hover:opacity-100">
-              "i have so many videos of 5 second moments of where i've been. here are some of these spaces"
+              "i have so many videos of 5 second moments of where i've been. here are some of these spaces 
             </div>
           </div>
           <button
