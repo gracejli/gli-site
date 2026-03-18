@@ -285,7 +285,7 @@ export default function App() {
             onClick={handleShuffle}
             className="rounded-full border border-amber-300/70 bg-black/60 px-4 py-1 text-xs font-fe uppercase tracking-wide text-amber-100 shadow-lg backdrop-blur transition hover:bg-amber-400/80 hover:text-black"
           >
-            shuffle background
+            teleport!
           </button>
         </div>
       </div>
