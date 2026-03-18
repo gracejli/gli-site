@@ -93,12 +93,43 @@ function BackgroundVideo({
   );
 }
 
+function EyeIcon({ slashed }: { slashed: boolean }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {slashed ? (
+        <>
+          <path d="M10.733 5.076A10.744 10.744 0 0 1 12 5c7 0 10 7 10 7a17.8 17.8 0 0 1-1.67 2.73" />
+          <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+          <path d="M14.12 14.12a3 3 0 0 1-4.24-4.24" />
+          <path d="M1 1l22 22" />
+        </>
+      ) : (
+        <>
+          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" />
+          <circle cx="12" cy="12" r="3" />
+        </>
+      )}
+    </svg>
+  );
+}
+
 export default function App() {
   const myImages = [
     "/images/2022-dorm-room.png",
     "/images/2025-los-feliz-room.png",
     "/images/2024-silverlake-room.png",
   ];
+
+  const [showText, setShowText] = useState(true);
 
   const [bgState, setBgState] = useState<{
     currentIndex: number | null;
@@ -175,7 +206,8 @@ export default function App() {
         - Stacked column on mobile (flex-col)
         - Centered with max-width
       */}
-      <div className="z-10 w-full max-w-4xl flex flex-col md:flex-row gap-8 pointer-events-auto">
+      {showText ? (
+        <div className="z-10 w-full max-w-4xl flex flex-col md:flex-row gap-8 pointer-events-auto">
         {/* LEFT COLUMN: Bio & Carousel (60%) */}
         <div className="w-full md:w-[60%] flex flex-col gap-8">
           {/* Bio Box */}
@@ -261,7 +293,8 @@ export default function App() {
             </ul>
           </div>
         </div>
-      </div>
+        </div>
+      ) : null}
 
       {/* Bottom-right shuffle + caption (desktop / tablet only) */}
       <div className="pointer-events-none fixed bottom-4 right-4 z-20 hidden max-w-xs flex-col items-end gap-2 text-right md:flex">
@@ -272,7 +305,22 @@ export default function App() {
         ) : null}
 
         <div className="pointer-events-auto flex items-center gap-2">
-        <div className="group relative flex h-6 w-6 items-center justify-center">
+          <div className="group relative flex h-6 w-6 items-center justify-center">
+            <button
+              type="button"
+              onClick={() => setShowText((v) => !v)}
+              aria-pressed={!showText}
+              aria-label={showText ? "Hide text" : "Show text"}
+              className="flex h-5 w-5 items-center justify-center rounded-full border border-amber-300/80 bg-black/70 text-amber-100 shadow-md transition group-hover:bg-amber-400/90 group-hover:text-black"
+            >
+              <EyeIcon slashed={!showText} />
+            </button>
+            {/* <div className="pointer-events-none absolute bottom-7 right-0 w-24 translate-y-1 rounded-lg border border-amber-200/60 bg-black/90 p-2 text-left text-[11px] font-fe leading-snug text-amber-50 opacity-0 shadow-xl backdrop-blur-sm transition-opacity duration-150 group-hover:translate-y-0 group-hover:opacity-100">
+              {showText ? "hide text" : "show text"}
+            </div> */}
+          </div>
+
+          <div className="group relative flex h-6 w-6 items-center justify-center">
             <div className="flex h-5 w-5 items-center justify-center rounded-full border border-amber-300/80 bg-black/70 text-[10px] font-fe text-amber-100 shadow-md transition group-hover:bg-amber-400/90 group-hover:text-black">
               i
             </div>
