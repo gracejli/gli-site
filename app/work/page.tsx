@@ -24,8 +24,8 @@ export default function WorkPage() {
           {/* Right Column: Toys */}
           <section>
             <div className="flex items-baseline gap-2 mb-8">
-              <h2 className="text-lg font-bold font-bianzhidai">toys</h2>
-              <span className="text-sm font-fe font-bold opacity-70 italic">short form experiments</span>
+              <h2 className="text-lg font-bold font-bianzhidai">short form</h2>
+              <span className="text-sm font-fe font-bold opacity-70 italic">experiments</span>
             </div>
             <div>
               {shortFormToys.map((p) => (
