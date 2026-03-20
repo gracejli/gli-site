@@ -84,5 +84,60 @@ export const backgroundVideos: BackgroundVideoSource[] = [
     url: "https://youtu.be/buhvRUvxwgw",
     caption: "2023, my friends practicing a script together",
   }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/hF6H4SGM9Nk",
+    caption: "waterfall in glacier national park 2024",
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/Nk0AfxvaDqw",
+    caption: "valentines day walk up to griffith observatory 2026",
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/2Y3vybhcrV8",
+    caption: "friends dancing, joshua tree np sunset 2025",
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/YW-LZfFcix0",
+    caption: "ping pong tournament 202r",
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/fnD4IyY1g_c",
+    caption: "los angeles beach at sunset, winter 2025",
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/R1GvWHn5c6k",
+    caption: "reeds near jiufen, taiwan 2024",
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/jYIq5tWiHFo",
+    caption: "afternoon storm at altitude, sequoia np 2024",
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/ButztFk7Nnw",
+    caption: "shadows dancing in the snow, sequoia np 2026",
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/_KyN_yYVs90",
+    caption: "summer lake sunset in michigan 2025",
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/yq-J7mxiVzU",
+    caption: "claremont, ca sunset, the semester I graduated 2023",
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/jHdnmtyz5Ks",
+    caption: "snowmelt water, sequoia 2026",
+  }, 
 ];
 
