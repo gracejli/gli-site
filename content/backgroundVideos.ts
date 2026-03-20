@@ -57,27 +57,27 @@ export const backgroundVideos: BackgroundVideoSource[] = [
   {
     type: "youtube",
     url: "https://youtu.be/SEbpSf39JPE",
-    caption: "2024, water in suzhou, china",
+    caption: "water in suzhou, china 2024",
   }, 
   {
     type: "youtube",
     url: "https://youtu.be/si9kcZm_ZmI",
-    caption: "2025, denali national park, alaska. friends climbing",
+    caption: "denali national park, 2024",
   }, 
   {
     type: "youtube",
     url: "https://youtu.be/x2Jg6jByzEU",
-    caption: "2025, santa monica beach, los angeles",
+    caption: "santa monica beach, los angeles, 2024",
   }, 
   {
     type: "youtube",
     url: "https://youtu.be/hbQvw1BF72I",
-    caption: "2024, ducks in suzhou, china",
+    caption: "ducks in suzhou, china, 2024",
   }, 
   {
     type: "youtube",
     url: "https://youtu.be/iyWU5s4e8KU",
-    caption: "2023, friends making dumplings together for thanksgiving",
+    caption: "my friends making dumplings together for thanksgivin, 2023",
   }, 
   {
     type: "youtube",
@@ -102,7 +102,7 @@ export const backgroundVideos: BackgroundVideoSource[] = [
   {
     type: "youtube",
     url: "https://youtu.be/YW-LZfFcix0",
-    caption: "ping pong tournament 202r",
+    caption: "ping pong tournament 2026",
   }, 
   {
     type: "youtube",
@@ -112,7 +112,7 @@ export const backgroundVideos: BackgroundVideoSource[] = [
   {
     type: "youtube",
     url: "https://youtu.be/R1GvWHn5c6k",
-    caption: "reeds near jiufen, taiwan 2024",
+    caption: "reeds near jiufen, taiwan 2024. trip with my mom",
   }, 
   {
     type: "youtube",
