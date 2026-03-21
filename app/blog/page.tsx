@@ -2,7 +2,9 @@ import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
 import BlogItem from "./BlogItem";
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
-
+import ColorStoryPicker, {
+  type ColorStoryIndex,
+} from "@/components/ColorStoryPicker";
 type BlogPageProps = {
   searchParams?: Promise<{ filter?: string }>;
 };
@@ -15,6 +17,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   const params = searchParams ? await searchParams : {};
   const filter = params?.filter === "links" ? "links" : "all";
   const isLinksView = filter === "links";
+  
 
   const posts =
     filter === "links"

@@ -19,6 +19,67 @@ sharpie style work that I always do in my drawings*/
 :root {
   --background: #6c000d;
   --foreground: #ff882d;
+  /* Default story tokens (ember); home page sets data-color-story for full palette */
+  --story-accent: rgb(251 191 36);
+  --story-accent-soft: rgb(252 211 77 / 0.85);
+  --story-muted: rgb(254 243 199 / 0.85);
+  --story-surface: rgb(0 0 0 / 0.4);
+  --story-surface-hover: rgb(251 191 36 / 0.08);
+  --story-control-bg: rgb(0 0 0 / 0.72);
+  --story-on-accent: #0a0a0a;
+  --story-video-tint: rgb(60 10 18 / 0.42);
+  --story-mobile-overlay: rgb(60 10 18 / 0.45);
+  --story-link-hover: #ffffff;
+  --story-link-glow: 0 0 6px rgb(253 224 71 / 0.85);
+}
+
+/* Home page color stories (set via data-color-story on documentElement) */
+[data-color-story="ember"] {
+  --background: #6c000d;
+  --foreground: #ff882d;
+  --story-accent: rgb(251 191 36);
+  --story-accent-soft: rgb(252 211 77 / 0.85);
+  --story-muted: rgb(254 243 199 / 0.85);
+  --story-surface: rgb(0 0 0 / 0.4);
+  --story-surface-hover: rgb(251 191 36 / 0.08);
+  --story-control-bg: rgb(0 0 0 / 0.72);
+  --story-on-accent: #0a0a0a;
+  --story-video-tint: rgb(60 10 18 / 0.42);
+  --story-mobile-overlay: rgb(60 10 18 / 0.45);
+  --story-link-hover: #ffffff;
+  --story-link-glow: 0 0 6px rgb(253 224 71 / 0.85);
+}
+
+[data-color-story="sky"] {
+  --background: #b9d9ee;
+  --foreground: #0c2a42;
+  --story-accent: rgb(30 74 110);
+  --story-accent-soft: rgb(30 74 110 / 0.85);
+  --story-muted: rgb(12 42 66 / 0.88);
+  --story-surface: rgb(255 255 255 / 0.52);
+  --story-surface-hover: rgb(30 74 110 / 0.08);
+  --story-control-bg: rgb(255 255 255 / 0.78);
+  --story-on-accent: #f8fafc;
+  --story-video-tint: rgb(185 217 238 / 0.55);
+  --story-mobile-overlay: rgb(185 217 238 / 0.5);
+  --story-link-hover: #ffffff;
+  --story-link-glow: 0 0 8px rgb(30 74 110 / 0.55);
+}
+
+[data-color-story="sun"] {
+  --background: #f2e28a;
+  --foreground: #c2410c;
+  --story-accent: rgb(234 88 12);
+  --story-accent-soft: rgb(234 88 12 / 0.9);
+  --story-muted: rgb(154 52 18 / 0.92);
+  --story-surface: rgb(255 255 255 / 0.35);
+  --story-surface-hover: rgb(234 88 12 / 0.1);
+  --story-control-bg: rgb(255 250 235 / 0.82);
+  --story-on-accent: #1c1917;
+  --story-video-tint: rgb(242 226 138 / 0.52);
+  --story-mobile-overlay: rgb(242 226 138 / 0.48);
+  --story-link-hover: #fffbeb;
+  --story-link-glow: 0 0 6px rgb(234 88 12 / 0.75);
 }
 
 /* 
@@ -99,11 +160,13 @@ body {
 
 html {
   background-color: var(--background);
+  transition: background-color 0.5s ease;
 }
 
 body {
   background-color: transparent;
   color: var(--foreground);
+  transition: color 0.5s ease;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji",
     "Segoe UI Emoji";

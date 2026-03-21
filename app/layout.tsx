@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   if (isHome) {
     return (
       <html lang="en">
-        <body className="min-h-screen w-screen overflow-hidden font-serif">
+        <body className="min-h-screen w-full overflow-x-hidden font-serif">
           {children}
         </body>
       </html>

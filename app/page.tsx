@@ -324,16 +324,16 @@ export default function App() {
             <div className="flex h-5 w-5 items-center justify-center rounded-full border border-amber-300/80 bg-black/70 text-[10px] font-fe text-amber-100 shadow-md transition group-hover:bg-amber-400/90 group-hover:text-black">
               i
             </div>
-            <div className="pointer-events-none absolute bottom-7 right-0 w-52 translate-y-1 rounded-lg border border-amber-200/60 bg-black/90 p-3 text-left text-[11px] font-fe leading-snug text-amber-50 opacity-0 shadow-xl backdrop-blur-sm transition-opacity duration-150 group-hover:translate-y-0 group-hover:opacity-100">
-              i have so many videos of 5 second moments of where i've been. here are some of these spaces 
-            </div>
+            {/* <div className="pointer-events-none absolute bottom-7 right-0 w-52 translate-y-1 rounded-lg border border-amber-200/60 bg-black/90 p-3 text-left text-[11px] font-fe leading-snug text-amber-50 opacity-0 shadow-xl backdrop-blur-sm transition-opacity duration-150 group-hover:translate-y-0 group-hover:opacity-100">
+              small, short videos that i've taken for years. here are some of my spaces
+            </div> */}
           </div>
           <button
             type="button"
             onClick={handleShuffle}
             className="rounded-full border border-amber-300/70 bg-black/60 px-4 py-1 text-xs font-fe uppercase tracking-wide text-amber-100 shadow-lg backdrop-blur transition hover:bg-amber-400/80 hover:text-black"
           >
-            ★  teleport ★
+            teleport
           </button>
         </div>
       </div>
