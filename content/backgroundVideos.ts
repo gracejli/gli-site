@@ -77,7 +77,7 @@ export const backgroundVideos: BackgroundVideoSource[] = [
   {
     type: "youtube",
     url: "https://youtu.be/iyWU5s4e8KU",
-    caption: "my friends making dumplings together for thanksgivin, 2023",
+    caption: "my friends making dumplings together for thanksgiving, 2023",
   }, 
   {
     type: "youtube",
