@@ -37,14 +37,17 @@ export default function ProjectItem({ project = defaultProject }: { project?: Pr
   const winWidth = typeof window !== "undefined" ? window.innerWidth : 1000;
   const winHeight = typeof window !== "undefined" ? window.innerHeight : 1000;
 
-  // Smoothly shift the image's anchor point based on screen position to prevent cutoffs.
-  // At the top of the screen, it renders below the cursor. At the bottom, it renders above.
-  const xPercent = (mousePos.x / winWidth) * 100;
-  const yPercent = (mousePos.y / winHeight) * 100;
-  
-  // Also add a 20px gap away from the cursor tip, flipping direction at the halfway point
-  const xOffset = `calc(-${xPercent}% + ${mousePos.x > winWidth / 2 ? '-20px' : '20px'})`;
-  const yOffset = `calc(-${yPercent}% + ${mousePos.y > winHeight / 2 ? '-20px' : '20px'})`;
+  // Pin the GIF corner nearest the viewport edge to the cursor; the image opens toward center.
+  const leftOfCenter = mousePos.x < winWidth / 2;
+  const aboveCenter = mousePos.y < winHeight / 2;
+  const cornerTransform =
+    leftOfCenter && aboveCenter
+      ? "translate(0, 0)"
+      : !leftOfCenter && aboveCenter
+        ? "translate(-100%, 0)"
+        : leftOfCenter && !aboveCenter
+          ? "translate(0, -100%)"
+          : "translate(-100%, -100%)";
 
   const content = (
     <div className="flex gap-4 mb-6 group cursor-pointer items-start">
@@ -58,7 +61,7 @@ export default function ProjectItem({ project = defaultProject }: { project?: Pr
           style={{
             left: mousePos.x,
             top: mousePos.y,
-            transform: `translate(${xOffset}, ${yOffset})`,
+            transform: cornerTransform,
           }}
         />
       )}

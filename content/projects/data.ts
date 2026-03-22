@@ -42,9 +42,9 @@ export const longFormProjects = [
     title: '12 hours in walmart',
     desc: '18 interviews from 8PM to 8AM in a walmart',
     img: '/images/12-hours.png',
-    link: 'https://gracejli.com/walmart', 
+    link: '/walmart', 
     hoverGif: 'images/12-hours.gif',
-    newTab: true,
+    newTab: false,
   },
   {
     id: 4,
