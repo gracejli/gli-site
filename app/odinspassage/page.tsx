@@ -35,15 +35,13 @@ export default function OdinsPassagePage() {
       <div className="flex flex-col md:flex-1 md:flex-row md:min-h-0 gap-10 md:gap-0 max-w-6xl mx-auto w-full min-h-0">
         <div className="w-full md:w-[45%] lg:w-[40%] md:pr-12 lg:pr-20 flex flex-col justify-between shrink-0 md:h-full md:min-h-0 md:overflow-hidden">
           <div className="flex-1">
-            <h1 className="text-lg font-bold font-bianzhidai mb-6">
+            <h1 className="text-lg font-bold font-rasterGrotesk mb-6">
               odins passage
             </h1>
 
             <div className="space-y-6 text-[15px] leading-relaxed max-w-md font-fe">
-              <p className="font-bianzhidai text-base">Archive</p>
-              <p className="text-sm opacity-95">“Odin’s Passage” (2022)</p>
+              <p className="text-sm font-rasterGrotesk text-base">3D game made in Unity</p>
               <p>
-                3D game made in Unity — 3D modeling, coding, game design.
                 Viking Odyssey × Crossy Road. Explored the mechanics of a very
                 popular game but with a Scandinavian twist to top off our
                 semester abroad in Denmark. Made in a group of three.

@@ -42,13 +42,13 @@ export default function TriumviratePage() {
       <div className="flex flex-col md:flex-1 md:flex-row md:min-h-0 gap-10 md:gap-0 max-w-6xl mx-auto w-full min-h-0">
         <div className="w-full md:w-[45%] lg:w-[40%] md:pr-12 lg:pr-20 flex flex-col justify-between shrink-0 md:h-full md:min-h-0 md:overflow-hidden">
           <div className="flex-1">
-            <h1 className="text-lg font-bold font-bianzhidai mb-6">
+            <h1 className="text-lg font-bold font-rasterGrotesk mb-6">
               triumvirate arena
             </h1>
 
             <div className="space-y-6 text-[15px] leading-relaxed max-w-md font-fe">
-              <p className="font-bianzhidai text-base">5: My Game Engine with Friends</p>
-              <p className="text-sm opacity-95">“triumvirate arena” (2022)</p>
+              <p className="font-rasterGrotesk text-base">Rust Game Engine</p>
+              <p className="opacity-95">“triumvirate arena” (2022)</p>
               <p>
                 2D game and game engine — Photoshop, Rust, Vulkan, game dev.
                 Battle arena card game as our own characters, made with friends

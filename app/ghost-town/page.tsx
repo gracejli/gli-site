@@ -35,11 +35,10 @@ export default function GhostTownPage() {
       <div className="flex flex-col md:flex-1 md:flex-row md:min-h-0 gap-10 md:gap-0 max-w-6xl mx-auto w-full min-h-0">
         <div className="w-full md:w-[45%] lg:w-[40%] md:pr-12 lg:pr-20 flex flex-col justify-between shrink-0 md:h-full md:min-h-0 md:overflow-hidden">
           <div className="flex-1">
-            <h1 className="text-lg font-bold font-bianzhidai mb-6">ghost town</h1>
+            <h1 className="text-lg font-bold font-rasterGrotesk mb-6">ghost town</h1>
 
             <div className="space-y-6 text-[15px] leading-relaxed max-w-md font-fe">
-              <p className="font-bianzhidai text-base">7: Immersive story game</p>
-              <p className="text-sm opacity-95">“ghost town” (2022)</p>
+              <p className="text-sm font-rasterGrotesk text-base">immersive story game built in Unity</p>
               <p>
                 2D game made in Unity — coding, game development, game design.
                 Narrative single-player game; we follow the main character
