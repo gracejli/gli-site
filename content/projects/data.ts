@@ -12,6 +12,32 @@ export const longFormProjects = [
     newTab: true,
   },
   {
+    id: 9,
+    title: 'shiny objects syndrome',
+    desc: '2d frame by frame animation',
+    img: '/images/shiny-objects2.png',
+    link: 'https://gracejli.com/shiny-objects',
+    hoverGif: 'images/animation.gif',
+    newTab: true,
+  },
+  {
+    id: 10,
+    title: 'dorm room vr',
+    desc: 'vr experience of my dorm room during covid',
+    img: '/images/oldenborg-room.png',
+    link: 'https://gracejli.com/dorm-room-vr',
+    hoverGif: 'images/dormRoom.gif',
+    newTab: true,
+  },
+  {
+    id: 7,
+    title: 'my favorite pictures ever',
+    desc: 'my instagram archive of 7 years',
+    img: '/images/gracejli.png',
+    link: 'https://www.instagram.com/gracejli/',
+    newTab: true,
+  },
+  {
     id: 2,
     title: '12 hours in walmart',
     desc: '18 interviews from 8PM to 8AM in a walmart',
@@ -46,32 +72,8 @@ export const longFormProjects = [
   //   link: '/games',
   //   newTab: false,
   // },
-  {
-    id: 7,
-    title: 'my favorite pictures ever',
-    desc: 'just an instagram archive of 7 years',
-    img: '/images/gracejli.png',
-    link: 'https://www.instagram.com/gracejli/',
-    newTab: true,
-  },
-  {
-    id: 9,
-    title: 'shiny objects syndrome',
-    desc: '2d frame by frame animation',
-    img: '/images/shiny-objects2.png',
-    link: 'https://gracejli.com/shiny-objects',
-    hoverGif: 'images/animation.gif',
-    newTab: true,
-  },
-  {
-    id: 10,
-    title: 'dorm room vr',
-    desc: 'vr experience of my dorm room during covid',
-    img: '/images/oldenborg-room.png',
-    link: 'https://gracejli.com/dorm-room-vr',
-    hoverGif: 'images/dormRoom.gif',
-    newTab: true,
-  },
+
+ 
 ];
 
 export const shortFormToys = [
