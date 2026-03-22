@@ -3,9 +3,9 @@ import type { GalleryItem } from "@/components/image-gallery";
 
 const coverItems: GalleryItem[] = [
   {
-    id: "triumvirate-cover",
-    url: "/images/triumvirate-arena.png",
-    alt: "Triumvirate Arena — key art and UI",
+    id: "odin-cover",
+    url: "/images/odins-passage.png",
+    alt: "Odin's Passage — key art",
     wrapperClass: "w-full",
     imgClass: "w-full h-auto object-cover",
   },
@@ -13,19 +13,19 @@ const coverItems: GalleryItem[] = [
 
 const galleryItems: GalleryItem[] = [
   {
-    id: "triumvirate-motion",
-    url: "/images/triumvirate.gif",
-    alt: "Triumvirate Arena — in-game motion",
+    id: "odin-motion",
+    url: "/images/odins.gif",
+    alt: "Odin's Passage — gameplay",
     wrapperClass: "w-full",
     imgClass: "w-full h-auto object-cover",
   },
 ];
 
-export default async function TriumviratePage() {
+export default async function OdinsPassagePage() {
   return (
     <ProjectGalleryPage
-      slug="triumvirate"
-      title="triumvirate arena"
+      slug="odinspassage"
+      title="odins passage"
       coverItems={coverItems}
       galleryItems={galleryItems}
     />

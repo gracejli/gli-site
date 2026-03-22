@@ -7,15 +7,24 @@ import { usePathname } from "next/navigation";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isHome = pathname === "/";
-  const isWalmart =
-    pathname === "/walmart" || pathname.startsWith("/walmart/");
+  const fullBleedPrefixes = [
+    "/walmart",
+    "/triumvirate",
+    "/shiny-objects",
+    "/dorm-room-vr",
+    "/odinspassage",
+    "/ghost-town",
+  ] as const;
+  const isFullBleedGallery = fullBleedPrefixes.some(
+    (p) => pathname === p || pathname.startsWith(`${p}/`),
+  );
 
-  if (isHome || isWalmart) {
+  if (isHome || isFullBleedGallery) {
     return (
       <html lang="en">
         <body
           className={
-            isWalmart
+            isFullBleedGallery
               ? "min-h-screen w-full font-serif md:h-dvh md:max-h-dvh md:overflow-hidden"
               : "min-h-screen w-full overflow-x-hidden font-serif"
           }
