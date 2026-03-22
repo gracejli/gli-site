@@ -11,7 +11,7 @@ export default function WorkPage() {
           {/* Left Column: Projects */}
           <section>
             <div className="flex items-baseline gap-2 mb-8">
-              <h2 className="text-lg font-bold font-bianzhidai">projects</h2>
+              <h2 className="text-lg font-bold font-louize">projects</h2>
               <span className="text-sm font-fe font-bold opacity-70 italic">long form</span>
             </div>
             <div>
@@ -24,7 +24,7 @@ export default function WorkPage() {
           {/* Right Column: Toys */}
           <section>
             <div className="flex items-baseline gap-2 mb-8">
-              <h2 className="text-lg font-bold font-bianzhidai">short form</h2>
+              <h2 className="text-lg font-bold font-louize">short form</h2>
               <span className="text-sm font-fe font-bold opacity-70 italic">experiments</span>
             </div>
             <div>
