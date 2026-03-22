@@ -33,10 +33,23 @@ export default function ProjectItem({ project = defaultProject }: { project?: Pr
     setMousePos({ x: e.clientX, y: e.clientY });
   };
 
+  // Safe window dimension checks for SSR
+  const winWidth = typeof window !== "undefined" ? window.innerWidth : 1000;
+  const winHeight = typeof window !== "undefined" ? window.innerHeight : 1000;
+
+  // Smoothly shift the image's anchor point based on screen position to prevent cutoffs.
+  // At the top of the screen, it renders below the cursor. At the bottom, it renders above.
+  const xPercent = (mousePos.x / winWidth) * 100;
+  const yPercent = (mousePos.y / winHeight) * 100;
+  
+  // Also add a 20px gap away from the cursor tip, flipping direction at the halfway point
+  const xOffset = `calc(-${xPercent}% + ${mousePos.x > winWidth / 2 ? '-20px' : '20px'})`;
+  const yOffset = `calc(-${yPercent}% + ${mousePos.y > winHeight / 2 ? '-20px' : '20px'})`;
+
   const content = (
     <div className="flex gap-4 mb-6 group cursor-pointer items-start">
       
-      {/* The Floating GIF/Image (Tracks the Title Hover) */}
+      {/* The Floating GIF/Image (Tracks the Title Hover & Stays within screen bounds) */}
       {isTitleHovering && (project?.hoverGif || project?.img) && (
         <img
           src={project.hoverGif || project.img}
@@ -44,10 +57,8 @@ export default function ProjectItem({ project = defaultProject }: { project?: Pr
           className="fixed pointer-events-none z-50 max-w-60 rounded-xl shadow-2xl border border-[#e6dfa8]/30"
           style={{
             left: mousePos.x,
-            // Offset by 20px so it sits below the cursor
-            top: mousePos.y + 20, 
-            // Only translate X to center it horizontally.
-            transform: 'translateX(-50%)', 
+            top: mousePos.y,
+            transform: `translate(${xOffset}, ${yOffset})`,
           }}
         />
       )}
