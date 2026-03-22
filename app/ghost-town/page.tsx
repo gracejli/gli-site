@@ -1,4 +1,7 @@
-import { ProjectGalleryPage } from "@/components/project-gallery-page";
+import {
+  ProjectGalleryPage,
+  projectGalleryLinkClass,
+} from "@/components/project-gallery-page";
 import type { GalleryItem } from "@/components/image-gallery";
 
 const coverItems: GalleryItem[] = [
@@ -11,13 +14,30 @@ const coverItems: GalleryItem[] = [
   },
 ];
 
-export default async function GhostTownPage() {
+export default function GhostTownPage() {
   return (
     <ProjectGalleryPage
-      slug="ghost-town"
       title="ghost town"
       coverItems={coverItems}
       galleryItems={[]}
-    />
+    >
+      <h2>7: Immersive story game</h2>
+      <h3>“ghost town” (2022)</h3>
+      <p>
+        2D game made in Unity — coding, game development, game design. Narrative
+        single-player game; we follow the main character through his hometown as
+        he discovers what has happened to everyone. Made in a team of four.
+      </p>
+      <p>
+        <a
+          href="https://github.com/williamconvertino/Ghost-Town"
+          className={projectGalleryLinkClass}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Repository
+        </a>
+      </p>
+    </ProjectGalleryPage>
   );
 }

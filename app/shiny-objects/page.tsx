@@ -1,4 +1,7 @@
-import { ProjectGalleryPage } from "@/components/project-gallery-page";
+import {
+  ProjectGalleryPage,
+  projectGalleryLinkClass,
+} from "@/components/project-gallery-page";
 import type { GalleryItem } from "@/components/image-gallery";
 
 const coverItems: GalleryItem[] = [
@@ -28,13 +31,34 @@ const galleryItems: GalleryItem[] = [
   },
 ];
 
-export default async function ShinyObjectsPage() {
+export default function ShinyObjectsPage() {
   return (
     <ProjectGalleryPage
-      slug="shiny-objects"
       title="shiny objects syndrome"
       coverItems={coverItems}
       galleryItems={galleryItems}
-    />
+    >
+      <h2>1: 2D Animation</h2>
+      <h3>“shiny objects” (2020)</h3>
+      <p>
+        2D animation — Toon Boom Harmony, Adobe Premiere, Adobe After Effects.
+      </p>
+      <p>
+        <strong className="font-bold text-amber-100">Shiny object syndrome</strong>{" "}
+        <em className="italic opacity-95">(n.)</em>: the tendency for someone to
+        chase something new, be it a new idea, trend, or goal, rather than to stay
+        focused on what they’re doing.
+      </p>
+      <p>
+        <a
+          href="https://www.youtube.com/watch?v=QfKiQ7uiS-w"
+          className={projectGalleryLinkClass}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Watch on YouTube
+        </a>
+      </p>
+    </ProjectGalleryPage>
   );
 }

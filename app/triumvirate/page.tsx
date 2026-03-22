@@ -21,13 +21,21 @@ const galleryItems: GalleryItem[] = [
   },
 ];
 
-export default async function TriumviratePage() {
+export default function TriumviratePage() {
   return (
     <ProjectGalleryPage
-      slug="triumvirate"
       title="triumvirate arena"
       coverItems={coverItems}
       galleryItems={galleryItems}
-    />
+    >
+      <h2>5: My Game Engine with Friends</h2>
+      <h3>“triumvirate arena” (2022)</h3>
+      <p>
+        2D game and game engine — Photoshop, Rust, Vulkan, game dev. Battle
+        arena card game as our own characters, made with friends in our own
+        engine. The engine is in Rust with Vulkan for graphics. Playthrough
+        video and code available upon request.
+      </p>
+    </ProjectGalleryPage>
   );
 }
