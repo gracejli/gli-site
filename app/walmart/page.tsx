@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import ImageGallery, { GalleryItem } from "@/components/image-gallery";
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
@@ -40,11 +39,11 @@ const risographItem: GalleryItem[] = [
 ];
 
 const linkClass =
-  "underline underline-offset-2 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_8px_rgba(253,224,71,0.8)]";
+  "underline underline-offset-2 transition-all duration-200 hover:text-[var(--page-link-hover)] hover:drop-shadow-[var(--page-link-glow)]";
 
 export default function WalmartPage() {
   return (
-    <div className="min-h-screen background px-4 pt-12 pb-8 flex flex-col md:h-dvh md:max-h-dvh md:overflow-hidden">
+    <div className="min-h-screen px-4 pt-12 pb-8 flex flex-col md:h-dvh md:max-h-dvh md:overflow-hidden">
       <ShootingStarCursor />
       <nav className="text-md font-rasterGrotesk shrink-0 mb-8 max-w-6xl mx-auto w-full">
         <Link href="/" className={linkClass}>
@@ -71,7 +70,7 @@ export default function WalmartPage() {
                 <br /><br />
                 one of my favorite and most formative projects to this day: fourteen interviews, 8:00 PM to 8:00 AM in Walmart.
                 <br />
-                * read the interviews <a href="https://gracejieyi.wixsite.com/home/walmartinterviews" className="underline transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_8px_rgba(253,224,71,0.8)]">here</a>
+                * read the interviews <a href="https://gracejieyi.wixsite.com/home/walmartinterviews" className="underline transition-all duration-200 hover:text-[var(--page-link-hover)] hover:drop-shadow-[var(--page-link-glow)]">here</a>
                 <br />
                 * made into a risograph publication later in 2021
               </p>

@@ -82,6 +82,14 @@ sharpie style work that I always do in my drawings*/
   --story-link-glow: 0 0 6px rgb(234 88 12 / 0.75);
 }
 
+/* Per-route page themes (data-page-theme on <html>, set from app/layout.tsx) */
+html[data-page-theme="walmart"] {
+  --background: #abcce1;
+  --foreground: #1a3795;
+  --page-link-hover: #1e40af;
+  --page-link-glow: 0 0 8px rgba(30, 74, 110, 0.45);
+}
+
 /* 
 :root {
   --background: #3e003f; 
@@ -166,7 +174,8 @@ html {
 body {
   background-color: transparent;
   color: var(--foreground);
-  transition: color 0.5s ease;
+  /* No color transition: reused <body> across layout branches would lerp
+     e.g. Walmart blue → default orange and read as “stuck blue” mid-nav. */
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji",
     "Segoe UI Emoji";
