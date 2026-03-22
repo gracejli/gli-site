@@ -1,25 +1,61 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
+import React, { useState } from "react";
 
 type Project = {
   id: number;
   title: string;
   desc: string;
   img?: string;
+  hoverGif?: string; // New property for the side thumbnail hover effect
   link?: string; // full URL or path
   newTab?: boolean; // open link in a new tab
 };
 
-export default function ProjectItem({ project }: { project: Project }) {
-  const href = project.link;
+// Add a default project so the component doesn't crash if previewed in isolation without props
+const defaultProject: Project = {
+  id: 0,
+  title: "Preview Project",
+  desc: "Hover over the item to see the side thumbnail turn into a GIF.",
+  img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=200&auto=format&fit=crop", // Static placeholder
+  hoverGif: "https://media.giphy.com/media/13HgwGsXF0aiGY/giphy.gif", // Animated placeholder
+  link: "#",
+};
+
+export default function ProjectItem({ project = defaultProject }: { project?: Project }) {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isTitleHovering, setIsTitleHovering] = useState(false);
+
+  // Safely access link now that we have a default fallback
+  const href = project?.link;
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    setMousePos({ x: e.clientX, y: e.clientY });
+  };
 
   const content = (
     <div className="flex gap-4 mb-6 group cursor-pointer items-start">
+      
+      {/* The Floating GIF/Image (Tracks the Title Hover) */}
+      {isTitleHovering && (project?.hoverGif || project?.img) && (
+        <img
+          src={project.hoverGif || project.img}
+          alt={`${project.title} preview`}
+          className="fixed pointer-events-none z-50 max-w-60 rounded-xl shadow-2xl border border-[#e6dfa8]/30"
+          style={{
+            left: mousePos.x,
+            // Offset by 20px so it sits below the cursor
+            top: mousePos.y + 20, 
+            // Only translate X to center it horizontally.
+            transform: 'translateX(-50%)', 
+          }}
+        />
+      )}
+
+      {/* Your Side Thumbnail (Static) */}
       <div className="w-12 h-12 border-2 border-dashed border-[#e6dfa8] flex-shrink-0 overflow-hidden rounded-xl">
-        {project.img && (
-          <Image
+        {project?.img && (
+          <img
             src={project.img}
             alt={project.title}
             width={48}
@@ -28,11 +64,17 @@ export default function ProjectItem({ project }: { project: Project }) {
           />
         )}
       </div>
+      
       <div>
-        <h3 className="font-fe font-bold underline underline-offset-4 leading-tight transition-all duration-200 group-hover:text-white group-hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]">
-          {project.title}
+        <h3 
+          className="font-fe font-bold underline underline-offset-4 leading-tight transition-all duration-200 group-hover:text-white group-hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)] w-max"
+          onMouseEnter={() => setIsTitleHovering(true)}
+          onMouseLeave={() => setIsTitleHovering(false)}
+          onMouseMove={handleMouseMove}
+        >
+          {project?.title}
         </h3>
-        <p className="text-sm mt-0.5 font-fe font-bold opacity-80">{project.desc}</p>
+        <p className="text-sm mt-0.5 font-fe font-bold opacity-80">{project?.desc}</p>
       </div>
     </div>
   );
@@ -40,16 +82,14 @@ export default function ProjectItem({ project }: { project: Project }) {
   if (href) {
     const isExternal = project.newTab === true;
     return (
-      <Link
+      <a
         href={href}
         {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
       >
         {content}
-      </Link>
+      </a>
     );
   }
 
-  return (
-    content
-  );
+  return content;
 }

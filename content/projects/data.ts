@@ -8,6 +8,7 @@ export const longFormProjects = [
     desc: 'self-made game engine, turn taking card game',
     img: '/images/triumvirate-arena.png',
     link: 'https://gracejli.com/triumvirate-arena',
+    hoverGif: 'images/triumvirate.gif',
     newTab: true,
   },
   {
@@ -16,6 +17,7 @@ export const longFormProjects = [
     desc: '18 interviews from 8PM to 8AM in a walmart',
     img: '/images/12-hours.png',
     link: 'https://gracejli.com/walmart', 
+    hoverGif: 'images/12-hours.gif',
     newTab: true,
   },
   {
@@ -24,6 +26,7 @@ export const longFormProjects = [
     desc: 'viking odyssey x flappy bird',
     img: '/images/odins-passage.png',
     link: 'https://gracejli.com/odinspassage',
+    hoverGif: 'images/odins.gif',
     newTab: false,
   },
   {
@@ -57,6 +60,7 @@ export const longFormProjects = [
     desc: '2d frame by frame animation',
     img: '/images/shiny-objects2.png',
     link: 'https://gracejli.com/shiny-objects',
+    hoverGif: 'images/animation.gif',
     newTab: true,
   },
   {
@@ -65,6 +69,7 @@ export const longFormProjects = [
     desc: 'vr experience of my dorm room during covid',
     img: '/images/oldenborg-room.png',
     link: 'https://gracejli.com/dorm-room-vr',
+    hoverGif: 'images/dormRoom.gif',
     newTab: true,
   },
 ];
