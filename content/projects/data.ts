@@ -82,6 +82,8 @@ export const shortFormToys = [
     id: 11,
     title: 'valentines day 2019',
     desc: 'drawings of my friends for valentines day',
+    linke: 'https://www.instagram.com/p/DVCZCkMEpsR/', 
+    newTab: true,
     img: '/images/valentines.png',
   },
   {
