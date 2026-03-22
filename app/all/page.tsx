@@ -28,7 +28,7 @@ export default async function AllPage({ searchParams }: AllPageProps) {
           {/* Projects Section */}
           <section>
             <div className="flex items-baseline gap-2 mb-8">
-              <h2 className="text-lg font-bold font-louize">projects</h2>
+              <h2 className="text-lg font-bold font-bianzhidai">projects</h2>
               <span className="text-sm font-fe font-bold opacity-70 italic">long form</span>
             </div>
             <div>
@@ -41,7 +41,7 @@ export default async function AllPage({ searchParams }: AllPageProps) {
           {/* Toys Section */}
           <section>
             <div className="flex items-baseline gap-2 mb-8">
-              <h2 className="text-lg font-bold font-louize">toys</h2>
+              <h2 className="text-lg font-bold font-bianzhidai">toys</h2>
               <span className="text-sm font-fe font-bold opacity-70 italic">short form experiments</span>
             </div>
             <div>
@@ -54,7 +54,7 @@ export default async function AllPage({ searchParams }: AllPageProps) {
           {/* Blog Posts Section */}
           <section className="pb-32">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-lg font-bold font-louize">blog posts</h2>
+              <h2 className="text-lg font-bold font-bianzhidai">blog posts</h2>
               <Link
                 href={isLinksView ? "/all" : "/all?filter=links"}
                 className="text-xs uppercase tracking-wide underline underline-offset-4 hover:text-white transition-colors"

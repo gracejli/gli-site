@@ -181,19 +181,19 @@
 //             <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between border-b border-neutral-100 pb-6 gap-4">
 //               <div>
 //                 <h2 className="text-3xl md:text-4xl font-bold font-rasterGrotesk tracking-tight ">{channelData.title}</h2>
-//                 <div className="flex flex-wrap items-center gap-x-3 text-sm font-rasterGrotesk  mt-2 font-medium">
+//                 <div className="flex flex-wrap items-center gap-x-3 text-sm font-doto  mt-2 font-medium">
 //                   <span className="text-bold">{channelData.user?.full_name}</span>
-//                   <span className="w-1 h-1 font-rasterGrotesk text-semibold rounded-full" />
+//                   <span className="w-1 h-1 font-doto text-semibold rounded-full" />
 //                   <span>{channelData.length} blocks</span>
-//                   <span className="w-1 h-1 font-rasterGrotesk text-semibold rounded-full" />
-//                   <span className="uppercase tracking-widest text-xs font-rasterGrotesk">Updated Recently</span>
+//                   <span className="w-1 h-1 font-doto text-semibold rounded-full" />
+//                   <span className="uppercase tracking-widest text-xs font-doto">Updated Recently</span>
 //                 </div>
 //               </div>
 //               <a 
 //                 href={`https://www.are.na/channel/${channelData.slug}`} 
 //                 target="_blank" 
 //                 rel="noreferrer"
-//                 className="flex items-center gap-2 text-sm underline font-medium font-rasterGrotesk hover:text-black transition-colors py-1 border-b border-transparent hover:border-black"
+//                 className="flex items-center gap-2 text-sm underline font-medium font-doto hover:text-black transition-colors py-1 border-b border-transparent hover:border-black"
 //               >
 //                 Open on Are.na <ExternalLink className="w-3 h-3" />
 //               </a>

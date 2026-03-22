@@ -212,7 +212,7 @@ export default function App() {
         <div className="w-full md:w-[60%] flex flex-col gap-8">
           {/* Bio Box */}
           <div className="p-8 border-2 border-dashed rounded-xl transition-all duration-300 hover:border-amber-400 hover:bg-amber-400/5 cursor-none text-left bg-black/40 backdrop-blur">
-            <p className="text-lg font-louize mb-2">grace li</p>
+            <p className="text-lg font-bianzhidai mb-2">grace li</p>
             <p className="text-sm font-bold font-fe mb-2">
               tinkerer in los angeles, from a small town in michigan.
             </p>
@@ -240,15 +240,15 @@ export default function App() {
         <div className="w-full md:w-[40%] flex flex-col h-full gap-4">
           {/* Site navigation box */}
           <div className="p-8 border-2 border-dashed rounded-xl transition-all duration-300 hover:border-amber-400 hover:bg-amber-400/5 bg-black/40 backdrop-blur">
-            <h2 className="text-lg font-bold font-louize mb-4">internal</h2>
-            <div className="font-louize text-sm">
+            <h2 className="text-lg font-bold font-bianzhidai mb-4">internal</h2>
+            <div className="font-rasterGrotesk text-sm">
               <Navbar />
             </div>
           </div>
 
           {/* External links box */}
           <div className="h-full p-8 border-2 border-dashed rounded-xl transition-all duration-300 hover:border-amber-400 hover:bg-amber-400/5 bg-black/40 backdrop-blur">
-            <h2 className="text-lg font-bold font-louize mb-4">external</h2>
+            <h2 className="text-lg font-bold font-bianzhidai mb-4">external</h2>
             <ul className="space-y-2 font-fe text-sm font-bold">
               <li>
                 <a
@@ -324,9 +324,9 @@ export default function App() {
             <div className="flex h-5 w-5 items-center justify-center rounded-full border border-amber-300/80 bg-black/70 text-[10px] font-fe text-amber-100 shadow-md transition group-hover:bg-amber-400/90 group-hover:text-black">
               i
             </div>
-            <div className="pointer-events-none absolute bottom-7 right-0 w-52 translate-y-1 rounded-lg border border-amber-200/60 bg-black/90 p-3 text-left text-[11px] font-fe leading-snug text-amber-50 opacity-0 shadow-xl backdrop-blur-sm transition-opacity duration-150 group-hover:translate-y-0 group-hover:opacity-100">
-              small, short, still videos that i've taken for years.here are some of my spaces
-            </div>
+            {/* <div className="pointer-events-none absolute bottom-7 right-0 w-52 translate-y-1 rounded-lg border border-amber-200/60 bg-black/90 p-3 text-left text-[11px] font-fe leading-snug text-amber-50 opacity-0 shadow-xl backdrop-blur-sm transition-opacity duration-150 group-hover:translate-y-0 group-hover:opacity-100">
+              small, short videos that i've taken for years. here are some of my spaces
+            </div> */}
           </div>
           <button
             type="button"

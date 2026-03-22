@@ -151,7 +151,7 @@ html[data-page-theme="walmart"] {
   --font-rasterGrotesk: "RasterGrotesk", sans-serif;
   --font-doto: "Doto", sans-serif; 
   --font-bianzhidai: "BianZhi", sans-serif; 
-  --font-rasterGrotesk: "Louize", sans-serif; 
+  --font-louize: "Louize", sans-serif; 
   --font-editorial: "Editorial", sans-serif;
   --font-fe: "FELight", sans-serif;
   --font-febold: "FEReg"; 
@@ -174,7 +174,8 @@ html {
 body {
   background-color: transparent;
   color: var(--foreground);
-  transition: color 0.5s ease;
+  /* No color transition: reused <body> across layout branches would lerp
+     e.g. Walmart blue → default orange and read as “stuck blue” mid-nav. */
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji",
     "Segoe UI Emoji";

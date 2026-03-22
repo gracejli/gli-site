@@ -20,7 +20,7 @@ export default function GamesPage() {
   return (
     <section className="space-y-10">
       <header className="space-y-4">
-        <h1 className="text-2xl font-louize">games</h1>
+        <h1 className="text-2xl font-bianzhidai">games</h1>
         <p className="text-sm font-fe max-w-prose">
           small worlds, tactics, and little experiments in play. use the links
           below to jump to a specific game.
@@ -50,7 +50,7 @@ export default function GamesPage() {
             id={game.id}
             className="scroll-mt-24 border-t border-dashed border-amber-200 pt-8 space-y-3"
           >
-            <h2 className="text-xl font-louize">{game.title}</h2>
+            <h2 className="text-xl font-bianzhidai">{game.title}</h2>
             <p className="text-xs font-fe uppercase tracking-wide text-amber-200/80">
               {game.year}
             </p>
