@@ -7,11 +7,19 @@ import { usePathname } from "next/navigation";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const isWalmart =
+    pathname === "/walmart" || pathname.startsWith("/walmart/");
 
-  if (isHome) {
+  if (isHome || isWalmart) {
     return (
       <html lang="en">
-        <body className="min-h-screen w-full overflow-x-hidden font-serif">
+        <body
+          className={
+            isWalmart
+              ? "min-h-screen w-full font-serif md:h-dvh md:max-h-dvh md:overflow-hidden"
+              : "min-h-screen w-full overflow-x-hidden font-serif"
+          }
+        >
           {children}
         </body>
       </html>
