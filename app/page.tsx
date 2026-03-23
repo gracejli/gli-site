@@ -69,7 +69,7 @@ function BackgroundVideo({
 
         {source.type === "youtube" ? (
           <iframe
-            className="h-full w-full object-cover scale-[1.3] origin-center"
+            className="h-full w-full origin-center object-cover scale-[4] md:scale-[1.3]"
             src={(() => {
               const id = getYouTubeId(source.url);
               if (!id) return "";
@@ -220,21 +220,8 @@ export default function App() {
   };
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center p-8 bg-black md:bg-transparent">
-      {/* Mobile static background image */}
-      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-black md:hidden">
-        <img
-          src="/images/2025-los-feliz-room.png"
-          alt="background"
-          className="h-full w-full object-cover"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70" />
-      </div>
-
-      {/* Desktop / tablet video background */}
-      <div className="hidden md:block">
-        <BackgroundVideo source={currentVideo} />
-      </div>
+    <main className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center p-8 md:bg-transparent">
+      <BackgroundVideo source={currentVideo} />
       <ShootingStarCursor />
 
       {showSlowDown ? (
@@ -357,8 +344,8 @@ export default function App() {
         </div>
       ) : null}
 
-      {/* Bottom-right shuffle + caption (desktop / tablet only) */}
-      <div className="pointer-events-none fixed bottom-4 right-4 z-20 hidden max-w-xs flex-col items-end gap-2 text-right md:flex">
+      {/* Bottom-right shuffle + caption */}
+      <div className="pointer-events-none fixed bottom-4 right-4 z-20 flex max-w-[min(20rem,calc(100vw-2rem))] flex-col items-end gap-2 text-right">
         {currentVideo ? (
           <p className="pointer-events-none text-xs font-fe text-amber-100/80 drop-shadow">
             {currentVideo.caption}
