@@ -1,3 +1,5 @@
+import { GalleryImage } from "@/components/gallery-image";
+
 export interface GalleryItem {
   id: string;
   url: string;
@@ -8,6 +10,12 @@ export interface GalleryItem {
   captionClassName?: string;
   wrapperClass: string;
   imgClass: string;
+  /**
+   * Intrinsic dimensions for next/image and loading placeholder aspect ratio.
+   * When omitted, a 16:9 default is used (add values per asset to match shape).
+   */
+  width?: number;
+  height?: number;
 }
 
 const gapClass = {
@@ -21,6 +29,13 @@ const gapClass = {
 } as const;
 
 export type ImageGalleryGap = keyof typeof gapClass;
+
+function gallerySizes(columns: number): string {
+  const c = Math.max(1, Math.floor(columns));
+  if (c === 1) return "(max-width: 768px) 100vw, 60vw";
+  const vw = Math.max(18, Math.ceil(60 / c));
+  return `(max-width: 768px) 100vw, ${vw}vw`;
+}
 
 export type ImageGalleryProps = {
   items: GalleryItem[];
@@ -48,6 +63,7 @@ function ImageGallery({
 }: ImageGalleryProps) {
   const safeCols = Math.max(1, Math.floor(columns));
   const useGrid = safeCols > 1 || rows != null;
+  const sizes = gallerySizes(safeCols);
 
   const gridStyle =
     useGrid
@@ -74,13 +90,13 @@ function ImageGallery({
         .join(" ")}
       style={gridStyle}
     >
-      {items.map((item) => (
+      {items.map((item, index) => (
         <figure key={item.id} className={item.wrapperClass}>
-          <img
-            src={item.url}
-            alt={item.alt}
-            className={item.imgClass}
-            loading="lazy"
+          <GalleryImage
+            item={item}
+            sizes={sizes}
+            priority={index < 6}
+            index={index}
           />
           {item.caption ? (
             <figcaption
