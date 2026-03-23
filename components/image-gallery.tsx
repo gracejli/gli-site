@@ -2,6 +2,10 @@ export interface GalleryItem {
   id: string;
   url: string;
   alt: string;
+  /** Shown below the image when set. */
+  caption?: string;
+  /** Overrides default caption styling when set. */
+  captionClassName?: string;
   wrapperClass: string;
   imgClass: string;
 }
@@ -71,14 +75,24 @@ function ImageGallery({
       style={gridStyle}
     >
       {items.map((item) => (
-        <div key={item.id} className={item.wrapperClass}>
+        <figure key={item.id} className={item.wrapperClass}>
           <img
             src={item.url}
             alt={item.alt}
             className={item.imgClass}
             loading="lazy"
           />
-        </div>
+          {item.caption ? (
+            <figcaption
+              className={
+                item.captionClassName ??
+                "mt-2 text-xs font-fe leading-snug text-amber-100/70"
+              }
+            >
+              {item.caption}
+            </figcaption>
+          ) : null}
+        </figure>
       ))}
     </div>
   );

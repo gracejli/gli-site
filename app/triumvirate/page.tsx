@@ -2,24 +2,79 @@ import Link from "next/link";
 import ImageGallery, { type GalleryItem } from "@/components/image-gallery";
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
 
-const coverItems: GalleryItem[] = [
-  {
-    id: "triumvirate-cover",
-    url: "/images/triumvirate-arena.png",
-    alt: "Triumvirate Arena — key art and UI",
+function triumvirateItem(
+  file: string,
+  id: string,
+  alt: string,
+  caption?: string,
+): GalleryItem {
+  return {
+    id,
+    url: `/images/triumvirate/${encodeURIComponent(file)}`,
+    alt,
+    caption,
     wrapperClass: "w-full",
     imgClass: "w-full h-auto object-cover",
-  },
-];
+  };
+}
 
-const galleryItems: GalleryItem[] = [
-  {
-    id: "triumvirate-motion",
-    url: "/images/triumvirate.gif",
-    alt: "Triumvirate Arena — in-game motion",
-    wrapperClass: "w-full",
-    imgClass: "w-full h-auto object-cover",
-  },
+const triumvirateImages: GalleryItem[] = [
+  triumvirateItem(
+    "playthrough.gif",
+    "triumvirate-playthrough",
+    "Triumvirate Arena — playthrough",
+    "Playthrough gif"
+  ),
+  triumvirateItem(
+    "player select screen.png",
+    "triumvirate-player-select",
+    "Triumvirate Arena — player select screen",
+    "Player select screen",
+  ),
+  triumvirateItem(
+    "fight screen.png",
+    "triumvirate-fight-screen",
+    "Triumvirate Arena — fight screen",
+    "Fight screen, health and mana"
+  ),
+  triumvirateItem(
+    "nate moves.gif",
+    "triumvirate-nate-moves",
+    "Triumvirate Arena — Nate moves",
+    "Nate moves walkthrough"
+  ),
+  triumvirateItem(
+    "grace li .gif",
+    "triumvirate-grace-li",
+    "Triumvirate Arena — Grace Li",
+    "Grace moves walkthrough"
+  ),
+  triumvirateItem(
+    "click through.gif",
+    "triumvirate-click-through",
+    "Triumvirate Arena — click through",
+    "Chloe moves walkthrough"
+  ),
+
+  triumvirateItem(
+    "nate movces.png",
+    "triumvirate-nate-movces",
+    "Triumvirate Arena — Nate",
+    "Nate move selection screen",
+  ),
+  triumvirateItem(
+    "chloe playscreen.png",
+    "triumvirate-chloe-playscreen",
+    "Triumvirate Arena — Chloe playscreen",
+    "Chloe move selection screen",
+  ),
+  triumvirateItem(
+    "grace playscreen.png",
+    "triumvirate-grace-playscreen",
+    "Triumvirate Arena — Grace playscreen",
+    "Grace move selection screen"
+  ),
+
 ];
 
 const linkClass =
@@ -58,8 +113,7 @@ export default function TriumviratePage() {
             </div>
           </div>
         </div>
-        <ImageGallery items={coverItems} columns={1} gap={2} />
-        <ImageGallery items={galleryItems} columns={3} gap={2} />
+        <ImageGallery items={triumvirateImages} columns={3} gap={2} />
       </div>
     </div>
   );

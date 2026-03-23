@@ -2,16 +2,6 @@ import Link from "next/link";
 import ImageGallery, { type GalleryItem } from "@/components/image-gallery";
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
 
-const coverItems: GalleryItem[] = [
-  {
-    id: "dorm-cover",
-    url: "/images/oldenborg-room.png",
-    alt: "Dorm room VR — room render",
-    wrapperClass: "w-full",
-    imgClass: "w-full h-auto object-cover",
-  },
-];
-
 const galleryItems: GalleryItem[] = [
   {
     id: "dorm-motion",
@@ -19,6 +9,15 @@ const galleryItems: GalleryItem[] = [
     alt: "Dorm room VR — motion",
     wrapperClass: "w-full",
     imgClass: "w-full h-auto object-cover",
+    caption: 'Dorm room experience in VR'
+  },
+  {
+    id: "dorm-cover",
+    url: "/images/oldenborg-room.png",
+    alt: "Dorm room VR — room render",
+    wrapperClass: "w-full",
+    imgClass: "w-full h-auto object-cover",
+    caption: 'My dorm room in 2022 for reference'
   },
 ];
 
@@ -72,8 +71,7 @@ export default function DormRoomVrPage() {
             </div>
           </div>
         </div>
-        <ImageGallery items={coverItems} columns={1} gap={2} />
-        <ImageGallery items={galleryItems} columns={3} gap={2} />
+        <ImageGallery items={galleryItems} columns={2} gap={2} />
       </div>
     </div>
   );

@@ -2,28 +2,30 @@ import Link from "next/link";
 import ImageGallery, { GalleryItem } from "@/components/image-gallery";
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
 
-const walmartImageFiles = [
-  "IMG_7131.JPG",
-  "IMG_7145.JPG",
-  "IMG_7150.JPG",
-  "IMG_7173.JPG",
-  "IMG_7195.JPG",
-  "IMG_7224.JPG",
-  "IMG_7232.JPG",
-  "IMG_7242.JPG",
-  "IMG_7258.JPG",
-  "IMG_7276.JPG",
-  "IMG_7277.JPG",
-  "IMG_7283.JPG",
-  "IMG_7329.JPG",
-  "IMG_7366.JPG",
-  "IMG_7332.JPG"
-] as const;
+/** Add optional `caption` on any entry; shown under the image in the gallery. */
+const walmartImageFiles: { file: string; caption?: string }[] = [
+  { file: "IMG_7131.JPG" },
+  { file: "IMG_7145.JPG" },
+  { file: "IMG_7150.JPG" },
+  { file: "IMG_7173.JPG" },
+  { file: "IMG_7195.JPG" },
+  { file: "IMG_7224.JPG" },
+  { file: "IMG_7232.JPG" },
+  { file: "IMG_7242.JPG" },
+  { file: "IMG_7258.JPG" },
+  { file: "IMG_7276.JPG" },
+  { file: "IMG_7277.JPG" },
+  { file: "IMG_7283.JPG" },
+  { file: "IMG_7329.JPG" },
+  { file: "IMG_7366.JPG" },
+  { file: "IMG_7332.JPG" },
+];
 
-const galleryItem: GalleryItem[] = walmartImageFiles.map((file, i) => ({
+const galleryItem: GalleryItem[] = walmartImageFiles.map(({ file, caption }, i) => ({
   id: file.replace(/\.[^.]+$/, ""),
   url: `/images/walmart/${file}`,
   alt: `Photograph ${i + 1} of ${walmartImageFiles.length} from 12 hours in Walmart, Midland Michigan`,
+  caption,
   wrapperClass: "w-full",
   imgClass: "w-full h-auto object-cover",
 }));
@@ -35,11 +37,17 @@ const risographItem: GalleryItem[] = [
     alt: "Risograph 1",
     wrapperClass: "w-full",
     imgClass: "w-full h-auto object-cover",
+    caption: "risograph book printing the interviews, 2021",
+    captionClassName:
+      "mt-2 text-xs font-fe leading-snug text-[var(--foreground)]",
   },
 ];
 
 const linkClass =
-  "underline underline-offset-2 transition-all duration-200 hover:text-[var(--page-link-hover)] hover:drop-shadow-[var(--page-link-glow)]";
+  "underline underline-offset-2 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_8px_rgba(253,224,71,0.8)]";
+
+const inlineLinkClass =
+  "underline transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_8px_rgba(253,224,71,0.8)]";
 
 export default function WalmartPage() {
   return (
@@ -70,7 +78,13 @@ export default function WalmartPage() {
                 <br /><br />
                 one of my favorite and most formative projects to this day: fourteen interviews, 8:00 PM to 8:00 AM in Walmart.
                 <br />
-                * read the interviews <a href="https://gracejieyi.wixsite.com/home/walmartinterviews" className="underline transition-all duration-200 hover:text-[var(--page-link-hover)] hover:drop-shadow-[var(--page-link-glow)]">here</a>
+                * read the interviews{" "}
+                <a
+                  href="https://gracejieyi.wixsite.com/home/walmartinterviews"
+                  className={inlineLinkClass}
+                >
+                  here
+                </a>
                 <br />
                 * made into a risograph publication later in 2021
               </p>
