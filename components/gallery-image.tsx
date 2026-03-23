@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 
+import { skeletonToneClass } from "@/lib/skeleton-tone";
+
 const DEFAULT_W = 1920;
 const DEFAULT_H = 1080;
 
@@ -15,13 +17,11 @@ export type GalleryImageItem = {
   height?: number;
 };
 
-const RGB_CYCLE_S = 2.4;
-
 export type GalleryImageProps = {
   item: GalleryImageItem;
   sizes: string;
   priority: boolean;
-  /** Used to offset the loading color cycle so each box shows a different hue. */
+  /** Picks a stable red / blue / yellow fill for the loading layer. */
   index: number;
 };
 
@@ -39,17 +39,13 @@ export function GalleryImage({ item, sizes, priority, index }: GalleryImageProps
 
   const imgClass = imgClassForFill(item.imgClass);
 
-  /** Negative delay advances the cycle so each box is on a different part of red → blue → yellow. */
-  const skeletonDelay = -(index * (RGB_CYCLE_S / 5));
-
   return (
     <div
       className="relative w-full overflow-hidden"
       style={{ aspectRatio: `${w} / ${h}` }}
     >
       <div
-        className="gallery-image-skeleton absolute inset-0 z-0"
-        style={{ animationDelay: `${skeletonDelay}s` }}
+        className={`${skeletonToneClass(index)} absolute inset-0 z-0`}
         aria-hidden
       />
       <Image

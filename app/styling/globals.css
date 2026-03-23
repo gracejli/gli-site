@@ -147,21 +147,15 @@ html[data-page-theme="walmart"] {
   src: url('./fonts/FluxischElse-Bold.woff') format('woff');
 } */
 
-@keyframes gallery-image-rgb {
-  0%,
-  100% {
-    background-color: rgb(220 38 38);
-  }
-  33% {
-    background-color: rgb(37 99 235);
-  }
-  66% {
-    background-color: rgb(234 179 8);
-  }
+/* Static loading fills for image placeholders (gallery + blog); tone chosen by index, no animation. */
+.gallery-image-skeleton-red {
+  background-color: rgb(220 38 38);
 }
-
-.gallery-image-skeleton {
-  animation: gallery-image-rgb 2.4s ease-in-out infinite;
+.gallery-image-skeleton-blue {
+  background-color: rgb(37 99 235);
+}
+.gallery-image-skeleton-yellow {
+  background-color: rgb(234 179 8);
 }
 
 @theme {
