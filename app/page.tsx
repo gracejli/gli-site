@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
 import Carousel from "@/components/Carousel";
 import Navbar from "@/components/Nav";
@@ -16,6 +16,10 @@ function shuffled<T>(arr: T[]): T[] {
   }
   return a;
 }
+
+const TELEPORT_CLICK_WINDOW_MS = 30_000;
+const TELEPORT_CLICK_THRESHOLD = 5;
+const TELEPORT_SLOW_DOWN_SESSION_KEY = "gli-teleport-slow-down-shown";
 
 function getYouTubeId(url: string): string | null {
   try {
@@ -130,6 +134,9 @@ export default function App() {
   ];
 
   const [showText, setShowText] = useState(true);
+  const [showSlowDown, setShowSlowDown] = useState(false);
+  const teleportClickTimesRef = useRef<number[]>([]);
+  const slowDownShownFallbackRef = useRef(false);
 
   const [bgState, setBgState] = useState<{
     currentIndex: number | null;
@@ -183,6 +190,35 @@ export default function App() {
     });
   };
 
+  const handleTeleportClick = () => {
+    const now = Date.now();
+    const recent = teleportClickTimesRef.current.filter(
+      (t) => now - t < TELEPORT_CLICK_WINDOW_MS,
+    );
+    recent.push(now);
+    teleportClickTimesRef.current = recent;
+    if (recent.length > TELEPORT_CLICK_THRESHOLD) {
+      let alreadyShown = slowDownShownFallbackRef.current;
+      try {
+        alreadyShown =
+          alreadyShown ||
+          !!sessionStorage.getItem(TELEPORT_SLOW_DOWN_SESSION_KEY);
+      } catch {
+        /* private mode / storage blocked */
+      }
+      if (!alreadyShown) {
+        slowDownShownFallbackRef.current = true;
+        try {
+          sessionStorage.setItem(TELEPORT_SLOW_DOWN_SESSION_KEY, "1");
+        } catch {
+          /* ref already prevents repeat */
+        }
+        setShowSlowDown(true);
+      }
+    }
+    handleShuffle();
+  };
+
   return (
     <main className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center p-8 bg-black md:bg-transparent">
       {/* Mobile static background image */}
@@ -200,6 +236,31 @@ export default function App() {
         <BackgroundVideo source={currentVideo} />
       </div>
       <ShootingStarCursor />
+
+      {showSlowDown ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="slow-down-title"
+        >
+          <div className="max-w-md rounded-xl border-2 border-dashed border-amber-300/80 bg-black/90 p-8 text-center shadow-xl">
+            <p
+              id="slow-down-title"
+              className="font-fe text-sm font-bold leading-relaxed text-amber-100"
+            >
+              slow down!!! you are doomscrolling my life. stay a little!
+            </p>
+            <button
+              type="button"
+              onClick={() => setShowSlowDown(false)}
+              className="mt-6 rounded-full border border-amber-300/70 bg-amber-400/20 px-5 py-2 text-xs font-fe font-bold uppercase tracking-wide text-amber-100 transition hover:bg-amber-400/80 hover:text-black"
+            >
+              ok
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       {/* Main Layout Container 
         - Flex row on medium screens and up (md:flex-row)
@@ -330,7 +391,7 @@ export default function App() {
           </div>
           <button
             type="button"
-            onClick={handleShuffle}
+            onClick={handleTeleportClick}
             className="rounded-full border border-amber-300/70 bg-black/60 px-4 py-1 text-xs font-fe uppercase tracking-wide text-amber-100 shadow-lg backdrop-blur transition hover:bg-amber-400/80 hover:text-black"
           >
             teleport!
