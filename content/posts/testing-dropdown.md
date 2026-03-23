@@ -1,7 +1,7 @@
 ---
 date: 2026-01-12
 summary: first post dropdown text
-image: /images/pixel-apple.png
+image: /images/blog/pixel-apple.png
 alt: "this is another apple"
 type: dropdown
 isPublished: false
