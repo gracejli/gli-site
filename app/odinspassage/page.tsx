@@ -9,6 +9,7 @@ const galleryItems: GalleryItem[] = [
     alt: "Odin's Passage — gameplay",
     wrapperClass: "w-full",
     imgClass: "w-full h-auto object-cover",
+    caption: "gameplay video",
   },
 ];
 
@@ -44,7 +45,7 @@ export default function OdinsPassagePage() {
               <p>
                 Viking Odyssey × Crossy Road. Explored the mechanics of a very
                 popular game but with a Scandinavian twist to top off our
-                semester abroad in Denmark. Made in a group of three.
+                semester abroad in Denmark. Made in a group of four.
               </p>
               <p>
                 *{" "}

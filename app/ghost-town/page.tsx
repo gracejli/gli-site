@@ -2,14 +2,40 @@ import Link from "next/link";
 import ImageGallery, { type GalleryItem } from "@/components/image-gallery";
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
 
-const coverItems: GalleryItem[] = [
+const galleryItems: GalleryItem[] = [
   {
     id: "ghost-cover",
-    url: "/images/ghost-town2.png",
+    url: "/images/ghost-town/ghost town.png",
     alt: "Ghost town — game artwork",
     wrapperClass: "w-full",
     imgClass: "w-full h-auto object-cover",
+    caption: "Platformer making way through house",
   },
+  {
+    id: "ghost-cover2",
+    url: "/images/ghost-town/ghost town 2.png",
+    alt: "Ghost town — game artwork",
+    caption: "Light mechanism to see ghosts",
+    wrapperClass: "w-full",
+    imgClass: "w-full h-auto object-cover",
+  },
+  {
+    id: "ghost-cover3",
+    url: "/images/ghost-town/ghost town 3.png",
+    alt: "Ghost town — game artwork",
+    caption: "Level select screen",
+    wrapperClass: "w-full",
+    imgClass: "w-full h-auto object-cover",
+  },
+  {
+    id: "ghost-cover4",
+    url: "/images/ghost-town/ghost town 4.png",
+    alt: "Ghost town — game artwork",
+    caption: "Dialog system",
+    wrapperClass: "w-full",
+    imgClass: "w-full h-auto object-cover",
+  },
+  
 ];
 
 const linkClass =
@@ -59,7 +85,7 @@ export default function GhostTownPage() {
             </div>
           </div>
         </div>
-        <ImageGallery items={coverItems} columns={1} gap={2} />
+        <ImageGallery items={galleryItems} columns={2} gap={2} />
       </div>
     </div>
   );
