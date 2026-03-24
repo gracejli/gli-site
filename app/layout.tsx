@@ -14,6 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "/dorm-room-vr",
     "/odinspassage",
     "/ghost-town",
+    "/email-signoffs",
   ] as const;
   const isFullBleedGallery = fullBleedPrefixes.some(
     (p) => pathname === p || pathname.startsWith(`${p}/`),

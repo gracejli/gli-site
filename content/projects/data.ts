@@ -63,19 +63,18 @@ export const longFormProjects = [
     link: '/ghost-town',
     newTab: false,
   },
-  // {
-  //   id: 6,
-  //   title: 'maze runner',
-  //   desc: 'turn taking memory maze game made in own 3D game engine',
-  //   img: 'https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=100&h=100&fit=crop',
-  //   link: '/games',
-  //   newTab: false,
-  // },
-
  
 ];
 
 export const shortFormToys = [
+  {
+    id: 14,
+    title: '2011 email sign off archive',
+    desc: 'real emails from 2009-2011, wishes and sign offs',
+    img: '/images/email-signoffs.png',
+    link: '/email-signoffs',
+    newTab: false,
+  },
   {
     id: 10,
     title: 'question mark keychain',
