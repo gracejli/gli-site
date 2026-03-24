@@ -50,7 +50,7 @@ export default function ProjectItem({ project = defaultProject }: { project?: Pr
           : "translate(-100%, -100%)";
 
   const content = (
-    <div className="flex gap-4 mb-6 group cursor-pointer items-start">
+    <div className="flex gap-4 mb-6 group cursor-pointer items-start" suppressHydrationWarning>
       
       {/* The Floating GIF/Image (Tracks the Title Hover & Stays within screen bounds) */}
       {isTitleHovering && (project?.hoverGif || project?.img) && (
