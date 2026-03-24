@@ -139,5 +139,15 @@ export const backgroundVideos: BackgroundVideoSource[] = [
     url: "https://youtu.be/jHdnmtyz5Ks",
     caption: "snowmelt water, sequoia 2026",
   }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/y90ObRbOSIk",
+    caption: "my grandma's food spread, eating together for lunar new years in china 2024",
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/hivheuLxFFw",
+    caption: "waterfall in shifen, taiwan 2024",
+  }, 
 ];
 
