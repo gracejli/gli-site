@@ -68,6 +68,14 @@ export const longFormProjects = [
 
 export const shortFormToys = [
   {
+    id: 15,
+    title: 'gli are.na photo album',
+    desc: 'my are.na photo channels collection',
+    img: '/images/gli-albums.png',
+    link: '/arena-channels',
+    newTab: false,
+  },
+  {
     id: 14,
     title: '2011 email sign off archive',
     desc: 'real emails from 2009-2011, wishes and sign offs',

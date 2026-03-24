@@ -1,7 +1,6 @@
 "use client";
 import React, { useMemo, useRef, useState } from "react";
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
-import Carousel from "@/components/Carousel";
 import Navbar from "@/components/Nav";
 import {
   backgroundVideos,
@@ -16,6 +15,30 @@ function shuffled<T>(arr: T[]): T[] {
   }
   return a;
 }
+
+// 1. Define the dialogue flow outside the component.
+// You can easily add more steps, endings, or secret paths here!
+const DIALOG_FLOW = {
+  initial: {
+    title: "slow down!!!",
+    message: "you just clicked five times in 10 seconds. you are doomscrolling my life. its ok. we're conditioned to do that. stay a little!",
+    buttons: [
+      { label: "oh man", action: "close" },
+      { label: "i just wanted to see them all!", nextStep: "seeAllResponse" },
+    ],
+  },
+  seeAllResponse: {
+    title: "whoa, ambitious!",
+    message: "that's okay. i understand. I only have 30 videos anyways. thanks for staying. you should write in the guestbook",
+    buttons: [
+      { label: "fine, random spot", action: "close" },
+      { label: "wait, go back", nextStep: "initial" },
+    ],
+  },
+} as const;
+
+type DialogStep = keyof typeof DIALOG_FLOW;
+type DialogOption = (typeof DIALOG_FLOW)[DialogStep]["buttons"][number];
 
 const TELEPORT_CLICK_WINDOW_MS = 30_000;
 const TELEPORT_CLICK_THRESHOLD = 5;
@@ -127,14 +150,9 @@ function EyeIcon({ slashed }: { slashed: boolean }) {
 }
 
 export default function App() {
-  const myImages = [
-    "/images/2022-dorm-room.png",
-    "/images/2025-los-feliz-room.png",
-    "/images/2024-silverlake-room.png",
-  ];
-
   const [showText, setShowText] = useState(true);
   const [showSlowDown, setShowSlowDown] = useState(false);
+  const [currentStep, setCurrentStep] = useState<DialogStep>("initial");
   const teleportClickTimesRef = useRef<number[]>([]);
   const slowDownShownFallbackRef = useRef(false);
 
@@ -213,17 +231,29 @@ export default function App() {
         } catch {
           /* ref already prevents repeat */
         }
+        setCurrentStep("initial");
         setShowSlowDown(true);
       }
     }
     handleShuffle();
   };
 
+  const handleDialogOptionClick = (option: DialogOption) => {
+    if ("action" in option && option.action === "close") {
+      setShowSlowDown(false);
+    } else if ("nextStep" in option && option.nextStep) {
+      setCurrentStep(option.nextStep);
+    }
+  };
+
+  const stepData = DIALOG_FLOW[currentStep];
+
   return (
     <main className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center p-8 md:bg-transparent">
       <BackgroundVideo source={currentVideo} />
       <ShootingStarCursor />
 
+      {/* 4. The Dynamic Popup */}
       {showSlowDown ? (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm"
@@ -231,20 +261,29 @@ export default function App() {
           aria-modal="true"
           aria-labelledby="slow-down-title"
         >
-          <div className="max-w-md rounded-xl border-2 border-dashed border-amber-300/80 bg-black/90 p-8 text-center shadow-xl">
+          <div className="w-full max-w-md rounded-xl border-2 border-dashed border-amber-300/80 bg-black/90 p-8 text-center shadow-xl transition-all">
             <p
               id="slow-down-title"
-              className="font-fe text-sm font-bold leading-relaxed text-amber-100"
+              className="font-fe text-lg font-bold leading-relaxed text-amber-100 mb-4"
             >
-              slow down!!! you are doomscrolling my life. stay a little!
+              {stepData.title}
             </p>
-            <button
-              type="button"
-              onClick={() => setShowSlowDown(false)}
-              className="mt-6 rounded-full border border-amber-300/70 bg-amber-400/20 px-5 py-2 text-xs font-fe font-bold uppercase tracking-wide text-amber-100 transition hover:bg-amber-400/80 hover:text-black"
-            >
-              ok
-            </button>
+            <p className="font-fe text-sm text-amber-100/80 mb-8 leading-relaxed">
+              {stepData.message}
+            </p>
+
+            <div className="flex flex-row items-center justify-center gap-3">
+              {stepData.buttons.map((btn, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => handleDialogOptionClick(btn)}
+                  className="rounded-full border border-amber-300/70 bg-amber-400/20 px-5 py-3 text-xs font-fe font-bold uppercase tracking-wide transition hover:bg-amber-400/80 hover:text-black"
+                >
+                  {btn.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       ) : null}

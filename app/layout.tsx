@@ -16,13 +16,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "/ghost-town",
     "/email-signoffs",
   ] as const;
+  const noNavPrefixes = [...fullBleedPrefixes, "/arena-channels"] as const;
   const isFullBleedGallery = fullBleedPrefixes.some(
+    (p) => pathname === p || pathname.startsWith(`${p}/`),
+  );
+  const isNoNavRoute = noNavPrefixes.some(
     (p) => pathname === p || pathname.startsWith(`${p}/`),
   );
   const isWalmart =
     pathname === "/walmart" || pathname.startsWith("/walmart/");
 
-  if (isHome || isFullBleedGallery) {
+  if (isHome || isNoNavRoute) {
     return (
       <html lang="en" data-page-theme={isWalmart ? "walmart" : undefined}>
         <body
