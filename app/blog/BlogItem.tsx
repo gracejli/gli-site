@@ -26,7 +26,7 @@ const markdownComponents = {
 // HELPER: Shared Image Component
 const PostImage = ({ src, alt }: { src?: string, alt?: string }) => (
   // Changed md:w-25 to standard md:w-24 to give the text block slightly more horizontal room on desktop
-  <div className="shrink-0 w-32 h-32 md:w-24 md:h-24 border-2 border-dashed border-[#e6dfa8] overflow-hidden rounded-xl relative transition-all duration-300">
+  <div className="shrink-0 w-32 h-32 md:w-24 md:h-24 border-2 overflow-hidden rounded-xl relative transition-all duration-300">
     {src ? (
       <div className="relative w-full h-full">
         <Image 

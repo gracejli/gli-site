@@ -67,7 +67,7 @@ export default function ProjectItem({ project = defaultProject }: { project?: Pr
       )}
 
       {/* Your Side Thumbnail (Static) */}
-      <div className="w-12 h-12 border-2 border-dashed border-[#e6dfa8] flex-shrink-0 overflow-hidden rounded-xl">
+      <div className="w-12 h-12 border-2 border-[#e6dfa8] flex-shrink-0 overflow-hidden rounded-xl">
         {project?.img && (
           <img
             src={project.img}
