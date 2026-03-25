@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
 import Navbar from "@/components/Nav";
 import {
@@ -69,11 +69,34 @@ function getYouTubeId(url: string): string | null {
   }
 }
 
+function postYoutubeMuteCommand(
+  iframe: HTMLIFrameElement | null,
+  muted: boolean,
+) {
+  const w = iframe?.contentWindow;
+  if (!w) return;
+  const func = muted ? "mute" : "unMute";
+  w.postMessage(JSON.stringify({ event: "command", func, args: "" }), "*");
+}
+
 function BackgroundVideo({
   source,
+  muted,
 }: {
   source: BackgroundVideoSource | null;
+  muted: boolean;
 }) {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  const applyYoutubeMute = useCallback(() => {
+    postYoutubeMuteCommand(iframeRef.current, muted);
+  }, [muted]);
+
+  useEffect(() => {
+    if (source?.type !== "youtube") return;
+    applyYoutubeMute();
+  }, [applyYoutubeMute, source?.type, source]);
+
   if (!source) return null;
 
   return (
@@ -84,7 +107,7 @@ function BackgroundVideo({
             className="h-full w-full object-cover"
             src={source.src}
             autoPlay
-            muted
+            muted={muted}
             loop
             playsInline
           />
@@ -92,6 +115,7 @@ function BackgroundVideo({
 
         {source.type === "youtube" ? (
           <iframe
+            ref={iframeRef}
             className="h-full w-full origin-center object-cover scale-[4] md:scale-[1.3]"
             src={(() => {
               const id = getYouTubeId(source.url);
@@ -104,12 +128,14 @@ function BackgroundVideo({
                 playlist: id,
                 modestbranding: "1",
                 playsinline: "1",
+                enablejsapi: "1",
               });
               return `https://www.youtube.com/embed/${id}?${params.toString()}`;
             })()}
             title={source.caption}
             allow="autoplay; encrypted-media; picture-in-picture"
             allowFullScreen={false}
+            onLoad={applyYoutubeMute}
           />
         ) : null}
       </div>
@@ -149,8 +175,38 @@ function EyeIcon({ slashed }: { slashed: boolean }) {
   );
 }
 
+function VolumeIcon({ muted }: { muted: boolean }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {muted ? (
+        <>
+          <path d="M11 5L6 9H2v6h4l5 4V5z" />
+          <line x1="23" y1="9" x2="17" y2="15" />
+          <line x1="17" y1="9" x2="23" y2="15" />
+        </>
+      ) : (
+        <>
+          <path d="M11 5L6 9H2v6h4l5 4V5z" />
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+        </>
+      )}
+    </svg>
+  );
+}
+
 export default function App() {
   const [showText, setShowText] = useState(true);
+  const [videoMuted, setVideoMuted] = useState(true);
   const [showSlowDown, setShowSlowDown] = useState(false);
   const [currentStep, setCurrentStep] = useState<DialogStep>("initial");
   const teleportClickTimesRef = useRef<number[]>([]);
@@ -250,7 +306,7 @@ export default function App() {
 
   return (
     <main className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center p-8 md:bg-transparent">
-      <BackgroundVideo source={currentVideo} />
+      <BackgroundVideo source={currentVideo} muted={videoMuted} />
       <ShootingStarCursor />
 
       {/* 4. The Dynamic Popup */}
@@ -392,6 +448,20 @@ export default function App() {
         ) : null}
 
         <div className="pointer-events-auto flex items-center gap-2">
+          {currentVideo ? (
+            <div className="group relative flex h-6 w-6 items-center justify-center">
+              <button
+                type="button"
+                onClick={() => setVideoMuted((m) => !m)}
+                aria-pressed={!videoMuted}
+                aria-label={videoMuted ? "Unmute background video" : "Mute background video"}
+                className="flex h-5 w-5 items-center justify-center rounded-full border border-amber-300/80 bg-black/70 text-amber-100 shadow-md transition group-hover:bg-amber-400/90 group-hover:text-black"
+              >
+                <VolumeIcon muted={videoMuted} />
+              </button>
+            </div>
+          ) : null}
+
           <div className="group relative flex h-6 w-6 items-center justify-center">
             <button
               type="button"

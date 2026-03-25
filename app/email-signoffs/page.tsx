@@ -32,6 +32,29 @@ function shuffle<T>(items: T[]): T[] {
   return a;
 }
 
+/** First `Subject: ...` line (case-insensitive); that line is omitted from `body`. */
+function parseSubjectLine(text: string): { subject: string | null; body: string } {
+  const lines = text.split(/\r?\n/);
+  let subject: string | null = null;
+  let subjectIndex = -1;
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(/^\s*subject\s*:\s*(.+)$/i);
+    if (m) {
+      const s = m[1].trim();
+      if (s) {
+        subject = s;
+        subjectIndex = i;
+        break;
+      }
+    }
+  }
+  if (subjectIndex === -1) {
+    return { subject: null, body: text };
+  }
+  const body = lines.filter((_, i) => i !== subjectIndex).join("\n");
+  return { subject, body };
+}
+
 type ArenaImageBlock = {
   class: string;
   title?: string | null;
@@ -263,6 +286,10 @@ export default function App() {
   }
 
   const current = signOffs[currentIndex];
+  const { subject: parsedSubject, body: textBody } =
+    current.kind === "text" ? parseSubjectLine(current.text) : { subject: null, body: "" };
+  const subjectLine =
+    parsedSubject ?? `Sign-off #${currentIndex + 1} of ${signOffs.length}`;
 
   return (
     <>
@@ -291,14 +318,14 @@ export default function App() {
             </div>
             <div className="flex items-start mt-2 pt-3 border-t border-slate-50">
               <span className="w-20 text-slate-400 font-medium select-none">Subject:</span>
-              <span className="font-bold text-slate-900">Sign-off #{currentIndex + 1} of {signOffs.length}</span>
+              <span className="font-bold text-slate-900 break-words">{subjectLine}</span>
             </div>
           </div>
 
           {/* Email Body */}
           <div className="px-6 py-8 min-h-[240px] flex flex-col">
             {current.kind === "text" ? (
-              <p className="text-slate-800 whitespace-pre-wrap leading-relaxed">{current.text}</p>
+              <p className="text-slate-800 whitespace-pre-wrap leading-relaxed">{textBody}</p>
             ) : (
               <figure className="m-0">
                 <img
