@@ -166,12 +166,10 @@ function AboutModal({ open, onClose }: { open: boolean; onClose: () => void }) {
           About
         </h2>
         <p className="leading-relaxed text-slate-600">
-          i collect a lot of photo channels on are.na of things I notice and find important or fun.
-          it's all about noticing. 
-        its hard to get people to look through, but they are important to me!
+          each album here is one of my are.na channels, lovingly collected since 2019 when I started using are.na. 
+          this format is the best way for me to share these channels and let people look through all the things i've been collecting, and noticing over the years.
           <br />
-          <br />
-          this apple-like photo grid makes it a little bit easier to look.
+          open any album to view the channel description and link. all images have their timestamp and their title. welcome, and enjoy!
         </p>
         <button
           type="button"
