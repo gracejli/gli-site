@@ -18,6 +18,7 @@ const SLUGS = [
   '/you-and-one-other-thing',
     '/beach-objects-library',
   '/coffee-shop-passwords',
+  'found-hearts',
   '/i-love-la-type',
   '/facebook-marketplace-objects',
   '/decorative-english-l-xfghwrlxw',
