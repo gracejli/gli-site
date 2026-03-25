@@ -23,15 +23,15 @@ const DIALOG_FLOW = {
     title: "slow down!!!",
     message: "you just clicked five times in 10 seconds. you are doomscrolling my life. its ok. we're conditioned to do that. stay a little!",
     buttons: [
-      { label: "oh man", action: "close" },
+      { label: "ill slow down :)", action: "close" },
       { label: "i just wanted to see them all!", nextStep: "seeAllResponse" },
     ],
   },
   seeAllResponse: {
     title: "whoa, ambitious!",
-    message: "that's okay. i understand. I only have 30 videos anyways. thanks for staying. you should write in the guestbook",
+    message: "that's okay. i understand. I only have 30 videos anyways. thanks for staying here with me.",
     buttons: [
-      { label: "fine, random spot", action: "close" },
+      { label: "leave me a note in the guestbook", action: "close" },
       { label: "wait, go back", nextStep: "initial" },
     ],
   },

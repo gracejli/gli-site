@@ -102,7 +102,7 @@ export const backgroundVideos: BackgroundVideoSource[] = [
   {
     type: "youtube",
     url: "https://youtu.be/YW-LZfFcix0",
-    caption: "ping pong tournament 2026",
+    caption: "ping pong tournament 2026. I didn't win, by the way. I actually got 'bageled' and learned what that phrase meant on the same day",
   }, 
   {
     type: "youtube",
