@@ -16,6 +16,7 @@ import {
 
 const SLUGS = [
   '/you-and-one-other-thing',
+    '/beach-objects-library',
   '/coffee-shop-passwords',
   '/i-love-la-type',
   '/facebook-marketplace-objects',
@@ -23,7 +24,8 @@ const SLUGS = [
   '/light-leaking-and-light-spilling',
   '/state-of-ai-generated-visual-content',
   '/google-map-reviews',
-  '/i-am-a-perfect-t-shirt'
+  '/i-am-a-perfect-t-shirt', 
+
   // Add your specific backend slugs here
 ];
 
@@ -41,14 +43,30 @@ type ArenaBlock = {
   image?: ArenaImage;
 };
 
-type ArenaChannelResponse = {
+/** Are.na v3 channel + contents shapes (only fields we use) */
+type ArenaV3ChannelMeta = {
   id: number;
   title: string;
   slug?: string;
-  metadata?: {
-    description?: string;
+  description?: string | { plain?: string; html?: string; markdown?: string } | null;
+};
+
+type ArenaV3BlockRaw = {
+  id: number;
+  type?: string;
+  title?: string;
+  description?: string | { plain?: string; html?: string; markdown?: string } | null;
+  image?: {
+    src?: string;
+    small?: { src?: string };
+    medium?: { src?: string };
+    large?: { src?: string };
   };
-  contents?: ArenaBlock[];
+  connection?: { connected_at?: string };
+};
+
+type ArenaV3ContentsResponse = {
+  data?: ArenaV3BlockRaw[];
 };
 
 type FormattedBlock = ArenaBlock & {
@@ -65,6 +83,41 @@ type FormattedChannel = {
   thumbnail?: string;
   blocks: FormattedBlock[];
 };
+
+function channelDescriptionFromV3(channel: ArenaV3ChannelMeta): string | undefined {
+  const d = channel.description;
+  if (d == null) return undefined;
+  if (typeof d === "string") return d;
+  return d.plain ?? d.markdown;
+}
+
+function normalizeV3ImageBlock(raw: ArenaV3BlockRaw, channelTitle: string): FormattedBlock | null {
+  const img = raw.image;
+  if (!img?.src) return null;
+  const displayUrl =
+    img.small?.src ?? img.medium?.src ?? img.large?.src ?? img.src;
+  const desc = raw.description;
+  let description: string | undefined;
+  let description_html: string | undefined;
+  if (typeof desc === "string") {
+    description = desc;
+  } else if (desc && typeof desc === "object") {
+    description = desc.plain ?? desc.markdown;
+    description_html = desc.html;
+  }
+  return {
+    id: raw.id,
+    title: raw.title,
+    description,
+    description_html,
+    connected_at: raw.connection?.connected_at,
+    image: {
+      display: { url: displayUrl },
+      original: { url: img.src },
+    },
+    channelTitle,
+  };
+}
 
 function formatConnectedAt(value?: string): string | null {
   if (!value) return null;
@@ -161,35 +214,38 @@ const App = () => {
     setLoading(true);
     setError(null);
     try {
-      const requests = SLUGS.map(slug => {
+      const requests = SLUGS.map(async slug => {
         const cleanSlug = slug.replace(/^\//, '');
-        return fetch(`https://api.are.na/v2/channels/${cleanSlug}?per=50`).then(res => {
-          if (!res.ok) throw new Error(`Channel ${cleanSlug} not found`);
-          return res.json();
-        });
-      });
-
-      const fetchedData = (await Promise.all(requests)) as ArenaChannelResponse[];
-      
-      const formattedChannels = fetchedData.map(channel => {
-        const imageBlocks = (channel.contents || []).filter(
-          (block): block is ArenaBlock & { image: ArenaImage } => Boolean(block.image),
-        );
+        const enc = encodeURIComponent(cleanSlug);
+        const [metaRes, contentsRes] = await Promise.all([
+          fetch(`https://api.are.na/v3/channels/${enc}`),
+          fetch(`https://api.are.na/v3/channels/${enc}/contents?per=50`),
+        ]);
+        if (!metaRes.ok) throw new Error(`Channel ${cleanSlug} not found`);
+        if (!contentsRes.ok) throw new Error(`Channel ${cleanSlug} contents not found`);
+        const channel = (await metaRes.json()) as ArenaV3ChannelMeta;
+        const { data: rawBlocks = [] } = (await contentsRes.json()) as ArenaV3ContentsResponse;
+        const imageBlocks = rawBlocks
+          .map(b => normalizeV3ImageBlock(b, channel.title))
+          .filter((b): b is FormattedBlock => b != null);
         // Sort by connected_at to simulate a chronological timeline like a camera roll
-        const sortedBlocks = imageBlocks.sort((a, b) => 
-          new Date(b.connected_at ?? 0).getTime() - new Date(a.connected_at ?? 0).getTime()
+        const sortedBlocks = imageBlocks.sort(
+          (a, b) =>
+            new Date(b.connected_at ?? 0).getTime() - new Date(a.connected_at ?? 0).getTime(),
         );
-        
+
         return {
           id: channel.id,
           title: channel.title,
           slug: channel.slug,
-          description: channel.metadata?.description,
+          description: channelDescriptionFromV3(channel),
           length: sortedBlocks.length,
-          thumbnail: sortedBlocks[0]?.image.display?.url, // First image as album cover
-          blocks: sortedBlocks.map(b => ({ ...b, channelTitle: channel.title }))
+          thumbnail: sortedBlocks[0]?.image.display?.url,
+          blocks: sortedBlocks,
         };
       });
+
+      const formattedChannels = await Promise.all(requests);
 
       setChannels(formattedChannels);
     } catch (err) {
