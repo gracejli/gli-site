@@ -4,6 +4,6 @@ type: link
 url: "/blog/canyon-coffee"
 image: "/images/blog/silverlake-res.png"
 alt: "Silver Lake street and palm trees"
-isPublished: true
+isPublished: false
 summary: "canyon coffee vs stagger coffee"
 ---
