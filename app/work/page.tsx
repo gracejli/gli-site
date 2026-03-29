@@ -11,8 +11,8 @@ export default function WorkPage() {
           {/* Left Column: Projects */}
           <section>
             <div className="flex items-baseline gap-2 mb-8">
-              <h2 className="text-lg font-bold font-bianzhidai">projects</h2>
-              <span className="text-sm font-fe font-bold opacity-70 italic">long form</span>
+              <h2 className="text-lg font-bold font-bianzhidai">digital</h2>
+              <span className="text-sm font-fe font-bold opacity-70 italic">toys, digital</span>
             </div>
             <div>
               {longFormProjects.map((p) => (
@@ -24,8 +24,8 @@ export default function WorkPage() {
           {/* Right Column: Toys */}
           <section>
             <div className="flex items-baseline gap-2 mb-8">
-              <h2 className="text-lg font-bold font-bianzhidai">play</h2>
-              <span className="text-sm font-fe font-bold opacity-70 italic">toys</span>
+              <h2 className="text-lg font-bold font-bianzhidai">physical</h2>
+              <span className="text-sm font-fe font-bold opacity-70 italic">toys, physical</span>
             </div>
             <div>
               {shortFormToys.map((p) => (

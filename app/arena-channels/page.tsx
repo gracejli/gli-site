@@ -17,6 +17,7 @@ import {
 const SLUGS = [
   '/you-and-one-other-thing',
     '/beach-objects-library',
+    '/nights-outdoors-log',
   '/coffee-shop-passwords',
   'found-hearts',
   '/i-love-la-type',

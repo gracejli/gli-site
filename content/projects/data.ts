@@ -3,21 +3,28 @@
 // Optional `newTab` controls whether the link opens in a new tab
 export const longFormProjects = [
   {
+    id: 15,
+    title: 'gli are.na photo album',
+    desc: 'my are.na photo channels collection',
+    img: '/images/gli-albums.png',
+    link: '/arena-channels',
+    newTab: false,
+  },
+  {
+    id: 14,
+    title: '2011 email sign off archive',
+    desc: 'real emails from 2009-2011, wishes and sign offs',
+    img: '/images/email-signoffs.png',
+    link: '/email-signoffs',
+    newTab: false,
+  },
+  {
     id: 1,
     title: 'triumvirate arena',
     desc: 'self-made game engine, turn taking card game',
     img: '/images/triumvirate-arena.png',
     link: '/triumvirate',
     hoverGif: 'images/triumvirate.gif',
-    newTab: false,
-  },
-  {
-    id: 9,
-    title: 'shiny objects syndrome',
-    desc: '2d frame by frame animation',
-    img: '/images/shiny-objects2.png',
-    link: '/shiny-objects',
-    hoverGif: 'images/animation.gif',
     newTab: false,
   },
   {
@@ -36,15 +43,6 @@ export const longFormProjects = [
     img: '/images/gracejli.png',
     link: 'https://www.instagram.com/gracejli/',
     newTab: true,
-  },
-  {
-    id: 2,
-    title: '12 hours in walmart',
-    desc: '18 interviews from 8PM to 8AM in a walmart',
-    img: '/images/12-hours.png',
-    link: '/walmart', 
-    hoverGif: 'images/12-hours.gif',
-    newTab: false,
   },
   {
     id: 4,
@@ -68,20 +66,30 @@ export const longFormProjects = [
 
 export const shortFormToys = [
   {
-    id: 15,
-    title: 'gli are.na photo album',
-    desc: 'my are.na photo channels collection',
-    img: '/images/gli-albums.png',
-    link: '/arena-channels',
+    id: 2,
+    title: '12 hours in walmart',
+    desc: '18 interviews from 8PM to 8AM in a walmart',
+    img: '/images/12-hours.png',
+    link: '/walmart', 
+    hoverGif: 'images/12-hours.gif',
     newTab: false,
   },
   {
-    id: 14,
-    title: '2011 email sign off archive',
-    desc: 'real emails from 2009-2011, wishes and sign offs',
-    img: '/images/email-signoffs.png',
-    link: '/email-signoffs',
+    id: 9,
+    title: 'shiny objects syndrome',
+    desc: '2d frame by frame animation',
+    img: '/images/shiny-objects2.png',
+    link: '/shiny-objects',
+    hoverGif: 'images/animation.gif',
     newTab: false,
+  },
+  {
+    id: 16,
+    title: 'painted porcelain',
+    desc: 'cobalt underglaze on hand thrown porcelain',
+    img: '/images/painted ceramics.png',
+    link: 'https://gracejli.com/ceramics',
+    newTab: true,
   },
   {
     id: 10,
@@ -99,6 +107,7 @@ export const shortFormToys = [
     newTab: true,
     img: '/images/valentines.png',
   },
+
   {
     id: 12,
     title: 'ceramic ear headphones',
