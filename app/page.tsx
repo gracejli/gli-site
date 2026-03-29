@@ -20,19 +20,27 @@ function shuffled<T>(arr: T[]): T[] {
 // You can easily add more steps, endings, or secret paths here!
 const DIALOG_FLOW = {
   initial: {
-    title: "slow down!!!",
-    message: "you just clicked five times in 10 seconds. you are doomscrolling my life. its ok. we're conditioned to do that. stay a little!",
+    title: "hello user!",
+    message: "this pop up only happens if you've clicked 7 times in thirty seconds. scientists call this the threshold for doomscrolling.",
     buttons: [
-      { label: "ill slow down :)", action: "close" },
-      { label: "i just wanted to see them all!", nextStep: "seeAllResponse" },
+      { label: "really?", action: "notReally" },
+      { label: "i just wanted to see them all", nextStep: "seeAllResponse" },
+    ],
+  },
+  notReally: {
+    title: "jk",
+    message: "no, i actually just made that up. lol. but you are doomscrolling my precious moments. so i wanted to say something",
+    buttons: [
+      { label: "time go back?", action: "close" },
+      { label: "i just wanted to see them all", nextStep: "seeAllResponse" },
     ],
   },
   seeAllResponse: {
-    title: "whoa, ambitious!",
-    message: "that's okay. i understand. I only have 30 videos anyways. thanks for staying here with me.",
+    title: "i understand",
+    message: "that's okay. i understand. I only have 20 videos anyways! someday ill add more. thanks for staying here with me.",
     buttons: [
       { label: "leave me a note in the guestbook", action: "close" },
-      { label: "wait, go back", nextStep: "initial" },
+      { label: "close", action: "close" },
     ],
   },
 } as const;
@@ -41,7 +49,7 @@ type DialogStep = keyof typeof DIALOG_FLOW;
 type DialogOption = (typeof DIALOG_FLOW)[DialogStep]["buttons"][number];
 
 const TELEPORT_CLICK_WINDOW_MS = 30_000;
-const TELEPORT_CLICK_THRESHOLD = 5;
+const TELEPORT_CLICK_THRESHOLD = 7;
 const TELEPORT_SLOW_DOWN_SESSION_KEY = "gli-teleport-slow-down-shown";
 
 function getYouTubeId(url: string): string | null {
@@ -360,7 +368,7 @@ export default function App() {
               tinkerer in los angeles, from a small town in michigan.
             </p>
             <p className="text-sm font-bold font-fe mb-2">
-              currently: i'm technical artist at riot games working on making the
+              currently: i'm a technical artist at riot games working on making the
               game teamfight tactics as delightul as possible for players
             </p>
             <p className="text-sm font-bold font-fe mb-2">
