@@ -8,7 +8,7 @@ export default function Loading() {
       <div className="max-w-md mx-auto">
         <div className="flex items-center justify-end mb-6">
           <div
-            className="h-3 w-20 rounded bg-orange-300/50 dark:bg-gray-700/50 animate-pulse"
+            className="h-3 w-20 rounded bg-orange-300/50 dark:bg-orange-700/50 animate-pulse"
             aria-hidden
           />
         </div>
@@ -23,8 +23,8 @@ export default function Loading() {
                   />
                 </div>
                 <div className="flex flex-1 animate-pulse flex-col gap-3 pt-1 w-full">
-                  <div className="h-4 w-3/4 rounded bg-orange-400/80 dark:bg-gray-700/80" />
-                  <div className="h-4 w-1/2 rounded bg-orange-300/60 dark:bg-gray-700/60" />
+                  <div className="h-4 w-3/4 rounded bg-orange-400/80 dark:bg-orange-700/80" />
+                  <div className="h-4 w-1/2 rounded bg-orange-300/60 dark:bg-orange-700/60" />
                 </div>
               </div>
             </div>
