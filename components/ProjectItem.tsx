@@ -28,6 +28,7 @@ export default function ProjectItem({ project = defaultProject }: { project?: Pr
 
   // Safely access link now that we have a default fallback
   const href = project?.link;
+  const mediaSrc = project.hoverGif || project.img;
 
   const handleMouseMove = (e: React.MouseEvent) => {
     setMousePos({ x: e.clientX, y: e.clientY });
@@ -56,9 +57,9 @@ export default function ProjectItem({ project = defaultProject }: { project?: Pr
     >
       
       {/* The Floating GIF/Image (Tracks the Title Hover & Stays within screen bounds) */}
-      {isTitleHovering && (project?.hoverGif || project?.img) && (
+      {isTitleHovering && mediaSrc && (
         <img
-          src={project.hoverGif || project.img}
+          src={mediaSrc}
           alt={`${project.title} preview`}
           className="fixed pointer-events-none z-50 max-w-60 rounded-xl shadow-2xl border border-[#e6dfa8]/30"
           style={{
@@ -69,11 +70,11 @@ export default function ProjectItem({ project = defaultProject }: { project?: Pr
         />
       )}
 
-      {/* Your Side Thumbnail (Static) */}
+      {/* Side thumbnail: same asset as hover preview (GIF when hoverGif is set, else img) */}
       <div className="w-12 h-12 border-2 border-[#e6dfa8] flex-shrink-0 overflow-hidden rounded-xl">
-        {project?.img && (
+        {mediaSrc && (
           <img
-            src={project.img}
+            src={mediaSrc}
             alt={project.title}
             width={48}
             height={48}

@@ -22,12 +22,12 @@ const SECTIONS = [
   },
   {
     key: "gliVsWorld" as const,
-    label: "gli VS world",
+    label: "a few things at once",
     projects: gliVsWorld,
   },
   {
     key: "documentation" as const,
-    label: "documenting the world",
+    label: "my eyes",
     projects: documents,
   },
 ] as const;

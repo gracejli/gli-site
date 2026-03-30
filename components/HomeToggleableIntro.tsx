@@ -1,5 +1,7 @@
 "use client";
 
+import { GUESTBOOK_URL } from "@/content/backgroundVideos";
+
 export default function HomeToggleableIntro() {
   return (
     <div className="z-10 w-full max-w-4xl flex flex-col md:flex-row gap-8 pointer-events-auto">
@@ -30,6 +32,8 @@ export default function HomeToggleableIntro() {
             <li>
               <a
                 href="https://www.are.na/gli/index"
+                target="_blank"
+                rel="noreferrer"
                 className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]"
               >
                 are.na
@@ -38,6 +42,8 @@ export default function HomeToggleableIntro() {
             <li>
               <a
                 href="https://docs.google.com/document/d/1WdBJDExZ1Qv5_9O9CWMckTeZ0aHClaSxNFT-jAPfEQk/edit?tab=t.0"
+                target="_blank"
+                rel="noreferrer"
                 className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]"
               >
                 my google doc cv
@@ -46,6 +52,8 @@ export default function HomeToggleableIntro() {
             <li>
               <a
                 href="https://www.instagram.com/gracejli/"
+                target="_blank"
+                rel="noreferrer"
                 className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]"
               >
                 some of my favorite photos
@@ -53,7 +61,9 @@ export default function HomeToggleableIntro() {
             </li>
             <li>
               <a
-                href="https://www.yourworldoftext.com/%7Egracejli/"
+                href={GUESTBOOK_URL}
+                target="_blank"
+                rel="noreferrer"
                 className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]"
               >
                 guestbook
@@ -62,6 +72,8 @@ export default function HomeToggleableIntro() {
             <li>
               <a
                 href="https://www.gracejli.com"
+                target="_blank"
+                rel="noreferrer"
                 className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]"
               >
                 my old, currently live project website

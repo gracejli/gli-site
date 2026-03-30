@@ -1,3 +1,7 @@
+/** Guestbook (Your World of Text). Used by the homepage intro and the slow-down dialog. */
+export const GUESTBOOK_URL =
+  "https://www.yourworldoftext.com/%7Egracejli/" as const;
+
 export type BackgroundVideoSource =
   | {
       type: "youtube";
@@ -24,6 +28,11 @@ export const backgroundVideos: BackgroundVideoSource[] = [
   //   url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
   //   caption: "gotchu",
   // },
+  {
+    type: "youtube",
+    url: "https://youtu.be/R1GvWHn5c6k",
+    caption: "reeds near jiufen, taiwan 2024. trip with my mom",
+  }, 
   {
     type: "youtube",
     url: "https://youtu.be/l9wLJL_0NQ0",
@@ -108,11 +117,6 @@ export const backgroundVideos: BackgroundVideoSource[] = [
     type: "youtube",
     url: "https://youtu.be/fnD4IyY1g_c",
     caption: "los angeles beach at sunset, winter 2025",
-  }, 
-  {
-    type: "youtube",
-    url: "https://youtu.be/R1GvWHn5c6k",
-    caption: "reeds near jiufen, taiwan 2024. trip with my mom",
   }, 
   {
     type: "youtube",

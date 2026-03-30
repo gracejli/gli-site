@@ -47,6 +47,14 @@ export const myHands = [
     img: "/images/valentines.png",
   },
   {
+    id: 20,
+    title: "observatory",
+    desc: "my show at the Benton Gallery - 3 paintings and drawings",
+    img: "/images/ceramic-headphones.png",
+    link: "https://www.instagram.com/p/DSihKsqEu3N/?img_index=1",
+    newTab: true,
+  },
+  {
     id: 10,
     title: "question mark keychain",
     desc: "laser cut at the octavia butler lab",
@@ -94,7 +102,7 @@ export const gliVsWorld = [
     { 
     id: 8,
     title: "chinatown, los angeles during covid",
-    desc: "europe, 2019",
+    desc: "interviews and photos of los angeles chinatown, the day my school announced we were leaving",
     img: "/images/ghost-town2.png",
     link: "/ghost-town",
     newTab: true,
@@ -120,7 +128,7 @@ export const gliVsWorld = [
   {
     id: 4,
     title: "odins passage",
-    desc: "viking odyssey x flappy bird",
+    desc: "a game made in unity: viking odyssey x flappy bird",
     img: "/images/odins-passage.png",
     link: "/odinspassage",
     hoverGif: "images/odins.gif",

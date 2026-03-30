@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react";
 import BackgroundVideo from "@/components/BackgroundVideo";
 import BackgroundVideoBottomBar from "@/components/BackgroundVideoBottomBar";
 import {
+  GUESTBOOK_URL,
   backgroundVideos as defaultBackgroundVideos,
   type BackgroundVideoSource,
 } from "@/content/backgroundVideos";
@@ -22,10 +23,10 @@ const DIALOG_FLOW = {
   notReally: {
     title: "jk",
     message:
-      "no, i actually just made that up. lol. but you are doomscrolling my precious moments. so i wanted to say something",
+      "no, i actually just made that up. lol. but you are doomscrolling precious, slow moments. so i wanted to say something.",
     buttons: [
-      { label: "time go back?", action: "close" as const },
-      { label: "i just wanted to see them all", nextStep: "seeAllResponse" as const },
+      { label: "ill slow down", action: "close" as const },
+      { label: "i just wanted to see them all!", nextStep: "seeAllResponse" as const },
     ],
   },
   seeAllResponse: {
@@ -33,7 +34,7 @@ const DIALOG_FLOW = {
     message:
       "that's okay. i understand. I only have 20 videos anyways! someday ill add more. thanks for staying here with me.",
     buttons: [
-      { label: "leave me a note in the guestbook", action: "close" as const },
+      { label: "leave me a note in the guestbook", action: "openGuestbook" as const },
       { label: "close", action: "close" as const },
     ],
   },
@@ -122,9 +123,20 @@ export default function BackgroundVideoLayout({
   };
 
   const handleDialogOptionClick = (option: DialogOption) => {
-    if ("action" in option && option.action === "close") {
-      setShowSlowDown(false);
-    } else if ("nextStep" in option && option.nextStep) {
+    if ("action" in option) {
+      if (option.action === "close") {
+        setShowSlowDown(false);
+        return;
+      }
+      if (option.action === "openGuestbook") {
+        window.open(GUESTBOOK_URL, "_blank", "noopener,noreferrer");
+        setShowSlowDown(false);
+        return;
+      }
+      setCurrentStep(option.action);
+      return;
+    }
+    if ("nextStep" in option && option.nextStep) {
       setCurrentStep(option.nextStep);
     }
   };
