@@ -4,7 +4,7 @@ import { GUESTBOOK_URL } from "@/content/backgroundVideos";
 
 export default function HomeToggleableIntro() {
   return (
-    <div className="z-10 w-full max-w-4xl flex flex-col md:flex-row gap-8 pointer-events-auto">
+    <div className="z-10 w-full max-w-4xl flex flex-col md:flex-row md:items-start gap-8 pointer-events-auto">
       <div className="w-full md:w-[60%] flex flex-col gap-8">
         <div className="p-8 border-2 border-dashed rounded-xl transition-all duration-300 hover:border-amber-400 hover:bg-amber-400/5 cursor-none text-left bg-black/40 backdrop-blur">
           <p className="text-lg font-bianzhidai mb-2">grace li</p>
@@ -20,13 +20,12 @@ export default function HomeToggleableIntro() {
             art from pomona college
           </p>
           <p className="text-sm font-bold font-febold mt-4 ">
-            welcome to my internet room
-          </p>
+            welcome to my internet room. cheers, gli</p>
         </div>
       </div>
 
-      <div className="w-full md:w-[40%] flex flex-col h-full gap-4">
-        <div className="h-full p-8 border-2 border-dashed rounded-xl transition-all duration-300 hover:border-amber-400 hover:bg-amber-400/5 bg-black/40 backdrop-blur">
+      <div className="w-full md:w-[40%] flex flex-col gap-4">
+        <div className="p-8 border-2 border-dashed rounded-xl transition-all duration-300 hover:border-amber-400 hover:bg-amber-400/5 bg-black/40 backdrop-blur">
           <h2 className="text-lg font-bold font-bianzhidai mb-4">external</h2>
           <ul className="space-y-2 font-fe text-sm font-bold">
             <li>
@@ -70,14 +69,14 @@ export default function HomeToggleableIntro() {
               </a>
             </li>
             <li>
-              <a
+              {/* <a
                 href="https://www.gracejli.com"
                 target="_blank"
                 rel="noreferrer"
                 className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]"
               >
                 my old, currently live project website
-              </a>
+              </a> */}
             </li>
           </ul>
         </div>
