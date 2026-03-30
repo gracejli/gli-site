@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useLayoutEffect, useMemo, useState } from "react";
 import type { BackgroundVideoSource } from "@/content/backgroundVideos";
 
 export function shuffled<T>(arr: T[]): T[] {
@@ -12,22 +12,39 @@ export function shuffled<T>(arr: T[]): T[] {
   return a;
 }
 
+/** Deterministic first paint so SSR and hydration match; random start runs in useLayoutEffect. */
+function getHydrationSafeInitialState(sources: BackgroundVideoSource[]): {
+  currentIndex: number | null;
+  remaining: number[];
+} {
+  if (!sources.length) {
+    return { currentIndex: null, remaining: [] };
+  }
+  if (sources.length === 1) {
+    return { currentIndex: 0, remaining: [] };
+  }
+  return {
+    currentIndex: 0,
+    remaining: sources.map((_, i) => i).filter((i) => i !== 0),
+  };
+}
+
 export function useBackgroundVideoPlaylist(sources: BackgroundVideoSource[]) {
   const [bgState, setBgState] = useState<{
     currentIndex: number | null;
     remaining: number[];
-  }>(() => {
-    if (!sources.length) {
-      return { currentIndex: null, remaining: [] };
-    }
+  }>(() => getHydrationSafeInitialState(sources));
 
-    const currentIndex = 0;
-    const remaining = shuffled(
-      sources.map((_, i) => i).filter((i) => i !== currentIndex),
-    );
-
-    return { currentIndex, remaining };
-  });
+  useLayoutEffect(() => {
+    if (!sources.length || sources.length === 1) return;
+    setBgState(() => {
+      const currentIndex = Math.floor(Math.random() * sources.length);
+      const remaining = shuffled(
+        sources.map((_, i) => i).filter((i) => i !== currentIndex),
+      );
+      return { currentIndex, remaining };
+    });
+  }, [sources]);
 
   const currentVideo = useMemo<BackgroundVideoSource | null>(() => {
     if (bgState.currentIndex === null) return null;

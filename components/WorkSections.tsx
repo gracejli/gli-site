@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState, type ComponentProps } from "react";
-import { FoldVertical } from "lucide-react";
+import { FoldVertical, UnfoldVertical } from "lucide-react";
 import ProjectItem from "@/components/ProjectItem";
 import { workProjectKey } from "@/content/projects/data";
 
@@ -22,21 +22,35 @@ export default function WorkSections({
     Object.fromEntries(sections.map((s) => [s.key, true]))
   );
 
-  const collapseAll = useCallback(() => {
-    setOpen(Object.fromEntries(sections.map((s) => [s.key, false])));
+  const toggleAllSections = useCallback(() => {
+    setOpen((prev) => {
+      const allCollapsed = sections.every((s) => !prev[s.key]);
+      if (allCollapsed) {
+        return Object.fromEntries(sections.map((s) => [s.key, true]));
+      }
+      return Object.fromEntries(sections.map((s) => [s.key, false]));
+    });
   }, [sections]);
+
+  const allCollapsed = sections.every((s) => !open[s.key]);
 
   return (
     <div className="relative max-w-2xl mx-auto">
       <div className="flex justify-end mb-2 min-h-9">
         <button
           type="button"
-          onClick={collapseAll}
+          onClick={toggleAllSections}
           className="p-1.5 rounded text-[var(--foreground)] hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)] transition-all duration-200"
-          aria-label="Collapse all sections"
-          title="Collapse all"
+          aria-label={
+            allCollapsed ? "Expand all sections" : "Collapse all sections"
+          }
+          title={allCollapsed ? "Expand all" : "Collapse all"}
         >
-          <FoldVertical className="size-5" strokeWidth={1.75} aria-hidden />
+          {allCollapsed ? (
+            <UnfoldVertical className="size-5" strokeWidth={1.75} aria-hidden />
+          ) : (
+            <FoldVertical className="size-5" strokeWidth={1.75} aria-hidden />
+          )}
         </button>
       </div>
       <div className="flex flex-col gap-2">

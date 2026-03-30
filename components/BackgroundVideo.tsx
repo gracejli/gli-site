@@ -60,7 +60,7 @@ export default function BackgroundVideo({
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-black">
-      <div className="absolute inset-0 opacity-55">
+      <div className="absolute inset-0 opacity-60">
         {source.type === "file" ? (
           <video
             className="h-full w-full object-cover"
