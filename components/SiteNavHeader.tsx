@@ -22,17 +22,19 @@ export default function SiteNavHeader() {
       <div className="relative px-8 pb-4 pt-6 md:px-12 md:pb-5 md:pt-8">
         <div
           aria-hidden
-          className={`pointer-events-none absolute left-0 top-0 h-[13rem] w-[min(36rem,92vw)] transition-opacity duration-500 ease-out md:h-[15rem] md:w-[min(42rem,94vw)] ${
+          className={`pointer-events-none absolute inset-x-0 top-0 min-h-[calc(100%+4rem)] transition-opacity duration-500 ease-out md:min-h-[calc(100%+5rem)] ${
             scrolled ? "opacity-100" : "opacity-0"
           }`}
           style={{
-            background: `radial-gradient(
-              ellipse 100% 88% at 0% 0%,
-              rgba(0,0,0,0.48) 0%,
-              rgba(0,0,0,0.24) 34%,
-              rgba(0,0,0,0.09) 56%,
-              rgba(0,0,0,0.02) 74%,
-              transparent 92%
+            background: `linear-gradient(
+              to bottom,
+              rgba(0,0,0,0.46) 0%,
+              rgba(0,0,0,0.34) 14%,
+              rgba(0,0,0,0.22) 30%,
+              rgba(0,0,0,0.12) 48%,
+              rgba(0,0,0,0.05) 65%,
+              rgba(0,0,0,0.015) 82%,
+              transparent 100%
             )`,
           }}
         />
