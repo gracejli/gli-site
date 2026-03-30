@@ -23,7 +23,7 @@ export default function Navbar() {
 
   return (
     <nav className="w-full" aria-label="Site">
-      <ul className="flex flex-row flex-wrap items-center justify-center gap-x-6 gap-y-2 text-md font-rasterGrotesk">
+      <ul className="flex flex-row flex-wrap items-center justify-start gap-x-6 gap-y-2 text-md font-rasterGrotesk">
         {navItems.map((item) => {
           const active = isNavActive(pathname, item.href);
 
