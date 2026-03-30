@@ -14,7 +14,7 @@ const DIALOG_FLOW = {
   initial: {
     title: "hello user!",
     message:
-      "this pop up only happens if you've clicked 7 times in thirty seconds. scientists call this the threshold for doomscrolling.",
+      "this pop up only happens if you've clicked 5times in thirty seconds. scientists call this the threshold for doomscrolling.",
     buttons: [
       { label: "really?", action: "notReally" as const },
       { label: "i just wanted to see them all", nextStep: "seeAllResponse" as const },
@@ -44,7 +44,7 @@ type DialogStep = keyof typeof DIALOG_FLOW;
 type DialogOption = (typeof DIALOG_FLOW)[DialogStep]["buttons"][number];
 
 const TELEPORT_CLICK_WINDOW_MS = 30_000;
-const TELEPORT_CLICK_THRESHOLD = 7;
+const TELEPORT_CLICK_THRESHOLD = 5;
 const TELEPORT_SLOW_DOWN_SESSION_KEY = "gli-teleport-slow-down-shown";
 
 export type BackgroundVideoLayoutProps = {
