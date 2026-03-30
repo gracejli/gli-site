@@ -22,7 +22,7 @@ const SLUGS = [
   'found-hearts',
   '/i-love-la-type',
   '/facebook-marketplace-objects',
-  '/decorative-english-l-xfghwrlxw',
+  'decorative-english-l-xfghwrlxw',
   '/light-leaking-and-light-spilling',
   '/state-of-ai-generated-visual-content',
   '/google-map-reviews',

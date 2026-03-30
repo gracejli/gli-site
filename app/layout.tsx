@@ -2,11 +2,20 @@
 
 import "@/app/styling/globals.css";
 import Nav from "@/components/Nav";
+import GridShellWithVideo from "@/components/GridShellWithVideo";
+import BackgroundVideoLayout from "@/components/BackgroundVideoLayout";
+import HomeToggleableIntro from "@/components/HomeToggleableIntro";
 import { usePathname } from "next/navigation";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const usesUnifiedVideoShell =
+    pathname === "/" ||
+    pathname === "/blog" ||
+    pathname.startsWith("/blog/") ||
+    pathname === "/work" ||
+    pathname.startsWith("/work/");
   const fullBleedPrefixes = [
     "/walmart",
     "/triumvirate",
@@ -26,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const isWalmart =
     pathname === "/walmart" || pathname.startsWith("/walmart/");
 
-  if (isHome || isNoNavRoute) {
+  if (isNoNavRoute) {
     return (
       <html lang="en" data-page-theme={isWalmart ? "walmart" : undefined}>
         <body
@@ -42,20 +51,69 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     );
   }
 
+  if (usesUnifiedVideoShell) {
+    return (
+      <html lang="en" data-page-theme={isWalmart ? "walmart" : undefined}>
+        <body className="min-h-screen w-full overflow-x-hidden font-serif">
+          <BackgroundVideoLayout
+            teleportWithSlowdown
+            eyeTogglesMain={!isHome}
+            toggleableContent={isHome ? <HomeToggleableIntro /> : undefined}
+            contentClassName={
+              isHome
+                ? "relative z-10 h-dvh max-h-dvh w-full overflow-hidden"
+                : "relative z-10 min-h-screen w-full"
+            }
+            toggleableWrapperClassName={
+              isHome
+                ? "absolute inset-0 flex flex-col items-center justify-center p-8 pt-20 md:pt-24 overflow-y-auto overscroll-y-contain md:overflow-hidden md:bg-transparent"
+                : ""
+            }
+            header={
+              <header className="pointer-events-none fixed inset-x-0 top-0 z-30 flex justify-center px-8 pt-6 md:px-12 md:pt-8">
+                <div className="pointer-events-auto w-full max-w-3xl">
+                  <Nav />
+                </div>
+              </header>
+            }
+            main={
+              <div
+                className={
+                  isHome
+                    ? "pointer-events-none absolute inset-0 mx-auto max-w-[1400px] px-8 md:px-12"
+                    : "mx-auto max-w-[1400px] px-8 md:px-12"
+                }
+              >
+                <main
+                  className={
+                    isHome
+                      ? "h-full pt-20 pb-8 md:pt-24 md:pb-12"
+                      : "pt-20 pb-8 md:pt-24 md:pb-12"
+                  }
+                >
+                  {children}
+                </main>
+              </div>
+            }
+          />
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html lang="en" data-page-theme={isWalmart ? "walmart" : undefined}>
-      <body className="max-w-[1400px] mx-auto px-8 md:px-12 font-serif">
-        <div className="md:grid md:grid-cols-12 md:min-h-screen">
-          <aside className="md:col-span-2 py-8 md:py-12 md:sticky md:top-12 self-start">
-            <Nav />
-          </aside>
-
-          <main className="md:col-span-8 py-8 md:py-12">
-            {children}
-          </main>
-
-          <div className="md:col-span-2" />
-        </div>
+      <body className="min-h-screen w-full overflow-x-hidden font-serif">
+        <GridShellWithVideo>
+          <header className="pointer-events-none fixed inset-x-0 top-0 z-30 flex justify-center px-8 pt-6 md:px-12 md:pt-8">
+            <div className="pointer-events-auto w-full max-w-3xl">
+              <Nav />
+            </div>
+          </header>
+          <div className="mx-auto max-w-[1400px] px-8 md:px-12">
+            <main className="pt-20 pb-8 md:pt-24 md:pb-12">{children}</main>
+          </div>
+        </GridShellWithVideo>
       </body>
     </html>
   );

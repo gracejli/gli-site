@@ -2,7 +2,13 @@ import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
 import BlogItem from "@/app/blog/BlogItem";
 import ProjectItem from "@/components/ProjectItem";
-import { longFormProjects, shortFormToys } from "@/content/projects/data";
+import {
+  myArchivesCollections,
+  documents,
+  myHands,
+  gliVsWorld,
+  workProjectKey,
+} from "@/content/projects/data";
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
 
 type AllPageProps = {
@@ -29,25 +35,24 @@ export default async function AllPage({ searchParams }: AllPageProps) {
           <section>
             <div className="flex items-baseline gap-2 mb-8">
               <h2 className="text-lg font-bold font-bianzhidai">projects</h2>
-              <span className="text-sm font-fe font-bold opacity-70 italic">long form</span>
+              <span className="text-sm font-fe font-bold opacity-70 italic">work</span>
             </div>
             <div>
-              {longFormProjects.map((p) => (
-                <ProjectItem key={p.id} project={p} />
-              ))}
-            </div>
-          </section>
-
-          {/* Toys Section */}
-          <section>
-            <div className="flex items-baseline gap-2 mb-8">
-              <h2 className="text-lg font-bold font-bianzhidai">toys</h2>
-              <span className="text-sm font-fe font-bold opacity-70 italic">short form experiments</span>
-            </div>
-            <div>
-              {shortFormToys.map((p) => (
-                <ProjectItem key={p.id} project={p} />
-              ))}
+              {(
+                [
+                  ["archives", myArchivesCollections],
+                  ["hands", myHands],
+                  ["gliVsWorld", gliVsWorld],
+                  ["documentation", documents],
+                ] as const
+              ).flatMap(([section, items]) =>
+                items.map((p) => (
+                  <ProjectItem
+                    key={workProjectKey(section, p.id)}
+                    project={p}
+                  />
+                ))
+              )}
             </div>
           </section>
 

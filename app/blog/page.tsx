@@ -25,7 +25,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
       : allPosts;
 
   return (
-    <div className="min-h-screen background py-12 px-4">
+    <div className="min-h-screen background px-4 pb-12 pt-6">
       <ShootingStarCursor />
       <div className="max-w-md mx-auto">
         <div className="flex items-center justify-end mb-6">
