@@ -1,9 +1,10 @@
 "use client"; 
 import React, { useState, useEffect, useCallback } from 'react';
 import Link from "next/link";
-import { 
-  Loader2, 
+import {
+  Loader2,
   ChevronLeft,
+  ChevronRight,
   Sparkles,
   Info
 } from 'lucide-react';
@@ -209,6 +210,7 @@ const App = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [aiInsight, setAiInsight] = useState('');
   const [isGeneratingAI, setIsGeneratingAI] = useState(false);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   const fetchAllChannels = useCallback(async () => {
     setLoading(true);
@@ -264,6 +266,66 @@ const App = () => {
     setSelectedBlock(null);
     setShowInfo(false);
     setAiInsight('');
+    setTouchStartX(null);
+  };
+
+  const selectedBlockIndex = selectedBlock && activeChannel
+    ? activeChannel.blocks.findIndex((block) => block.id === selectedBlock.id)
+    : -1;
+  const hasPreviousBlock = selectedBlockIndex > 0;
+  const hasNextBlock = activeChannel ? selectedBlockIndex < activeChannel.blocks.length - 1 : false;
+
+  const navigateLightbox = useCallback((direction: "prev" | "next") => {
+    if (!activeChannel || selectedBlockIndex < 0) return;
+
+    const nextIndex =
+      direction === "prev" ? selectedBlockIndex - 1 : selectedBlockIndex + 1;
+
+    if (nextIndex < 0 || nextIndex >= activeChannel.blocks.length) return;
+
+    setSelectedBlock(activeChannel.blocks[nextIndex]);
+    setShowInfo(false);
+    setAiInsight('');
+  }, [activeChannel, selectedBlockIndex]);
+
+  useEffect(() => {
+    if (!selectedBlock) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeLightbox();
+      } else if (event.key === "ArrowLeft") {
+        navigateLightbox("prev");
+      } else if (event.key === "ArrowRight") {
+        navigateLightbox("next");
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [selectedBlock, navigateLightbox]);
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    setTouchStartX(event.touches[0]?.clientX ?? null);
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (touchStartX == null) return;
+
+    const touchEndX = event.changedTouches[0]?.clientX;
+    if (touchEndX == null) {
+      setTouchStartX(null);
+      return;
+    }
+
+    const deltaX = touchEndX - touchStartX;
+    const swipeThreshold = 50;
+
+    if (Math.abs(deltaX) >= swipeThreshold) {
+      navigateLightbox(deltaX > 0 ? "prev" : "next");
+    }
+
+    setTouchStartX(null);
   };
 
   // Gemini API Call with Exponential Backoff
@@ -468,12 +530,34 @@ const App = () => {
           </header>
           
           {/* Main Image Area */}
-          <div className="flex-1 flex items-center justify-center overflow-hidden relative">
+          <div
+            className="flex-1 flex items-center justify-center overflow-hidden relative"
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
+            <button
+              type="button"
+              onClick={() => navigateLightbox("prev")}
+              disabled={!hasPreviousBlock}
+              aria-label="Previous photo"
+              className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/45 p-3 text-white backdrop-blur-[1px] transition hover:bg-black/60 disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              <ChevronLeft size={24} />
+            </button>
             <img 
               src={selectedBlock.image.original?.url ?? selectedBlock.image.display?.url ?? ""} 
               alt={selectedBlock.title}
               className="max-w-full max-h-full object-contain"
             />
+            <button
+              type="button"
+              onClick={() => navigateLightbox("next")}
+              disabled={!hasNextBlock}
+              aria-label="Next photo"
+              className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/45 p-3 text-white backdrop-blur-[1px] transition hover:bg-black/60 disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              <ChevronRight size={24} />
+            </button>
             <div className="absolute right-4 bottom-4 max-w-[min(36rem,80vw)] bg-black/45 text-white rounded-lg px-4 py-3 backdrop-blur-[1px]">
               {formatConnectedAt(selectedBlock.connected_at) ? (
                 <p className="text-[11px] md:text-xs text-white/80 mb-1">

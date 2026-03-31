@@ -2,11 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Nav from "@/components/Nav";
+import { usePathname } from "next/navigation";
 
 const SCROLL_THRESHOLD_PX = 8;
 
 export default function SiteNavHeader() {
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   useEffect(() => {
     const onScroll = () => {
@@ -23,7 +26,7 @@ export default function SiteNavHeader() {
         <div
           aria-hidden
           className={`pointer-events-none absolute inset-x-0 top-0 min-h-[calc(100%+4rem)] transition-opacity duration-500 ease-out md:min-h-[calc(100%+5rem)] ${
-            scrolled ? "opacity-100" : "opacity-0"
+            scrolled ? "opacity-100" : isHome ? "opacity-100 md:opacity-0" : "opacity-0"
           }`}
           style={{
             background: `linear-gradient(
