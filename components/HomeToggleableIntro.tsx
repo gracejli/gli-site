@@ -70,7 +70,7 @@ export default function HomeToggleableIntro() {
             </li>
             <li>
               {/* <a
-                href="https://www.gracejli.com"
+                href="https://gli.cargo.site"
                 target="_blank"
                 rel="noreferrer"
                 className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]"

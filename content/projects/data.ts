@@ -53,7 +53,7 @@ export const myHands = [
     title: "observatory",
     desc: "my show at the Benton Gallery - 3 paintings and drawings",
     img: "/images/observatory.png",
-    link: "https://gracejli.com/observatory",
+    link: "https://gli.cargo.site/observatory",
     newTab: true,
   },
   {
@@ -86,7 +86,7 @@ export const myHands = [
     title: "painted porcelain",
     desc: "cobalt underglaze on hand thrown porcelain",
     img: "/images/painted ceramics.png",
-    link: "https://gracejli.com/ceramics",
+    link: "https://gli.cargo.site/ceramics",
     newTab: true,
   },
 ];
@@ -106,7 +106,7 @@ export const gliVsWorld = [
     title: "chinatown, los angeles during covid",
     desc: "interviews and photos of los angeles chinatown, the day my school announced we were leaving",
     img: "/images/chinatown.jpg",
-    link: "https://gracejli.com/chinatown",
+    link: "https://gli.cargo.site/chinatown",
     newTab: true,
   },
   {
