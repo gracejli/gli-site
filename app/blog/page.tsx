@@ -2,9 +2,6 @@ import Link from "next/link";
 import { getAllPosts } from "@/lib/posts";
 import BlogItem from "./BlogItem";
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
-import ColorStoryPicker, {
-  type ColorStoryIndex,
-} from "@/components/ColorStoryPicker";
 type BlogPageProps = {
   searchParams?: Promise<{ filter?: string }>;
 };
@@ -41,7 +38,9 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           {posts.length === 0 ? (
             <p className="text-gray-500">No posts yet.</p>
           ) : (
-            posts.map((post) => <BlogItem key={post.slug} post={post} />)
+            posts.map((post, index) => (
+              <BlogItem key={post.slug} post={post} toneIndex={index} />
+            ))
           )}
         </div>
       </div>

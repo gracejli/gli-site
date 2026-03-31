@@ -71,7 +71,9 @@ export default async function AllPage({ searchParams }: AllPageProps) {
               {blogPosts.length === 0 ? (
                 <p className="font-fe font-bold opacity-70">No posts yet.</p>
               ) : (
-                blogPosts.map((post) => <BlogItem key={post.slug} post={post} />)
+                blogPosts.map((post, index) => (
+                  <BlogItem key={post.slug} post={post} toneIndex={index} />
+                ))
               )}
             </div>
           </section>
