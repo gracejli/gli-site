@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
+import { skeletonToneClass } from "@/lib/skeleton-tone";
 
 type Project = {
   id: number;
@@ -25,10 +27,14 @@ const defaultProject: Project = {
 export default function ProjectItem({ project = defaultProject }: { project?: Project }) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isTitleHovering, setIsTitleHovering] = useState(false);
+  const [thumbLoaded, setThumbLoaded] = useState(false);
+  const [previewLoaded, setPreviewLoaded] = useState(false);
 
   // Safely access link now that we have a default fallback
   const href = project?.link;
   const mediaSrc = project.hoverGif || project.img;
+  const isGif = mediaSrc?.toLowerCase().endsWith(".gif") ?? false;
+  const skeletonTone = skeletonToneClass(project.id);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     setMousePos({ x: e.clientX, y: e.clientY });
@@ -58,28 +64,42 @@ export default function ProjectItem({ project = defaultProject }: { project?: Pr
       
       {/* The Floating GIF/Image (Tracks the Title Hover & Stays within screen bounds) */}
       {isTitleHovering && mediaSrc && (
-        <img
-          src={mediaSrc}
-          alt={`${project.title} preview`}
-          className="fixed pointer-events-none z-50 max-w-60 rounded-xl shadow-2xl border border-[#e6dfa8]/30"
+        <div
+          className="fixed pointer-events-none z-50 w-60 h-60 rounded-xl shadow-2xl border border-[#e6dfa8]/30 overflow-hidden"
           style={{
             left: mousePos.x,
             top: mousePos.y,
             transform: cornerTransform,
           }}
-        />
+        >
+          <div className={`${skeletonTone} absolute inset-0`} aria-hidden />
+          <Image
+            src={mediaSrc}
+            alt={`${project.title} preview`}
+            fill
+            sizes="240px"
+            unoptimized={isGif}
+            className={`object-cover transition-opacity duration-300 ${previewLoaded ? "opacity-100" : "opacity-0"}`}
+            onLoad={() => setPreviewLoaded(true)}
+          />
+        </div>
       )}
 
       {/* Side thumbnail: same asset as hover preview (GIF when hoverGif is set, else img) */}
-      <div className="w-12 h-12 border-2 border-[#e6dfa8] flex-shrink-0 overflow-hidden rounded-xl">
+      <div className="relative w-12 h-12 border-2 border-[#e6dfa8] flex-shrink-0 overflow-hidden rounded-xl">
         {mediaSrc && (
-          <img
-            src={mediaSrc}
-            alt={project.title}
-            width={48}
-            height={48}
-            className="w-full h-full object-cover opacity-80 group-hover/item:opacity-100 transition-opacity"
-          />
+          <>
+            <div className={`${skeletonTone} absolute inset-0`} aria-hidden />
+            <Image
+              src={mediaSrc}
+              alt={project.title}
+              fill
+              sizes="48px"
+              unoptimized={isGif}
+              className={`object-cover transition-opacity duration-300 ${thumbLoaded ? "opacity-100" : "opacity-0"}`}
+              onLoad={() => setThumbLoaded(true)}
+            />
+          </>
         )}
       </div>
       
