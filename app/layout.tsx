@@ -47,7 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }
         >
           <MobileNotOptimizedScreen />
-          <div className="hidden md:contents">{children}</div>
+          <div>{children}</div>
         </body>
       </html>
     );
@@ -58,7 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <html lang="en" data-page-theme={isWalmart ? "walmart" : undefined}>
         <body className="min-h-screen w-full overflow-x-hidden font-serif max-md:overflow-hidden">
           <MobileNotOptimizedScreen />
-          <div className="hidden md:contents">
+          <div>
             <BackgroundVideoLayout
               teleportWithSlowdown
               eyeTogglesMain={!isHome}
@@ -104,7 +104,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" data-page-theme={isWalmart ? "walmart" : undefined}>
       <body className="min-h-screen w-full overflow-x-hidden font-serif max-md:overflow-hidden">
         <MobileNotOptimizedScreen />
-        <div className="hidden md:contents">
+        <div>
           <GridShellWithVideo>
             <SiteNavHeader />
             <div className="mx-auto max-w-[1400px] px-8 md:px-12">

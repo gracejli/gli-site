@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { BackgroundVideoSource } from "@/content/backgroundVideos";
 
 function getYouTubeId(url: string): string | null {
@@ -46,17 +46,38 @@ export default function BackgroundVideo({
   muted: boolean;
 }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [isDesktop, setIsDesktop] = useState(() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    return window.matchMedia("(min-width: 768px)").matches;
+  });
 
   const applyYoutubeMute = useCallback(() => {
     postYoutubeMuteCommand(iframeRef.current, muted);
   }, [muted]);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    const updateIsDesktop = () => setIsDesktop(mediaQuery.matches);
+
+    updateIsDesktop();
+    mediaQuery.addEventListener("change", updateIsDesktop);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateIsDesktop);
+    };
+  }, []);
+
+  useEffect(() => {
     if (source?.type !== "youtube") return;
     applyYoutubeMute();
   }, [applyYoutubeMute, source?.type, source]);
 
-  if (!source) return null;
+  if (!source || !isDesktop) return null;
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-black">
