@@ -1,23 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const MOBILE_WARNING_ACKNOWLEDGED_KEY = "gli-mobile-warning-acknowledged";
 
 export default function MobileNotOptimizedScreen() {
   const [showAcknowledgement, setShowAcknowledgement] = useState(false);
-  const [dismissed, setDismissed] = useState(() => {
-    if (typeof window === "undefined") {
-      return false;
-    }
-
-    try {
-      return localStorage.getItem(MOBILE_WARNING_ACKNOWLEDGED_KEY) === "1";
-    } catch {
-      return false;
-    }
-  });
+  const [dismissed, setDismissed] = useState(false);
   const [isFinalConfirmation, setIsFinalConfirmation] = useState(false);
+
+  useEffect(() => {
+    try {
+      setDismissed(localStorage.getItem(MOBILE_WARNING_ACKNOWLEDGED_KEY) === "1");
+    } catch {
+      setDismissed(false);
+    }
+  }, []);
 
   if (dismissed) {
     return null;

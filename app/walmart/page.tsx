@@ -33,7 +33,7 @@ const galleryItem: GalleryItem[] = walmartImageFiles.map(({ file, caption }, i) 
 const risographItem: GalleryItem[] = [
   {
     id: "risograph-1",
-    url: "/images/12-hours.gif",
+    url: "/images/project-images/12-hours.gif",
     alt: "Risograph 1",
     wrapperClass: "w-full",
     imgClass: "w-full h-auto object-cover",

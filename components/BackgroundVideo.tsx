@@ -46,13 +46,7 @@ export default function BackgroundVideo({
   muted: boolean;
 }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [isDesktop, setIsDesktop] = useState(() => {
-    if (typeof window === "undefined") {
-      return false;
-    }
-
-    return window.matchMedia("(min-width: 768px)").matches;
-  });
+  const [isDesktop, setIsDesktop] = useState(false);
 
   const applyYoutubeMute = useCallback(() => {
     postYoutubeMuteCommand(iframeRef.current, muted);
