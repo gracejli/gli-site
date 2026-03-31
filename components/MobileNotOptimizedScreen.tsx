@@ -5,20 +5,9 @@ import { useState } from "react";
 const MOBILE_WARNING_ACKNOWLEDGED_KEY = "gli-mobile-warning-acknowledged";
 
 export default function MobileNotOptimizedScreen() {
-  const [shouldPersistAcknowledgement] = useState(() => {
-    if (typeof window === "undefined") {
-      return false;
-    }
-
-    return window.location.hostname === "gli-site.vercel.app";
-  });
   const [showAcknowledgement, setShowAcknowledgement] = useState(false);
   const [dismissed, setDismissed] = useState(() => {
     if (typeof window === "undefined") {
-      return false;
-    }
-
-    if (window.location.hostname !== "gli-site.vercel.app") {
       return false;
     }
 
@@ -75,12 +64,10 @@ export default function MobileNotOptimizedScreen() {
               type="button"
               onClick={() => {
                 if (isFinalConfirmation) {
-                  if (shouldPersistAcknowledgement) {
-                    try {
-                      localStorage.setItem(MOBILE_WARNING_ACKNOWLEDGED_KEY, "1");
-                    } catch {
-                      /* storage unavailable */
-                    }
+                  try {
+                    localStorage.setItem(MOBILE_WARNING_ACKNOWLEDGED_KEY, "1");
+                  } catch {
+                    /* storage unavailable */
                   }
                   setDismissed(true);
                   return;

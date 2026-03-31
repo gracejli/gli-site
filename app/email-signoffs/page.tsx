@@ -162,7 +162,7 @@ function AboutButton({ onClick }: { onClick: () => void }) {
     <button
       type="button"
       onClick={onClick}
-      className="fixed bottom-6 right-6 z-40 text-xs font-medium font-sans px-2.5 py-1.5 rounded-md bg-blue-600 text-white border border-blue-700 shadow-sm hover:bg-blue-700 transition-colors"
+      className="mt-4 self-end text-xs font-medium font-sans px-2.5 py-1.5 rounded-md bg-blue-600 text-white border border-blue-700 shadow-sm hover:bg-blue-700 transition-colors md:fixed md:bottom-6 md:right-6 md:z-40 md:mt-0"
     >
       about
     </button>
@@ -247,7 +247,7 @@ export default function App() {
     return (
       <>
         <PageShell>
-          <div className="w-full max-w-2xl font-sans">
+          <div className="w-full max-w-2xl font-sans flex flex-col">
             <div className="bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col min-h-[400px]">
               {renderWindowControls()}
               <div className="flex-1 flex flex-col items-center justify-center text-slate-400 gap-3 py-12">
@@ -255,9 +255,9 @@ export default function App() {
                 <p className="text-sm font-medium">Connecting to server...</p>
               </div>
             </div>
+            <AboutButton onClick={() => setAboutOpen(true)} />
           </div>
         </PageShell>
-        <AboutButton onClick={() => setAboutOpen(true)} />
         <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
       </>
     );
@@ -267,7 +267,7 @@ export default function App() {
     return (
       <>
         <PageShell>
-          <div className="w-full max-w-2xl font-sans">
+          <div className="w-full max-w-2xl font-sans flex flex-col">
             <div className="bg-white rounded-xl shadow-xl border border-slate-200 flex flex-col min-h-[400px]">
               {renderWindowControls()}
               <div className="flex-1 flex flex-col items-center justify-center text-slate-500 gap-3 py-12">
@@ -277,9 +277,9 @@ export default function App() {
                 </p>
               </div>
             </div>
+            <AboutButton onClick={() => setAboutOpen(true)} />
           </div>
         </PageShell>
-        <AboutButton onClick={() => setAboutOpen(true)} />
         <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
       </>
     );
@@ -294,7 +294,7 @@ export default function App() {
   return (
     <>
       <PageShell>
-      <div className="w-full max-w-2xl max-h-[min(85vh,720px)] min-h-0 font-sans">
+      <div className="w-full max-w-2xl max-h-[min(85vh,720px)] min-h-0 font-sans flex flex-col">
         <div className="h-full max-h-[min(85vh,720px)] min-h-0 bg-white rounded-xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden transition-all duration-300">
         
         {/* Top Window Bar */}
@@ -354,9 +354,9 @@ export default function App() {
         </div>
 
         </div>
+        <AboutButton onClick={() => setAboutOpen(true)} />
       </div>
       </PageShell>
-      <AboutButton onClick={() => setAboutOpen(true)} />
       <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
     </>
   );

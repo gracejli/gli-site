@@ -11,6 +11,7 @@ import { usePathname } from "next/navigation";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const mobileWarningRoutes = ["/", "/blog", "/work"] as const;
   const usesUnifiedVideoShell =
     pathname === "/" ||
     pathname === "/blog" ||
@@ -33,6 +34,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const isNoNavRoute = noNavPrefixes.some(
     (p) => pathname === p || pathname.startsWith(`${p}/`),
   );
+  const shouldShowMobileWarning = mobileWarningRoutes.includes(
+    pathname as (typeof mobileWarningRoutes)[number],
+  );
   const isWalmart =
     pathname === "/walmart" || pathname.startsWith("/walmart/");
 
@@ -46,7 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               : "min-h-screen w-full overflow-x-hidden font-serif max-md:overflow-hidden"
           }
         >
-          <MobileNotOptimizedScreen />
+          {shouldShowMobileWarning ? <MobileNotOptimizedScreen /> : null}
           <div>{children}</div>
         </body>
       </html>
@@ -57,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
       <html lang="en" data-page-theme={isWalmart ? "walmart" : undefined}>
         <body className="min-h-screen w-full overflow-x-hidden font-serif max-md:overflow-hidden">
-          <MobileNotOptimizedScreen />
+          {shouldShowMobileWarning ? <MobileNotOptimizedScreen /> : null}
           <div>
             <BackgroundVideoLayout
               teleportWithSlowdown
@@ -103,7 +107,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" data-page-theme={isWalmart ? "walmart" : undefined}>
       <body className="min-h-screen w-full overflow-x-hidden font-serif max-md:overflow-hidden">
-        <MobileNotOptimizedScreen />
+        {shouldShowMobileWarning ? <MobileNotOptimizedScreen /> : null}
         <div>
           <GridShellWithVideo>
             <SiteNavHeader />

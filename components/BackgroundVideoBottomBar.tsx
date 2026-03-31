@@ -82,7 +82,7 @@ export default function BackgroundVideoBottomBar({
   infoTooltipText = "small, short videos that i've taken for years. here are some of my spaces",
 }: BackgroundVideoBottomBarProps) {
   return (
-    <div className="pointer-events-none fixed bottom-4 right-4 z-20 flex max-w-[min(20rem,calc(100vw-2rem))] flex-col items-end gap-2 text-right">
+    <div className="pointer-events-none fixed bottom-4 right-4 z-20 hidden max-w-[min(20rem,calc(100vw-2rem))] flex-col items-end gap-2 text-right md:flex">
       {currentVideo ? (
         <p className="pointer-events-none text-xs font-fe text-amber-100/80 drop-shadow">
           {currentVideo.caption}
