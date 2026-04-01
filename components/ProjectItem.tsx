@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { skeletonToneClass } from "@/lib/skeleton-tone";
 
@@ -29,6 +29,21 @@ export default function ProjectItem({ project = defaultProject }: { project?: Pr
   const [isTitleHovering, setIsTitleHovering] = useState(false);
   const [thumbLoaded, setThumbLoaded] = useState(false);
   const [previewLoaded, setPreviewLoaded] = useState(false);
+  const [supportsHoverPreview, setSupportsHoverPreview] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const updateSupportsHoverPreview = () =>
+      setSupportsHoverPreview(mediaQuery.matches);
+
+    updateSupportsHoverPreview();
+    mediaQuery.addEventListener("change", updateSupportsHoverPreview);
+
+    return () =>
+      mediaQuery.removeEventListener("change", updateSupportsHoverPreview);
+  }, []);
 
   // Safely access link now that we have a default fallback
   const href = project?.link;
@@ -63,7 +78,7 @@ export default function ProjectItem({ project = defaultProject }: { project?: Pr
     >
       
       {/* The Floating GIF/Image (Tracks the Title Hover & Stays within screen bounds) */}
-      {isTitleHovering && mediaSrc && (
+      {supportsHoverPreview && isTitleHovering && mediaSrc && (
         <div
           className="fixed pointer-events-none z-50 w-60 h-60 rounded-xl shadow-2xl border border-[#e6dfa8]/30 overflow-hidden"
           style={{
@@ -106,9 +121,11 @@ export default function ProjectItem({ project = defaultProject }: { project?: Pr
       <div>
         <h3 
           className="font-fe font-bold text-[var(--foreground)] underline underline-offset-4 leading-tight transition-all duration-200 group-hover/item:text-white group-hover/item:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)] w-max"
-          onMouseEnter={() => setIsTitleHovering(true)}
+          onMouseEnter={() => {
+            if (supportsHoverPreview) setIsTitleHovering(true);
+          }}
           onMouseLeave={() => setIsTitleHovering(false)}
-          onMouseMove={handleMouseMove}
+          onMouseMove={supportsHoverPreview ? handleMouseMove : undefined}
         >
           {project?.title}
         </h3>

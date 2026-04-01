@@ -46,8 +46,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <body
           className={
             isFullBleedGallery
-              ? "min-h-screen w-full font-serif max-md:overflow-hidden md:h-dvh md:max-h-dvh md:overflow-hidden"
-              : "min-h-screen w-full overflow-x-hidden font-serif max-md:overflow-hidden"
+              ? "min-h-screen w-full overflow-x-hidden font-serif md:h-dvh md:max-h-dvh md:overflow-hidden"
+              : "min-h-screen w-full overflow-x-hidden font-serif"
           }
         >
           {shouldShowMobileWarning ? <MobileNotOptimizedScreen /> : null}
@@ -60,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   if (usesUnifiedVideoShell) {
     return (
       <html lang="en" data-page-theme={isWalmart ? "walmart" : undefined}>
-        <body className="min-h-screen w-full overflow-x-hidden font-serif max-md:overflow-hidden">
+        <body className="min-h-screen w-full overflow-x-hidden font-serif">
           {shouldShowMobileWarning ? <MobileNotOptimizedScreen /> : null}
           <div>
             <BackgroundVideoLayout
@@ -106,7 +106,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en" data-page-theme={isWalmart ? "walmart" : undefined}>
-      <body className="min-h-screen w-full overflow-x-hidden font-serif max-md:overflow-hidden">
+      <body className="min-h-screen w-full overflow-x-hidden font-serif">
         {shouldShowMobileWarning ? <MobileNotOptimizedScreen /> : null}
         <div>
           <GridShellWithVideo>
