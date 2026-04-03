@@ -112,7 +112,7 @@ export const gliVsWorld = [
   {
     id: 1,
     title: "triumvirate arena",
-    desc: "self-made game engine, turn taking card game",
+    desc: "self-made game engine with Rust and Vulkan for graphics, turn taking card game",
     img: "/images/triumvirate-arena.png",
     link: "/triumvirate",
     hoverGif: "images/triumvirate.gif",
@@ -130,7 +130,7 @@ export const gliVsWorld = [
   {
     id: 4,
     title: "odins passage",
-    desc: "a game made in unity: viking odyssey x flappy bird",
+    desc: "unity game: viking odyssey x flappy bird",
     img: "/images/odins-passage.png",
     link: "/odinspassage",
     hoverGif: "images/odins.gif",
@@ -139,7 +139,7 @@ export const gliVsWorld = [
   {
     id: 5,
     title: "ghost town",
-    desc: "story based game about someone who returns to their hometown",
+    desc: "unity game: story based game about someone who returns to their hometown",
     img: "/images/ghost-town2.png",
     link: "/ghost-town",
     newTab: false,
