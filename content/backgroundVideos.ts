@@ -152,6 +152,111 @@ export const backgroundVideos: BackgroundVideoSource[] = [
     type: "youtube",
     url: "https://youtu.be/hivheuLxFFw",
     caption: "waterfall in shifen, taiwan 2024",
-  }, 
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/pueyjnKea8o",
+    caption: "houses on the top of a mountain in bødo, norway. hiked up with friends 2022",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/MbZzUFnj4qI",
+    caption: "summer sunset in northern michigan, 2024",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/yw3lOSgjIR0",
+    caption: "bird hiking on the W trek in patagonia national park, chile 2023",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/WxqpbttlyCo",
+    caption: "friend biking in southern denmark, my semester abroad 2022",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/503tcLtsO9Y",
+    caption: "family playing in san diego 2020",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/MvOidukurRw",
+    caption: "still water in patagonia, chile 2023",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/87z-NSBJai4",
+    caption: "my jumping caterpillar friend 2023",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/2-4_VKugB2A",
+    caption: "water in glacier national park, 2023",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/ywgGKIV5LfU",
+    caption: "my friends talking on the pier in lake tahoe, california",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/6PUlnsZ3GS4",
+    caption: "sun peering through after the rain on a farm walk in costa rica",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/UFV-IRNa8e8",
+    caption: "near saltstraumen in norway, 2022. study abroad semester",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/0yD9UF4C870",
+    caption: "i led backpacking trips for middle schoolers in 2022 in the pacific northwest. hardest and most rewarding summer, ever.",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/AOP6kTJTQFU",
+    caption: "san diego beach, 2020",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/Bqw-l1vc_Sg",
+    caption:"sunset surfer in san diego. one of my favorite clips ever. 2020",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/WfMcU6Zycg4",
+    caption: "mossy hike in norway. we tried to see the northern lights but it was cloudy. 2022",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/cssuqkJDj5U",
+    caption: "saltstraumen, norway. two water densities fighting. 2022",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/ygg2AAxPCsU",
+    caption: "peak of a hike, lunchtime sandwich 2022",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/DIyC_VjUbj4",
+    caption: "friends looking at beautiful sunset in malaga, spain. study abroad 2022",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/_nJ4y4Tw4fs",
+    caption: "new years moment 2025, along the la river!",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/iF8ZQWSVoAc",
+    caption: "kayaking with my family in northern michigan 2025",
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/nWIi2UKsyI0",
+    caption: "bright morning in kenai fjords, alaska 2025. sorry about the dog barking, haha",
+  },
 ];
 

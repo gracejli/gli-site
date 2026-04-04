@@ -25,14 +25,14 @@ const DIALOG_FLOW = {
     message:
       "no, i actually just made that up. lol. but you are doomscrolling precious, slow moments. so i wanted to say something.",
     buttons: [
-      { label: "ill slow down", action: "close" as const },
+      { label: "ill slow down", action: "seeAllResponse" as const },
       { label: "i just wanted to see them all!", nextStep: "seeAllResponse" as const },
     ],
   },
   seeAllResponse: {
     title: "i understand",
     message:
-      "that's okay. i understand. I only have 20 videos anyways! someday ill add more. thanks for staying here with me.",
+      "that's okay. i understand. I only have 30 or so videos anyways! someday ill add more. thanks for staying here with me.",
     buttons: [
       { label: "leave me a note in the guestbook", action: "openGuestbook" as const },
       { label: "close", action: "close" as const },
