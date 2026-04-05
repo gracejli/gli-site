@@ -36,8 +36,23 @@ const risographItem: GalleryItem[] = [
     url: "/images/project-images/12-hours.gif",
     alt: "Risograph 1",
     wrapperClass: "w-full",
-    imgClass: "w-full h-auto object-cover",
-    caption: "risograph book printing the interviews, 2021",
+    imgClass: "w-full h-full object-cover",
+    width: 600,
+    height: 600,
+    caption: "risograph book, with the interviews, 2021",
+    captionClassName:
+      "mt-2 text-xs font-fe leading-snug text-[var(--foreground)]",
+  },
+  {
+    id: "lisa-feedback",
+    url: "/images/walmart/lisa-feedback.png",
+    alt: "Email from professor Lisa Anne Auerbach with final project feedback for 12 Hours in Walmart",
+    wrapperClass: "w-full",
+    imgClass: "w-full h-auto object-contain",
+    width: 1186,
+    height: 1050,
+    caption:
+      "here was the feedback from my professor, that year. I did alright in the class, this actually being my only A. The website linked here isn't the right medium, but if you have the chance you should read through a few stories <3",
     captionClassName:
       "mt-2 text-xs font-fe leading-snug text-[var(--foreground)]",
   },
@@ -76,8 +91,8 @@ export default function WalmartPage() {
                 <br />
                 photo-interview project
                 <br /><br />
-                one of my favorite and most formative projects to this day: fourteen interviews, 8:00 PM to 8:00 AM in Walmart.
-                <br />
+                one of my favorite and most formative projects to this day: fourteen interviews, 8:00 PM to 8:00 AM in Walmart. 
+                <br/> <br />
                 * read the interviews{" "}
                 <a
                   href="https://gracejieyi.wixsite.com/home/walmartinterviews"
@@ -87,14 +102,12 @@ export default function WalmartPage() {
                 </a>
                 <br />
                 * made into a risograph publication later in 2021
+                <br/><br/>I went into walmart with my mom's DSLR, my brother (mom did not trust me there alone) and a few prewritten questions. I recorded the conversations, and transcribed them into a website
+                at first, leaving the project dormant for a while. Years later did I finally found the right medium in a publication class in college, where I printed the interviews and stories with red and blue ink riso, printing 25 copies for a zine fair. 
+                Only then did I feel the stories had a medium that let the person sit with enough attention for each one. 
+               
               </p>
             </div>
-          </div>
-
-          <div className="text-[15px] leading-relaxed max-w-md mt-12 md:mt-16 font-fe opacity-90">
-            <p>
-              this project ended up being what I wrote my college essay about, when I was 17.
-            </p>
           </div>
         </div>
         <ImageGallery items={risographItem} columns={1} gap={2} />
