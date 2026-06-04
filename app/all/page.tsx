@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getAllPosts } from "@/lib/posts";
+import { getBlogFeed } from "@/lib/blog-feed";
 import BlogItem from "@/app/blog/BlogItem";
 import ProjectItem from "@/components/ProjectItem";
 import {
@@ -15,8 +15,10 @@ type AllPageProps = {
   searchParams?: Promise<{ filter?: string }>;
 };
 
+export const revalidate = 3600;
+
 export default async function AllPage({ searchParams }: AllPageProps) {
-  const allPosts = getAllPosts().filter((post) => post.isPublished !== false);
+  const allPosts = await getBlogFeed();
 
   const params = searchParams ? await searchParams : {};
   const filter = params?.filter === "links" ? "links" : "all";

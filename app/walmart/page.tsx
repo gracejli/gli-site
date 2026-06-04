@@ -52,7 +52,7 @@ const risographItem: GalleryItem[] = [
     width: 1186,
     height: 1050,
     caption:
-      "here was the feedback from my professor, that year. I did alright in the class, this actually being my only A. The website linked here isn't the right medium, but if you have the chance you should read through a few stories <3",
+      "here was the feedback from my professor, that year. I did alright in the class, this actually being my only A. The website linked here isn't the right medium, of course, that was the whole point, but if you have the chance you should read through a few stories <3",
     captionClassName:
       "mt-2 text-xs font-fe leading-snug text-[var(--foreground)]",
   },

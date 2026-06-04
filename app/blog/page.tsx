@@ -1,7 +1,10 @@
 import Link from "next/link";
-import { getAllPosts } from "@/lib/posts";
+import { getBlogFeed } from "@/lib/blog-feed";
 import BlogItem from "./BlogItem";
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
+
+export const revalidate = 3600;
+
 type BlogPageProps = {
   searchParams?: Promise<{ filter?: string }>;
 };
@@ -9,7 +12,7 @@ type BlogPageProps = {
 // --- MAIN PAGE ---
 // Server Component that can filter posts via ?filter=links|all
 export default async function BlogPage({ searchParams }: BlogPageProps) {
-  const allPosts = getAllPosts().filter((post) => post.isPublished !== false);
+  const allPosts = await getBlogFeed();
 
   const params = searchParams ? await searchParams : {};
   const filter = params?.filter === "links" ? "links" : "all";
