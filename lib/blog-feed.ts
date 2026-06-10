@@ -21,7 +21,7 @@ function arenaPostToBlogPost(arena: ArenaBlogPost): BlogPost {
     slug: `arena-${arena.id}`,
     image: arena.image,
     alt: arena.alt,
-    type: "dropdown",
+    type: arena.type,
     isPublished: true,
     summary: arena.summary,
     body: arena.body,

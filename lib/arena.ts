@@ -1,4 +1,4 @@
-import type { ArenaBlogPost } from "./arena-types";
+import type { ArenaBlogPost, ArenaBlogPostType } from "./arena-types";
 
 const API_BASE = "https://api.are.na/v3";
 
@@ -46,11 +46,39 @@ function firstLine(text: string): string {
   return line?.trim() ?? "";
 }
 
+const ARENA_TYPE_LINE = /^type:\s*(dropdown|text|link)\s*$/i;
+
+/** Strip an optional `type: dropdown|text|link` directive from the first non-empty line. */
+export function parseArenaDescription(raw: string): {
+  type: ArenaBlogPostType;
+  body: string;
+} {
+  const lines = raw.split("\n");
+  let type: ArenaBlogPostType = "dropdown";
+  let bodyStart = 0;
+
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    if (!trimmed) continue;
+
+    const match = trimmed.match(ARENA_TYPE_LINE);
+    if (match) {
+      type = match[1].toLowerCase() as ArenaBlogPostType;
+      bodyStart = i + 1;
+    }
+    break;
+  }
+
+  return { type, body: lines.slice(bodyStart).join("\n").trim() };
+}
+
 function normalizeImageBlock(raw: ArenaV3BlockRaw): ArenaBlogPost | null {
   const img = raw.image;
   if (!img?.src) return null;
 
-  const body = descriptionMarkdown(raw.description);
+  const { type, body } = parseArenaDescription(
+    descriptionMarkdown(raw.description),
+  );
   const title =
     typeof raw.title === "string" && raw.title.trim()
       ? raw.title.trim()
@@ -70,6 +98,7 @@ function normalizeImageBlock(raw: ArenaV3BlockRaw): ArenaBlogPost | null {
     title,
     summary,
     body,
+    type,
     date: raw.connection?.connected_at ?? raw.created_at ?? "",
     arenaUrl: `https://www.are.na/block/${raw.id}`,
   };

@@ -113,11 +113,6 @@ const BlogItem: React.FC<{ post: BlogPost; toneIndex: number }> = ({ post, toneI
           <PostImage src={post.image} alt={post.alt} toneIndex={toneIndex} />
           
           <div className="flex-1 flex flex-col gap-2 pt-1 w-full">
-            {post.summary && (
-              <p className="text-sm leading-relaxed font-medium w-full">
-                {post.summary}
-              </p>
-            )}
             {post.body && (
               <div className="text-sm font-fe font-bold leading-relaxed whitespace-pre-wrap w-full max-w-full break-words">
                 <ReactMarkdown components={markdownComponents}>{post.body}</ReactMarkdown>

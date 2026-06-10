@@ -1,7 +1,8 @@
-import Link from "next/link";
+import InfoChip from "@/components/InfoChip";
+import { ShootingStarCursor } from "@/components/shooting-star-cursor";
+import { MICROBLOG_INFO_TEXT } from "@/content/microblog";
 import { getBlogFeed } from "@/lib/blog-feed";
 import BlogItem from "./BlogItem";
-import { ShootingStarCursor } from "@/components/shooting-star-cursor";
 
 export const revalidate = 3600;
 
@@ -16,8 +17,6 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
   const params = searchParams ? await searchParams : {};
   const filter = params?.filter === "links" ? "links" : "all";
-  const isLinksView = filter === "links";
-  
 
   const posts =
     filter === "links"
@@ -29,12 +28,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
       <ShootingStarCursor />
       <div className="max-w-md mx-auto">
         <div className="flex items-center justify-end mb-6">
-          <Link
-            href={isLinksView ? "/blog" : "/blog?filter=links"}
-            className="text-xs uppercase tracking-wide underline underline-offset-4 hover:text-white transition-colors"
-          >
-            {/* {isLinksView ? "view all" : "view links"} */}
-          </Link>
+          <InfoChip text={MICROBLOG_INFO_TEXT} placement="below" />
         </div>
 
         <div className="flex flex-col">
