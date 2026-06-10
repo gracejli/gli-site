@@ -28,10 +28,7 @@ function getYouTubeId(url: string): string | null {
   }
 }
 
-/** Minimal typing for https://developers.google.com/youtube/iframe_api_reference */
-/** YT.PlayerState — https://developers.google.com/youtube/iframe_api_reference#onStateChange */
 const YT_ENDED = 0;
-/** Fires briefly around some loop/restart paths; nudging playback hides the center overlay. */
 const YT_PAUSED = 2;
 
 type YoutubePlayerInstance = {
@@ -243,6 +240,13 @@ export default function BackgroundVideo({
             />
           </div>
         ) : null}
+      </div>
+
+      {/* Soft blur patches: large play/pause center + small back/forward beside it */}
+      <div className="pointer-events-none absolute inset-0 z-[1]" aria-hidden>
+        <div className="absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-400/15 backdrop-blur-sm" />
+        <div className="absolute left-[calc(50%-6.5rem)] top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-500/15 backdrop-blur-sm" />
+        <div className="absolute left-[calc(50%+6.5rem)] top-1/2 h-16 w-16 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/15 backdrop-blur-sm" />
       </div>
 
       {/* Soft vignette / gradient so content stays readable */}
