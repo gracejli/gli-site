@@ -8,7 +8,7 @@ export const myArchivesCollections = [
     title: "flickr surf",
     desc: "a small tool for non-algorithmic image inspiration from flickr. my alternative to pinterest.",
     link: "/flickr-surf",
-    img: "/images/flickr-surf.png",
+    img: "/images/project-images/flickr-surf.png",
     newTab: false,
   },
   {
