@@ -253,7 +253,7 @@ const APP_HTML = `<!DOCTYPE html>
     <h1>flickr surf</h1>
     <div class="sidebar-about">
       <div class="sidebar-about-summary">about</div>
-      <div class="sidebar-about-copy">In 2024, flickr was reported to have over 10 billion images, with over 25 million new uploads a day. This is a small tool for non-algorithmic image inspiration search with real images from flickr, built in the old HTML style.Have fun surfing.</div>
+      <div class="sidebar-about-copy">In 2024, flickr was reported to have over 10 billion images, with over 25 million new uploads a day. This is a small tool for non-algorithmic image inspiration search with real images from flickr, built in the old HTML style. Have fun surfing.</div>
     </div>
 
     <fieldset>
