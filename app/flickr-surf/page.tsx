@@ -109,28 +109,23 @@ const APP_HTML = `<!DOCTYPE html>
     #sidebar {
       width: 280px;
       flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
       background: #e4e4e4;
       border-right: 1px solid #999;
       padding: 20px 16px;
       overflow-y: auto;
       height: 100vh;
     }
-    .sidebar-main {
-      flex: 1;
-    }
     #sidebar h1 {
       font-size: 15px;
       font-weight: bold;
       line-height: 1.3;
-      margin: 0 0 18px 0;
+      margin: 0 0 6px 0;
       color: #111;
     }
     .sidebar-about {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid #b8b8b8;
+      position: relative;
+      display: inline-block;
+      margin: 0 0 18px 0;
       font-size: 11px;
       color: #555;
       line-height: 1.4;
@@ -138,11 +133,32 @@ const APP_HTML = `<!DOCTYPE html>
     .sidebar-about-summary {
       display: inline-block;
       text-decoration: underline;
-      cursor: default;
+      cursor: help;
     }
     .sidebar-about-copy {
       display: none;
-      margin-top: 6px;
+      position: absolute;
+      left: 0;
+      top: calc(100% + 8px);
+      z-index: 20;
+      width: 230px;
+      padding: 10px 12px;
+      background: #222;
+      color: #fff;
+      border: 1px solid #000;
+      box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+      font-size: 11px;
+      line-height: 1.45;
+      pointer-events: none;
+    }
+    .sidebar-about-copy::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      top: -6px;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 6px solid #222;
     }
     .sidebar-about:hover .sidebar-about-copy {
       display: block;
@@ -234,8 +250,11 @@ const APP_HTML = `<!DOCTYPE html>
 </head>
 <body>
   <aside id="sidebar">
-    <div class="sidebar-main">
     <h1>flickr surf</h1>
+    <div class="sidebar-about">
+      <div class="sidebar-about-summary">about</div>
+      <div class="sidebar-about-copy">In 2024, flickr was reported to have over 10 billion images, with over 25 million new uploads a day. This is a small tool for non-algorithmic image inspiration search with real images from flickr. Have fun surfing.</div>
+    </div>
 
     <fieldset>
       <legend>Search Parameters</legend>
@@ -297,11 +316,6 @@ const APP_HTML = `<!DOCTYPE html>
       </div>
       <div id="status"></div>
     </fieldset>
-    </div>
-    <div class="sidebar-about">
-      <div class="sidebar-about-summary">about</div>
-      <div class="sidebar-about-copy">A small tool for image inspiration search, non algorithmic and from real images from flickr. Built in the old HTML style. have fun surfing.<div>
-    </div>
   </aside>
 
   <main id="main">
