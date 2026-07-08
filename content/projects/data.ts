@@ -4,6 +4,14 @@
 
 export const myArchivesCollections = [
   {
+    id: 21,
+    title: "flickr surf",
+    desc: "a small tool for non-algorithmic image inspiration from flickr. my alternative to pinterest.",
+    link: "/flickr-surf",
+    img: "/images/flickr-surf.png",
+    newTab: false,
+  },
+  {
     id: 15,
     title: "gli are.na photo album",
     desc: "12 photo are.na albums of what i've collected",

@@ -583,11 +583,11 @@ const APP_HTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
-export default function FinterestPage() {
+export default function FlickrSurfPage() {
   return (
     <iframe
       srcDoc={APP_HTML}
-      title="Flickr Pinterest (Finterest)"
+      title="flickr surf"
       className="w-full h-screen border-0 block"
       sandbox="allow-scripts allow-same-origin allow-popups"
     />
