@@ -286,7 +286,7 @@ export const backgroundVideos: BackgroundVideoSource[] = [
   {
     type: "youtube", 
     url: "https://youtu.be/UxWS7MBHxa0", 
-    caption: "at high noon, my shadow was right above. accompanying me on my solo backpacking trip was the sound of the trekking pole. the rhythmic shadow was a constant friend 2026"
+    caption: "the rhythmic, hypnotic shadow of my trekking pole on my solo backpacking trip. catalina island, 2026" 
   }, 
   {
     type: "youtube",
