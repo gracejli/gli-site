@@ -258,5 +258,40 @@ export const backgroundVideos: BackgroundVideoSource[] = [
     url: "https://youtu.be/nWIi2UKsyI0",
     caption: "bright morning in kenai fjords, alaska 2025. sorry about the dog barking, haha",
   },
+  {
+    type: "youtube",
+    url: "https://youtu.be/i8hK4p1BXvE", 
+    caption: "5am sunrise on adeep sea fishing trip off the coast of long beach. caught a few scorpionfish, good for ceviche. 2026"
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/DYOOZajodk4",  
+    caption: "still water at 6am on a deep sea fishing trip. wasn't too motion sick. 2026"
+  }, 
+  {
+    type: "youtube", 
+    url: "https://youtu.be/qLYAHA2LnrU", 
+    caption: "on the last leg of the trans catalina hike, i was high up enough to see the clouds moving and changing right above me. 2026"
+  }, 
+  {
+    type: "youtube",
+    url:"https://youtu.be/2WEWdAYcQOY", 
+    caption: "little harbor campground on the trans catalina hike. sparkling water, beach campsite. 2026"
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/M6LR0KfOGo0", 
+    caption: "night two at little harbor campground on the trans catalina trail backpacking. got to the site early, spent the rest of the day laying on the beach 2026"
+  }, 
+  {
+    type: "youtube", 
+    url: "https://youtu.be/UxWS7MBHxa0", 
+    caption: "at high noon, my shadow was right above. accompanying me on my solo backpacking trip was the sound of the trekking pole. the rhythmic shadow was a constant friend 2026"
+  }, 
+  {
+    type: "youtube",
+    url: "https://youtu.be/2T_uggX_VxQ", 
+    caption: "wind blowing on the trans catalina trail 2026"
+  }
 ];
 
