@@ -26,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "/odinspassage",
     "/ghost-town",
     "/email-signoffs",
+    "/finterest",
   ] as const;
   const noNavPrefixes = [...fullBleedPrefixes, "/arena-channels"] as const;
   const isFullBleedGallery = fullBleedPrefixes.some(
