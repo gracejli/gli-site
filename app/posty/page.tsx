@@ -124,6 +124,7 @@ async function photoWithWhiteBorder(dataUrl: string): Promise<string> {
 export default function PostyPage() {
   const [draft, setDraft] = useState<Draft>(emptyDraft);
   const [ready, setReady] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const [cameraOpen, setCameraOpen] = useState(false);
   const [cameraNote, setCameraNote] = useState("Opening your back camera…");
   const [cameraError, setCameraError] = useState(false);
@@ -149,6 +150,10 @@ export default function PostyPage() {
     if (videoRef.current) videoRef.current.srcObject = null;
   }, []);
 
+  const closeAbout = useCallback(() => {
+    setAboutOpen(false);
+  }, []);
+
   const closeCamera = useCallback(() => {
     stopCamera();
     setCameraOpen(false);
@@ -156,6 +161,15 @@ export default function PostyPage() {
     setCameraError(false);
     setCameraNote("Opening your back camera…");
   }, [stopCamera]);
+
+  useEffect(() => {
+    if (!aboutOpen) return;
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") closeAbout();
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [aboutOpen, closeAbout]);
 
   useEffect(() => {
     if (!cameraOpen) return;
@@ -184,7 +198,7 @@ export default function PostyPage() {
             audio: false,
           });
           if (!cancelled) {
-            setCameraNote("Line up your shot, then take the photo.");
+            setCameraNote("Frame your postcard, then take the photo.");
           }
         } catch {
           stream = await navigator.mediaDevices.getUserMedia({
@@ -192,7 +206,7 @@ export default function PostyPage() {
             audio: false,
           });
           if (!cancelled) {
-            setCameraNote("Line up your shot, then take the photo.");
+            setCameraNote("Frame your postcard, then take the photo.");
           }
         }
 
@@ -443,7 +457,7 @@ export default function PostyPage() {
   const hasMessage = Boolean(draft.message.trim());
   const message = hasMessage
     ? draft.message
-    : "Your message will appear here as you write it.";
+    : "your message will appear here~";
   const sender = draft.sender.trim() || "<3 grace";
   const location = draft.location.trim() || "playing at glassell park";
   const leftMeta = [formatDate(draft.date), location].filter(Boolean).join(" · ");
@@ -452,14 +466,22 @@ export default function PostyPage() {
     <main className="posty" aria-live="polite">
       <section className="posty-controls" aria-label="Postcard controls">
         <div className="posty-intro">
-          <h1 className="posty-brand">posty ✉</h1>
+          <h1 className="posty-brand">posty</h1>
           <p className="posty-brand-note">
             send someone a digital postcard
             <br />
             <em className="posty-brand-note-sub">
-              estimated delivery time: 7-14 days 
+              estimated delivery time: 7-14 days
             </em>
           </p>
+          <button
+            type="button"
+            className="posty-about-link"
+            aria-expanded={aboutOpen}
+            onClick={() => setAboutOpen(true)}
+          >
+            what is this?
+          </button>
         </div>
 
         <section className="posty-section posty-section-photo">
@@ -583,6 +605,40 @@ export default function PostyPage() {
           </article>
         </div>
       </section>
+
+      {aboutOpen ? (
+        <section className="posty-modal" onClick={closeAbout}>
+          <div
+            className="posty-about-box"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="posty-about-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="posty-about-head">
+              <span id="posty-about-title" className="posty-about-title">
+                about posty
+              </span>
+              <button
+                className="posty-close"
+                aria-label="Close about posty"
+                type="button"
+                onClick={closeAbout}
+              >
+                ×
+              </button>
+            </div>
+            <div className="posty-about-body">
+              <p>
+                posty is an e-postcard. take a photo of where you are right now, then write a message and
+                who it&apos;s for. your draft saves on this device (and saves even if you have no service!) they&apos;ll get a postcard in about{" "}
+                7–14 days from no-reply [at] posty.gracejli.com.
+              </p>
+              <p className="posty-about-signoff">happy slow sending, gli</p>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {cameraOpen ? (
         <section className="posty-modal">
