@@ -184,7 +184,7 @@ export default function PostyPage() {
             audio: false,
           });
           if (!cancelled) {
-            setCameraNote("Rotate your phone to landscape, then take the photo.");
+            setCameraNote("Line up your shot, then take the photo.");
           }
         } catch {
           stream = await navigator.mediaDevices.getUserMedia({
@@ -386,21 +386,21 @@ export default function PostyPage() {
 
       if (response.ok && result.sent) {
         rememberSend(emails, "postcard backend", snapshot);
-        const recipientLabel = `Sent to ${emails.length} recipient${emails.length > 1 ? "s" : ""}. `;
+        const to = emails[0] ?? "recipient";
         if (result.immediate) {
           setStatus({
             kind: "success",
-            text: `${recipientLabel}Delivered immediately (dev mode).`,
+            text: `Sent to ${to}. Delivered immediately (dev mode).`,
           });
         } else if (result.delayDays) {
           setStatus({
             kind: "success",
-            text: `${recipientLabel}Your postcard is on its way — delivery in about ${result.delayDays} days.`,
+            text: `Sent to ${to}. Your postcard is on its way, estimated delivery in about ${result.delayDays} days.`,
           });
         } else {
           setStatus({
             kind: "success",
-            text: `${recipientLabel}Your postcard is on its way.`,
+            text: `Sent to ${to}. Your postcard is on its way.`,
           });
         }
         return;
@@ -447,7 +447,6 @@ export default function PostyPage() {
   const sender = draft.sender.trim() || "<3 grace";
   const location = draft.location.trim() || "playing at glassell park";
   const leftMeta = [formatDate(draft.date), location].filter(Boolean).join(" · ");
-  const recipientCount = currentRecipients(draft.recipients).length;
 
   return (
     <main className="posty" aria-live="polite">
@@ -550,9 +549,7 @@ export default function PostyPage() {
             disabled={sending}
             onClick={() => void send()}
           >
-            {sending
-              ? "Sending…"
-              : `Send postcard${recipientCount > 1 ? "s" : ""}`}
+            {sending ? "Sending…" : "Send postcard"}
           </button>
         </div>
         <p className={`posty-status ${status.kind}`.trim()}>{status.text}</p>
@@ -601,24 +598,6 @@ export default function PostyPage() {
               >
                 ×
               </button>
-            </div>
-            <div className="posty-rotate-hint" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M4 12a8 8 0 0 1 13.66-5.66M20 12a8 8 0 0 1-13.66 5.66"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M14 3.5 17.66 6.34 14.6 8.6M10 20.5 6.34 17.66 9.4 15.4"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span>Turn your phone sideways — the postcard is landscape.</span>
             </div>
             <div className="posty-camera-stage">
               <video ref={videoRef} autoPlay muted playsInline />
