@@ -2,7 +2,7 @@
 // Optional `link` is a full URL or path
 // Optional `newTab` controls whether the link opens in a new tab
 
-export const myArchivesCollections = [
+export const visitorShort = [
   {
     id: 21,
     title: "flickr surf",
@@ -12,12 +12,11 @@ export const myArchivesCollections = [
     newTab: false,
   },
   {
-    id: 15,
-    title: "gli are.na photo album",
-    desc: "12 photo are.na albums of what i've collected",
-    img: "/images/gli-albums.png",
-    hoverGif: "images/project-images/are-na.gif",
-    link: "/arena-channels",
+    id: 22, 
+    title: "posty",
+    desc: "create and send someone a digital postcard, itll deliver sometime in the 7-14 days",
+    link: "/posty",
+    img: "/images/posty/posty-preview.png",
     newTab: false,
   },
   {
@@ -30,11 +29,113 @@ export const myArchivesCollections = [
     newTab: false,
   },
   {
+    id: 15,
+    title: "gli are.na photo album",
+    desc: "12 photo are.na albums of what i've collected",
+    img: "/images/gli-albums.png",
+    hoverGif: "images/project-images/are-na.gif",
+    link: "/arena-channels",
+    newTab: false,
+  },
+  {
+    id: 10,
+    title: "dorm room vr",
+    desc: "vr experience of my dorm room during covid",
+    img: "/images/oldenborg-room.png",
+    link: "/dorm-room-vr",
+    hoverGif: "images/dormRoom.gif",
+    newTab: false,
+  },
+];
+
+export const visitorLong = [
+  {
+    id: 2,
+    title: "12 hours in walmart",
+    desc: "18 interviews from 8PM to 8AM in a walmart",
+    img: "/images/project-images/12-hours.png",
+    link: "/walmart",
+    hoverGif: "images/project-images/12-hours.gif",
+    newTab: false,
+  },
+  {
+    id: 8,
+    title: "chinatown, los angeles during covid",
+    desc: "interviews and photos of los angeles chinatown, the day my school announced we were leaving",
+    img: "/images/chinatown.jpg",
+    link: "https://gli.cargo.site/chinatown",
+    newTab: true,
+  },
+  {
+    id: 9,
+    title: "shiny objects syndrome",
+    desc: "2d frame by frame animation",
+    img: "/images/shiny-objects2.png",
+    link: "/shiny-objects",
+    hoverGif: "images/animation.gif",
+    newTab: false,
+  },
+  {
+    id: 1,
+    title: "triumvirate arena",
+    desc: "self-made game engine with Rust and Vulkan for graphics, turn taking card game",
+    img: "/images/triumvirate-arena.png",
+    link: "/triumvirate",
+    hoverGif: "images/triumvirate.gif",
+    newTab: false,
+  },
+  {
+    id: 4,
+    title: "odins passage",
+    desc: "unity game: viking odyssey x flappy bird",
+    img: "/images/odins-passage.png",
+    link: "/odinspassage",
+    hoverGif: "images/odins.gif",
+    newTab: false,
+  },
+  {
+    id: 5,
+    title: "ghost town",
+    desc: "unity game: story based game about someone who returns to their hometown",
+    img: "/images/ghost-town2.png",
+    link: "/ghost-town",
+    newTab: false,
+  },
+];
+
+export const myArchivesCollections = [
+
+
+  {
     id: 7,
     title: "my favorite pictures ever",
     desc: "my instagram archive of 7 years",
     img: "/images/gracejli.png",
     link: "https://www.instagram.com/gracejli/",
+    newTab: true,
+  },
+  {
+    id: 1,
+    title: "rubiks cubes",
+    desc: "video:  lauterbrunnen, switzerland",
+    img: "/images/rubiks-cubes.gif",
+    link: "https://www.youtube.com/watch?v=F_qfGXidmDo",
+    newTab: true,
+  },
+  {
+    id: 2,
+    title: "back home now",
+    desc: "video: san diego, covid semester",
+    img: "/images/san-diego.gif",
+    link: "https://www.youtube.com/watch?v=V9Sbn4pKelg",
+    newTab: true,
+  },
+  {
+    id: 5,
+    title: "pigeon friend",
+    desc: "video: trip with the metro to LA",
+    img: "/images/pigeon-friend.gif",
+    link: "https://www.youtube.com/watch?v=l9wLJL_0NQ0",
     newTab: true,
   },
 ];
@@ -81,15 +182,6 @@ export const myHands = [
     newTab: true,
   },
   {
-    id: 9,
-    title: "shiny objects syndrome",
-    desc: "2d frame by frame animation",
-    img: "/images/shiny-objects2.png",
-    link: "/shiny-objects",
-    hoverGif: "images/animation.gif",
-    newTab: false,
-  },
-  {
     id: 16,
     title: "painted porcelain",
     desc: "cobalt underglaze on hand thrown porcelain",
@@ -99,99 +191,8 @@ export const myHands = [
   },
 ];
 
-export const gliVsWorld = [
-  { 
-    id: 2,
-    title: "12 hours in walmart",
-    desc: "18 interviews from 8PM to 8AM in a walmart",
-    img: "/images/project-images/12-hours.png",
-    link: "/walmart",
-    hoverGif: "images/project-images/12-hours.gif",
-    newTab: false,
-  },
-    { 
-    id: 8,
-    title: "chinatown, los angeles during covid",
-    desc: "interviews and photos of los angeles chinatown, the day my school announced we were leaving",
-    img: "/images/chinatown.jpg",
-    link: "https://gli.cargo.site/chinatown",
-    newTab: true,
-  },
-  {
-    id: 1,
-    title: "triumvirate arena",
-    desc: "self-made game engine with Rust and Vulkan for graphics, turn taking card game",
-    img: "/images/triumvirate-arena.png",
-    link: "/triumvirate",
-    hoverGif: "images/triumvirate.gif",
-    newTab: false,
-  },
-  {
-    id: 10,
-    title: "dorm room vr",
-    desc: "vr experience of my dorm room during covid",
-    img: "/images/oldenborg-room.png",
-    link: "/dorm-room-vr",
-    hoverGif: "images/dormRoom.gif",
-    newTab: false,
-  },
-  {
-    id: 4,
-    title: "odins passage",
-    desc: "unity game: viking odyssey x flappy bird",
-    img: "/images/odins-passage.png",
-    link: "/odinspassage",
-    hoverGif: "images/odins.gif",
-    newTab: false,
-  },
-  {
-    id: 5,
-    title: "ghost town",
-    desc: "unity game: story based game about someone who returns to their hometown",
-    img: "/images/ghost-town2.png",
-    link: "/ghost-town",
-    newTab: false,
-  },
-];
-
-export const documents = [
-  {
-    id: 1,
-    title: "rubiks cubes",
-    desc: "video:  lauterbrunnen, switzerland",
-    img: "/images/rubiks-cubes.gif",
-    link: "https://www.youtube.com/watch?v=F_qfGXidmDo",
-    newTab: true,
-  },
-  { 
-    id: 2,
-    title: "back home now",
-    desc: "video: san diego, covid semester",
-    img: "/images/san-diego.gif",
-    link: "https://www.youtube.com/watch?v=V9Sbn4pKelg",
-    newTab: true,
-  },
-  { 
-    id: 5,
-    title: "pigeon friend",
-    desc: "video: trip with the metro to LA",
-    img: "/images/pigeon-friend.gif",
-    link: "https://www.youtube.com/watch?v=l9wLJL_0NQ0",
-    newTab: true,
-  },
-  {
-    id: 7,
-    title: "my favorite pictures ever",
-    desc: "my instagram archive of 7 years",
-    img: "/images/gracejli.png",
-    link: "https://www.instagram.com/gracejli/",
-    newTab: true,
-  },
-
-];
-
 export function workProjectKey(
-  section: "archives" | "hands" | "gliVsWorld" | "documentation",
+  section: "visitorShort" | "visitorLong" | "archives" | "hands",
   id: number
 ) {
   return `${section}-${id}`;

@@ -3,10 +3,10 @@ import { getBlogFeed } from "@/lib/blog-feed";
 import BlogItem from "@/app/blog/BlogItem";
 import ProjectItem from "@/components/ProjectItem";
 import {
+  visitorShort,
+  visitorLong,
   myArchivesCollections,
-  documents,
   myHands,
-  gliVsWorld,
   workProjectKey,
 } from "@/content/projects/data";
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
@@ -42,10 +42,10 @@ export default async function AllPage({ searchParams }: AllPageProps) {
             <div>
               {(
                 [
+                  ["visitorShort", visitorShort],
+                  ["visitorLong", visitorLong],
                   ["archives", myArchivesCollections],
                   ["hands", myHands],
-                  ["gliVsWorld", gliVsWorld],
-                  ["documentation", documents],
                 ] as const
               ).flatMap(([section, items]) =>
                 items.map((p) => (
