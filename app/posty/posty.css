@@ -406,6 +406,10 @@ textarea.posty-field {
   object-fit: cover;
 }
 
+.posty-camera-stage video.posty-camera-mirror {
+  transform: scaleX(-1);
+}
+
 .posty-camera-note {
   min-height: 18px;
   margin: 8px 0 0;

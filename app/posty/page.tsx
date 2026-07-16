@@ -83,6 +83,12 @@ function contacts(): string[] {
   }
 }
 
+function shouldMirrorCamera(stream: MediaStream) {
+  const track = stream.getVideoTracks()[0];
+  if (!track) return false;
+  return track.getSettings().facingMode !== "environment";
+}
+
 function dataUrlToFile(dataUrl: string, filename: string): File {
   const [header, base64] = dataUrl.split(",");
   const mime = /data:(.*?);base64/.exec(header)?.[1] || "image/jpeg";
@@ -129,6 +135,7 @@ export default function PostyPage() {
   const [cameraNote, setCameraNote] = useState("Opening your back camera…");
   const [cameraError, setCameraError] = useState(false);
   const [canCapture, setCanCapture] = useState(false);
+  const [mirrorPreview, setMirrorPreview] = useState(false);
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState<Status>({ kind: "", text: "" });
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -158,6 +165,7 @@ export default function PostyPage() {
     stopCamera();
     setCameraOpen(false);
     setCanCapture(false);
+    setMirrorPreview(false);
     setCameraError(false);
     setCameraNote("Opening your back camera…");
   }, [stopCamera]);
@@ -178,6 +186,7 @@ export default function PostyPage() {
     setCameraNote("Opening your back camera…");
     setCameraError(false);
     setCanCapture(false);
+    setMirrorPreview(false);
 
     async function openStream() {
       if (!navigator.mediaDevices?.getUserMedia) {
@@ -216,6 +225,9 @@ export default function PostyPage() {
         }
 
         streamRef.current = stream;
+        if (!cancelled) {
+          setMirrorPreview(shouldMirrorCamera(stream));
+        }
         const video = videoRef.current;
         if (video) {
           video.srcObject = stream;
@@ -280,9 +292,13 @@ export default function PostyPage() {
     const targetWidth = Math.min(1000, sw);
     canvas.width = Math.round(targetWidth);
     canvas.height = Math.round(targetWidth / POSTCARD_FRONT_RATIO);
-    canvas
-      .getContext("2d")
-      ?.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+    const context = canvas.getContext("2d");
+    if (!context) return;
+    if (mirrorPreview) {
+      context.translate(canvas.width, 0);
+      context.scale(-1, 1);
+    }
+    context.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
     updateField("photo", canvas.toDataURL("image/jpeg", 0.82));
     closeCamera();
   }
@@ -364,12 +380,12 @@ export default function PostyPage() {
     }
 
     setSending(true);
-    setStatus({ kind: "", text: "Sending your postcard securely…" });
+    setStatus({ kind: "", text: "Sending your postcard..." });
 
     const snapshot = { ...draft };
     const senderName = snapshot.sender.trim() || "a friend";
     const dateLabel = formatDate(snapshot.date);
-    const subject = `A postcard from ${senderName}`;
+    const subject = `a postcard from ${senderName}`;
     const body = [
       snapshot.message,
       "",
@@ -409,7 +425,7 @@ export default function PostyPage() {
         } else if (result.delayDays) {
           setStatus({
             kind: "success",
-            text: `Sent to ${to}. Your postcard is on its way, estimated delivery in about ${result.delayDays} days.`,
+            text: `Success, your postcard is on its way to ${to}, estimated delivery in about ${result.delayDays} days.`,
           });
         } else {
           setStatus({
@@ -662,10 +678,10 @@ export default function PostyPage() {
             className="posty-camera-box"
             role="dialog"
             aria-modal="true"
-            aria-label="Back camera"
+            aria-label={mirrorPreview ? "Camera" : "Back camera"}
           >
             <div className="posty-camera-bar">
-              <strong>Back camera</strong>
+              <strong>{mirrorPreview ? "Camera" : "Back camera"}</strong>
               <button
                 className="posty-close"
                 aria-label="Close camera"
@@ -676,7 +692,13 @@ export default function PostyPage() {
               </button>
             </div>
             <div className="posty-camera-stage">
-              <video ref={videoRef} autoPlay muted playsInline />
+              <video
+                ref={videoRef}
+                autoPlay
+                muted
+                playsInline
+                className={mirrorPreview ? "posty-camera-mirror" : undefined}
+              />
             </div>
             <p
               className={`posty-camera-note${cameraError ? " error" : ""}`.trim()}

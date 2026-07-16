@@ -135,21 +135,23 @@ export async function POST(request: NextRequest) {
       ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
       : "https://gracejli.com");
   const postyUrl = `${siteUrl}/posty`;
+  const subject = `a postcard from ${sender}`;
 
   const html = `<main style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;padding:24px 16px;background:#f5f3ee;color:#1d1d1d">
+  <p style="margin:0 0 16px;font-size:15px;line-height:1.4;color:rgba(29,29,29,0.7)">${escapeEmailHtml(subject)}</p>
   <img src="cid:postcard" alt="Postcard" style="display:block;width:100%;max-width:640px;height:auto;border:0" />
   <p style="margin:20px 0 8px;font-size:15px;line-height:1.4;color:rgba(29,29,29,0.7)">${
     sendImmediately
       ? "Sent just now (dev mode)."
       : "They sent this sometime 7–14 days ago."
   }</p>
-  <p style="margin:0;font-size:15px;line-height:1.4;color:rgba(29,29,29,0.7)">Sent with <a href="${escapeEmailHtml(postyUrl)}" style="color:#1d1d1d;text-decoration:underline">posty</a>.</p>
+  <p style="margin:0;font-size:15px;line-height:1.4;color:rgba(29,29,29,0.7)">sent with <a href="${escapeEmailHtml(postyUrl)}" style="color:#1d1d1d;text-decoration:underline">posty</a></p>
 </main>`;
 
   const payload: Record<string, unknown> = {
     from: fromEmail,
     to: recipients,
-    subject: `A postcard from ${sender}`,
+    subject,
     html,
     attachments: [
       {
