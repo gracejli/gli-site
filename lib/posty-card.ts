@@ -1,18 +1,14 @@
 import sharp from "sharp";
 
 const CARD_WIDTH = 1080;
-const IMAGE_BORDER = 18;
-const PHOTO_RADIUS = 20;
 const PAD_X = 48;
 const PAD_TOP = 40;
-const PAD_BOTTOM = 52;
+const PAD_BOTTOM = 44;
 const MESSAGE_SIZE = 34;
 const MESSAGE_LINE = 48;
 const META_SIZE = 24;
 const META_GAP = 28;
-const FOOTER_SIZE = 22;
-/** Warm paper tone from reframe.camera (--bg: #f5f3ee) */
-const PAPER = "#f5f3ee";
+const PAPER = "#ffffff";
 const INK = "#1d1d1d";
 const MUTED = "#8a8680";
 
@@ -76,23 +72,14 @@ export async function buildPostcardCardImage(options: {
   location: string;
   date: string;
 }): Promise<Buffer> {
-  const photoWidth = CARD_WIDTH - IMAGE_BORDER * 2;
   const photoBuffer = Buffer.from(options.photoBase64, "base64");
   const resized = await sharp(photoBuffer)
     .rotate()
-    .resize({ width: photoWidth, withoutEnlargement: false })
+    .resize({ width: CARD_WIDTH, withoutEnlargement: false })
     .jpeg({ quality: 90 })
     .toBuffer();
 
-  const { height: photoHeight = photoWidth } = await sharp(resized).metadata();
-
-  const roundedMask = Buffer.from(
-    `<svg width="${photoWidth}" height="${photoHeight}" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" rx="${PHOTO_RADIUS}" ry="${PHOTO_RADIUS}"/></svg>`,
-  );
-  const roundedPhoto = await sharp(resized)
-    .composite([{ input: roundedMask, blend: "dest-in" }])
-    .png()
-    .toBuffer();
+  const { height: photoHeight = CARD_WIDTH } = await sharp(resized).metadata();
 
   const maxChars = Math.floor((CARD_WIDTH - PAD_X * 2) / (MESSAGE_SIZE * 0.52));
   const messageLines = wrapLines(options.message || " ", maxChars);
@@ -102,10 +89,9 @@ export async function buildPostcardCardImage(options: {
   const leftMeta = [dateLabel, options.location].filter(Boolean).join(" · ");
   const sender = options.sender.trim() || "A friend";
 
-  const textTop = IMAGE_BORDER + photoHeight + IMAGE_BORDER + PAD_TOP;
+  const textTop = photoHeight + PAD_TOP;
   const metaY = textTop + messageBlockHeight + META_GAP + META_SIZE;
-  const footerY = metaY + META_GAP + FOOTER_SIZE;
-  const totalHeight = footerY + PAD_BOTTOM;
+  const totalHeight = metaY + PAD_BOTTOM;
 
   const messageSvg = messageLines
     .map((line, index) => {
@@ -120,11 +106,10 @@ export async function buildPostcardCardImage(options: {
   ${messageSvg}
   <text x="${PAD_X}" y="${metaY}" fill="${MUTED}" font-size="${META_SIZE}" font-family="Arial, Helvetica, sans-serif">${escapeXml(leftMeta)}</text>
   <text x="${CARD_WIDTH - PAD_X}" y="${metaY}" fill="${MUTED}" font-size="${META_SIZE}" font-family="Arial, Helvetica, sans-serif" text-anchor="end">${escapeXml(sender)}</text>
-  <text x="${PAD_X}" y="${footerY}" fill="${MUTED}" font-size="${FOOTER_SIZE}" font-family="Arial, Helvetica, sans-serif">sent with posty</text>
 </svg>`);
 
   return sharp(overlay)
-    .composite([{ input: roundedPhoto, top: IMAGE_BORDER, left: IMAGE_BORDER }])
+    .composite([{ input: resized, top: 0, left: 0 }])
     .jpeg({ quality: 90 })
     .toBuffer();
 }

@@ -68,14 +68,14 @@ const APP_HTML = `<!doctype html>
       text-transform: lowercase; color: var(--muted);
     }
     .sent-card {
-      background: #f5f3ee; border: 1px solid var(--line); border-radius: var(--radius-md);
+      background: #ffffff; border: 1px solid var(--line); border-radius: 0;
       overflow: hidden; box-shadow: 0 10px 30px rgba(36,34,28,.06);
-      padding: 10px 10px 0;
+      padding: 0;
     }
     .sent-card-photo {
-      position: relative; width: 100%; aspect-ratio: 4 / 3;
+      position: relative; width: 100%; aspect-ratio: 1.55 / 1;
       background: rgba(29,29,29,0.04); overflow: hidden;
-      border-radius: 10px;
+      border-radius: 0;
     }
     .sent-card-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
     .sent-card-photo .empty-photo {
@@ -103,8 +103,8 @@ const APP_HTML = `<!doctype html>
     .camera-box video { display: block; width: 100%; max-height: 65dvh; background: #202020; object-fit: cover; }
     .frame-guide {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      aspect-ratio: 4 / 3; height: min(78%, 62dvh); width: auto; max-width: 78%;
-      border: 2px solid #fff; border-radius: 6px;
+      aspect-ratio: 1.55; width: min(90vw, 88%); max-height: 82%;
+      border: 2px solid #fff; border-radius: 0;
       box-shadow: 0 0 0 1200px rgba(0,0,0,.55); pointer-events: none;
     }
     .rotate-hint { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; padding: 9px 12px; background: rgba(29,29,29,0.04); border: 1px solid var(--line); border-radius: var(--radius-sm); color: var(--ink); font-size: 13px; line-height: 1.35; }
@@ -147,7 +147,7 @@ const APP_HTML = `<!doctype html>
   var SENT_KEY = "postcard-simple-sent";
   var stream = null;
   var draft = loadDraft();
-  var POSTCARD_FRONT_RATIO = 4 / 3;
+  var POSTCARD_FRONT_RATIO = 1.55;
 
   function loadDraft() {
     try {
@@ -289,15 +289,14 @@ const APP_HTML = `<!doctype html>
           '<label class="label" for="recipients">To</label>' +
           '<input id="recipients" class="field" type="email" value="' + escapeHtml(draft.recipients) + '" placeholder="recipient@email.com" autocomplete="email" />' +
           '<label class="label" for="sender" style="margin-top:18px">From</label>' +
-          '<input id="sender" class="field" value="' + escapeHtml(draft.sender) + '" placeholder="Your name" autocomplete="off" />' +
+          '<input id="sender" class="field" value="' + escapeHtml(draft.sender) + '" placeholder="<3 grace" autocomplete="off" />' +
           '<label class="label" for="location" style="margin-top:18px">Location <span class="hint" style="display:inline">optional</span></label>' +
-          '<input id="location" class="field" value="' + escapeHtml(draft.location) + '" placeholder="e.g. Big Sur, California" autocomplete="off" />' +
+          '<input id="location" class="field" value="' + escapeHtml(draft.location) + '" placeholder="outside in the grass" autocomplete="off" />' +
           '<label class="label" for="date" style="margin-top:18px">Date <span class="hint" style="display:inline">optional</span></label>' +
           '<input id="date" type="date" class="field" value="' + escapeHtml(draft.date) + '" autocomplete="off" />' +
           '<div class="message-head"><label class="label" for="message" style="margin:18px 0 0">Message</label>' +
           '<span class="counter" id="counter">' + wordCount(draft.message) + " / 150 words</span></div>" +
           '<textarea id="message" class="field" placeholder="Write your message…">' + escapeHtml(draft.message) + "</textarea>" +
-          '<span class="hint">Saved on this device as you write, so you can finish it offline.</span>' +
         "</div></section>" +
         '<button class="button primary" type="button" data-action="send">Send postcard' +
           (currentRecipients().length > 1 ? "s" : "") +

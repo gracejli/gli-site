@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
   const postyUrl = `${siteUrl}/posty`;
 
   const html = `<main style="font-family:Arial,Helvetica,sans-serif;max-width:640px;margin:0 auto;padding:24px 16px;background:#f5f3ee;color:#1d1d1d">
-  <img src="cid:postcard" alt="Postcard" style="display:block;width:100%;max-width:640px;height:auto;border:0;border-radius:12px" />
+  <img src="cid:postcard" alt="Postcard" style="display:block;width:100%;max-width:640px;height:auto;border:0" />
   <p style="margin:20px 0 8px;font-size:15px;line-height:1.4;color:rgba(29,29,29,0.7)">${
     sendImmediately
       ? "Sent just now (dev mode)."
@@ -156,6 +156,7 @@ export async function POST(request: NextRequest) {
         filename: `postcard-${Date.now()}.jpg`,
         content: cardBase64,
         content_id: "postcard",
+        content_type: "image/jpeg",
       },
     ],
     tags: [{ name: "type", value: "postcard" }],
