@@ -6,6 +6,7 @@ import GridShellWithVideo from "@/components/GridShellWithVideo";
 import BackgroundVideoLayout from "@/components/BackgroundVideoLayout";
 import HomeToggleableIntro from "@/components/HomeToggleableIntro";
 import MobileNotOptimizedScreen from "@/components/MobileNotOptimizedScreen";
+import { Analytics } from "@vercel/analytics/next";
 import { usePathname } from "next/navigation";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           {shouldShowMobileWarning ? <MobileNotOptimizedScreen /> : null}
           <div>{children}</div>
+          <Analytics />
         </body>
       </html>
     );
@@ -100,6 +102,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               }
             />
           </div>
+          <Analytics />
         </body>
       </html>
     );
@@ -117,6 +120,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </GridShellWithVideo>
         </div>
+        <Analytics />
       </body>
     </html>
   );
