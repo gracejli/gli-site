@@ -454,10 +454,10 @@ export default function PostyPage() {
         <div className="posty-intro">
           <h1 className="posty-brand">posty ✉</h1>
           <p className="posty-brand-note">
-            send someone adigital postcard
+            send someone a digital postcard
             <br />
             <em className="posty-brand-note-sub">
-              estimated delivery time: 7-14 days
+              estimated delivery time: 7-14 days 
             </em>
           </p>
         </div>
