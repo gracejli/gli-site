@@ -466,7 +466,7 @@ export default function PostyPage() {
     <main className="posty" aria-live="polite">
       <section className="posty-controls" aria-label="Postcard controls">
         <div className="posty-intro">
-          <h1 className="posty-brand">posty</h1>
+          <h1 className="posty-brand">posty ✏</h1>
           <p className="posty-brand-note">
             send someone a digital postcard
             <br />
@@ -480,7 +480,7 @@ export default function PostyPage() {
             aria-expanded={aboutOpen}
             onClick={() => setAboutOpen(true)}
           >
-            what is this?
+            about
           </button>
         </div>
 
@@ -630,11 +630,10 @@ export default function PostyPage() {
             </div>
             <div className="posty-about-body">
               <p>
-                posty is an e-postcard. take a photo of where you are right now, then write a message and
-                who it&apos;s for. your draft saves on this device (and saves even if you have no service!) they&apos;ll get a postcard in about{" "}
-                7–14 days from no-reply [at] posty.gracejli.com.
+                take a photo of what you're seeing, for someone, and write them. they&apos;ll get your digital postcard in about{" "}
+                7–14 days from no-reply [at] posty.gracejli.com. 
               </p>
-              <p className="posty-about-signoff">happy slow sending, gli</p>
+              <p className="posty-about-signoff"></p>
             </div>
           </div>
         </section>
