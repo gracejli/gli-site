@@ -29,6 +29,7 @@ const APP_HTML = `<!doctype html>
     button { cursor: pointer; color: inherit; }
     .app { min-height: 100dvh; display: grid; grid-template-columns: minmax(360px, 460px) 1fr; }
     .controls { background: transparent; border-right: 1px solid var(--line); padding: 40px 40px 36px; overflow: auto; }
+    .intro { margin: 0 0 0; }
     .brand { font-size: 20px; font-weight: 400; letter-spacing: 0.01em; margin: 0 0 8px; }
     .brand-note { margin: 0 0 36px; font-size: 16px; line-height: 1.3; color: var(--muted); max-width: 28em; }
     .section { border-top: 1px solid var(--line); padding: 26px 0; margin: 0; }
@@ -52,6 +53,7 @@ const APP_HTML = `<!doctype html>
     .button.primary:hover { background: #111; }
     .camera-line { display: flex; gap: 12px; margin-bottom: 12px; }
     .camera-line .button { flex: 1; }
+    .actions { margin-top: 8px; }
     #message { font-family: Arial, Helvetica, sans-serif; }
     .message-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; }
     .counter { font-size: 13px; color: var(--muted); }
@@ -92,22 +94,38 @@ const APP_HTML = `<!doctype html>
     }
     .sent-card-meta span { min-width: 0; }
     .sent-card-meta .sender { text-align: right; }
-    .modal { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 10; display: grid; place-items: center; padding: 20px; }
-    .camera-box { width: min(620px, 100%); background: var(--bg); border-radius: var(--radius-md); padding: 18px; }
-    .camera-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-    .camera-stage { position: relative; overflow: hidden; background: #202020; border-radius: var(--radius-sm); }
-    .camera-box video { display: block; width: 100%; max-height: 65dvh; background: #202020; object-fit: cover; }
-    .frame-guide {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      aspect-ratio: 1.55; width: min(90vw, 88%); max-height: 82%;
-      border: 2px solid #fff; border-radius: 0;
-      box-shadow: 0 0 0 1200px rgba(0,0,0,.55); pointer-events: none;
+    .modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+      padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+        max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
     }
-    .rotate-hint { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; padding: 9px 12px; background: rgba(29,29,29,0.04); border: 1px solid var(--line); border-radius: var(--radius-sm); color: var(--ink); font-size: 13px; line-height: 1.35; }
+    .camera-box {
+      width: min(620px, 100%); max-height: 100%;
+      background: var(--bg); border-radius: var(--radius-md); padding: 14px;
+      display: flex; flex-direction: column; min-height: 0; overflow: hidden;
+    }
+    .camera-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-shrink: 0; }
+    .camera-stage {
+      position: relative; overflow: hidden; background: #202020; border-radius: var(--radius-sm);
+      flex: 1 1 auto; min-height: 180px;
+    }
+    .camera-box video {
+      display: block; width: 100%; height: 100%; min-height: 180px; max-height: min(48dvh, 420px);
+      background: #202020; object-fit: cover;
+    }
+    .rotate-hint {
+      display: flex; align-items: center; gap: 8px; margin: 0 0 10px; padding: 9px 12px;
+      background: rgba(29,29,29,0.04); border: 1px solid var(--line); border-radius: var(--radius-sm);
+      color: var(--ink); font-size: 13px; line-height: 1.35; flex-shrink: 0;
+    }
     .rotate-hint svg { flex-shrink: 0; }
-    .camera-note { min-height: 18px; margin: 10px 0 0; font-size: 13px; line-height: 1.35; color: var(--muted); }
+    .camera-note { min-height: 18px; margin: 8px 0 0; font-size: 13px; line-height: 1.35; color: var(--muted); flex-shrink: 0; }
     .camera-note.error { color: var(--error); }
-    .camera-actions { display: flex; justify-content: center; margin-top: 16px; }
+    .camera-actions {
+      display: flex; justify-content: center; align-items: center;
+      flex-shrink: 0; margin-top: 12px; padding-bottom: 2px;
+    }
     .camera-shutter {
       width: 58px; height: 58px; border-radius: 999px; border: 1.5px solid var(--line);
       background: rgba(255,255,255,0.55); color: var(--ink); padding: 0;
@@ -119,14 +137,40 @@ const APP_HTML = `<!doctype html>
     .button:disabled { cursor: not-allowed; opacity: .45; }
     .close { border: 0; background: transparent; font-size: 22px; line-height: 1; padding: 0 4px; color: var(--muted); }
     @media (max-width: 760px) {
-      .app { display: block; }
-      .controls { border-right: 0; border-bottom: 1px solid var(--line); padding: 28px 20px; }
-      .brand { font-size: 20px; }
+      .app {
+        display: flex; flex-direction: column; min-height: 100dvh;
+      }
+      .controls {
+        display: contents;
+        border-right: 0;
+      }
+      .intro {
+        order: 1; padding: 28px 20px 0;
+      }
+      .brand-note { margin-bottom: 20px; }
+      .section-photo {
+        order: 2; margin: 0 20px; padding: 20px 0;
+      }
+      .preview {
+        order: 3; min-height: auto; padding: 8px 20px 28px;
+      }
+      .section-write {
+        order: 4; margin: 0 20px; padding: 20px 0;
+      }
+      .actions {
+        order: 5; margin: 0 20px 8px;
+      }
+      .status {
+        order: 6; margin: 0 20px 28px;
+      }
       .camera-button { width: 100%; }
-      .preview { min-height: auto; padding: 32px 20px; }
       .preview-stage { width: min(100%, 540px); margin: 0 auto; }
-      .camera-box { padding: 14px; }
+      .camera-box { padding: 12px; border-radius: 16px; width: 100%; max-height: calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
+      .camera-box video { max-height: min(42dvh, 360px); min-height: 160px; }
+      .rotate-hint { font-size: 12px; padding: 8px 10px; }
+      .camera-note { font-size: 12px; }
       .camera-shutter { width: 64px; height: 64px; }
+      .camera-actions { margin-top: 10px; }
     }
     @media (prefers-reduced-motion: no-preference) {
       .button, .field { transition: background 120ms ease, border-color 120ms ease, opacity 120ms ease; }
@@ -284,13 +328,14 @@ const APP_HTML = `<!doctype html>
   function render() {
     root.innerHTML =
       '<section class="controls" aria-label="Postcard controls">' +
-        '<h1 class="brand">posty</h1>' +
-        '<p class="brand-note">send a postcard, well get it to them sometime in the next 7-14 days</p>' +
-        '<section class="section"><h2 class="section-title"><span>Photo</span></h2><div class="section-inner">' +
+        '<div class="intro">' +
+          '<h1 class="brand">posty</h1>' +
+          '<p class="brand-note">send a postcard, well get it to them sometime in the next 7-14 days</p>' +
+        "</div>" +
+        '<section class="section section-photo"><h2 class="section-title"><span>Photo</span></h2><div class="section-inner">' +
           '<div class="camera-line"><button class="button primary camera-button" type="button" data-action="camera">Take photo</button></div>' +
-
         "</div></section>" +
-        '<section class="section"><h2 class="section-title"><span>Write</span></h2><div class="section-inner">' +
+        '<section class="section section-write"><h2 class="section-title"><span>Write</span></h2><div class="section-inner">' +
           '<label class="label" for="recipients">To</label>' +
           '<input id="recipients" class="field" type="email" value="' + escapeHtml(draft.recipients) + '" placeholder="recipient@email.com" autocomplete="email" />' +
           '<label class="label" for="sender" style="margin-top:18px">From</label>' +
@@ -303,7 +348,7 @@ const APP_HTML = `<!doctype html>
           '<span class="counter" id="counter">' + wordCount(draft.message) + " / 150 words</span></div>" +
           '<textarea id="message" class="field" placeholder="Write your message…">' + escapeHtml(draft.message) + "</textarea>" +
         "</div></section>" +
-        '<div class="camera-line" style="margin-top:8px">' +
+        '<div class="camera-line actions">' +
           '<button class="button" type="button" data-action="clear">Clear</button>' +
           '<button class="button primary" type="button" data-action="send">Send postcard' +
             (currentRecipients().length > 1 ? "s" : "") +
@@ -347,8 +392,7 @@ const APP_HTML = `<!doctype html>
           "</svg>" +
           "<span>Turn your phone sideways — the postcard is landscape.</span>" +
         "</div>" +
-        '<div class="camera-stage"><video id="camera-video" autoplay muted playsinline></video>' +
-        '<div class="frame-guide" aria-hidden="true"></div></div>' +
+        '<div class="camera-stage"><video id="camera-video" autoplay muted playsinline></video></div>' +
         '<p class="camera-note" id="camera-note">Opening your back camera…</p>' +
         '<div class="camera-actions">' +
           '<button class="camera-shutter" type="button" data-action="capture" aria-label="Take photo" disabled>' +
@@ -397,17 +441,14 @@ const APP_HTML = `<!doctype html>
       .then(function (value) {
         attachStream(
           value,
-          "Rotate your phone to landscape and fill the outlined frame — that\\u2019s exactly what will print on the postcard."
+          "Rotate your phone to landscape, then take the photo."
         );
       })
       .catch(function () {
         return navigator.mediaDevices
           .getUserMedia({ video: true, audio: false })
           .then(function (value) {
-            attachStream(
-              value,
-              "Fill the outlined frame — that\\u2019s exactly what will print on the postcard."
-            );
+            attachStream(value, "Line up your shot, then take the photo.");
           });
       })
       .catch(function (error) {
