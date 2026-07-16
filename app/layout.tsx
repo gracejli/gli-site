@@ -28,9 +28,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "/ghost-town",
     "/email-signoffs",
     "/flickr-surf",
-    "/posty",
   ] as const;
-  const noNavPrefixes = [...fullBleedPrefixes, "/arena-channels"] as const;
+  const noNavPrefixes = [...fullBleedPrefixes, "/arena-channels", "/posty"] as const;
   const isFullBleedGallery = fullBleedPrefixes.some(
     (p) => pathname === p || pathname.startsWith(`${p}/`),
   );

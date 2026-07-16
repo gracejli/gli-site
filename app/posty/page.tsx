@@ -1,702 +1,661 @@
 "use client";
 
-const APP_HTML = `<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>posty</title>
-  <style>
-    :root {
-      --bg:#f5f3ee; --bg-soft:#fbfaf7; --panel:rgba(29,29,29,0.03); --paper:#f5f3ee;
-      --ink:rgba(29,29,29,0.9); --muted:rgba(29,29,29,0.55); --line:rgba(29,29,29,0.12);
-      --soft-line:rgba(29,29,29,0.08); --accent:rgba(20,20,20,0.82); --error:#a33;
-      --radius-lg:28px; --radius-md:20px; --radius-sm:12px;
-      --font:Arial, Helvetica, sans-serif;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: radial-gradient(circle at 22% 0%, var(--bg-soft) 0%, var(--bg) 58%);
-      color: var(--ink);
-      font-family: var(--font);
-      font-size: 16px;
-      line-height: 1.3;
-      letter-spacing: 0.01em;
-      -webkit-font-smoothing: antialiased;
-    }
-    button, input, textarea { font: inherit; }
-    button { cursor: pointer; color: inherit; }
-    .app { min-height: 100dvh; display: grid; grid-template-columns: minmax(360px, 460px) 1fr; }
-    .controls { background: transparent; border-right: 1px solid var(--line); padding: 40px 40px 36px; overflow: auto; }
-    .intro { margin: 0 0 0; }
-    .brand { font-size: 20px; font-weight: 400; letter-spacing: 0.01em; margin: 0 0 8px; }
-    .brand-note { margin: 0 0 36px; font-size: 16px; line-height: 1.3; color: var(--muted); max-width: 28em; }
-    .section { border-top: 1px solid var(--line); padding: 26px 0; margin: 0; }
-    .section-title { margin: 0 0 18px; font-size: 13px; font-weight: 400; text-transform: lowercase; letter-spacing: .04em; color: var(--muted); }
-    .section-inner { padding: 0; }
-    .label { display: block; margin: 0 0 7px; font-size: 15px; color: var(--ink); }
-    .hint { display: block; margin-top: 6px; color: var(--muted); font-size: 13px; line-height: 1.35; }
-    .field {
-      width: 100%; min-height: 44px; padding: 12px 14px;
-      border: 1px solid var(--line); border-radius: var(--radius-sm);
-      background: rgba(255,255,255,0.35); outline: 0; color: var(--ink);
-    }
-    .field:focus { border-color: rgba(29,29,29,0.35); box-shadow: 0 0 0 3px rgba(29,29,29,.06); }
-    textarea.field { min-height: 150px; line-height: 1.45; resize: vertical; }
-    .button {
-      min-height: 44px; border: 1px solid var(--line); border-radius: var(--radius-sm);
-      background: rgba(255,255,255,0.35); padding: 0 16px; white-space: nowrap; font-weight: 400;
-    }
-    .button:hover { background: rgba(29,29,29,0.04); }
-    .button.primary { background: var(--accent); border-color: transparent; color: #fff; }
-    .button.primary:hover { background: #111; }
-    .camera-line { display: flex; gap: 12px; margin-bottom: 12px; }
-    .camera-line .button { flex: 1; }
-    .actions { margin-top: 8px; }
-    #message { font-family: Arial, Helvetica, sans-serif; }
-    .message-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; }
-    .counter { font-size: 13px; color: var(--muted); }
-    .status { min-height: 20px; margin: 16px 0 0; font-size: 14px; line-height: 1.4; }
-    .status.error { color: var(--error); }
-    .status.success { color: #2f6b3c; }
-    .preview {
-      position: relative; min-height: 100dvh; display: flex; align-items: center; justify-content: center;
-      background: transparent; padding: clamp(28px, 4vw, 64px);
-    }
-    .preview-stage { width: min(100%, 520px); }
-    .preview-label {
-      margin: 0 0 14px; font-size: 13px; font-weight: 400; letter-spacing: .04em;
-      text-transform: lowercase; color: var(--muted);
-    }
-    .sent-card {
-      background: #ffffff; border: 1px solid var(--line); border-radius: 0;
-      overflow: hidden; box-shadow: 0 10px 30px rgba(36,34,28,.06);
-      padding: 0;
-    }
-    .sent-card-photo {
-      position: relative; width: 100%; aspect-ratio: 1.55 / 1;
-      background: rgba(29,29,29,0.04); overflow: hidden;
-      border-radius: 0;
-    }
-    .sent-card-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
-    .sent-card-body {
-      padding: 22px 24px 26px; color: rgba(29,29,29,0.9);
-    }
-    .sent-card-message {
-      margin: 0; font-size: 17px; line-height: 1.4; white-space: pre-wrap; word-break: break-word;
-      min-height: 1.4em;
-    }
-    .sent-card-message.is-placeholder { color: var(--muted); }
-    .sent-card-meta {
-      display: flex; justify-content: space-between; gap: 16px; align-items: baseline;
-      margin-top: 18px; font-size: 13px; line-height: 1.35; color: #8a8680;
-    }
-    .sent-card-meta span { min-width: 0; }
-    .sent-card-meta .sender { text-align: right; }
-    .modal {
-      position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 10;
-      display: flex; align-items: center; justify-content: center;
-      padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
-        max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
-    }
-    .camera-box {
-      width: min(620px, 100%); max-height: 100%;
-      background: var(--bg); border-radius: var(--radius-md); padding: 14px;
-      display: flex; flex-direction: column; min-height: 0; overflow: hidden;
-    }
-    .camera-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-shrink: 0; }
-    .camera-stage {
-      position: relative; overflow: hidden; background: #202020; border-radius: var(--radius-sm);
-      flex: 1 1 auto; min-height: 180px;
-    }
-    .camera-box video {
-      display: block; width: 100%; height: 100%; min-height: 180px; max-height: min(48dvh, 420px);
-      background: #202020; object-fit: cover;
-    }
-    .rotate-hint {
-      display: flex; align-items: center; gap: 8px; margin: 0 0 10px; padding: 9px 12px;
-      background: rgba(29,29,29,0.04); border: 1px solid var(--line); border-radius: var(--radius-sm);
-      color: var(--ink); font-size: 13px; line-height: 1.35; flex-shrink: 0;
-    }
-    .rotate-hint svg { flex-shrink: 0; }
-    .camera-note { min-height: 18px; margin: 8px 0 0; font-size: 13px; line-height: 1.35; color: var(--muted); flex-shrink: 0; }
-    .camera-note.error { color: var(--error); }
-    .camera-actions {
-      display: flex; justify-content: center; align-items: center;
-      flex-shrink: 0; margin-top: 12px; padding-bottom: 2px;
-    }
-    .camera-shutter {
-      width: 58px; height: 58px; border-radius: 999px; border: 1.5px solid var(--line);
-      background: rgba(255,255,255,0.55); color: var(--ink); padding: 0;
-      display: grid; place-items: center;
-    }
-    .camera-shutter:hover { background: rgba(29,29,29,0.06); }
-    .camera-shutter:disabled { cursor: not-allowed; opacity: .4; }
-    .camera-shutter svg { width: 22px; height: 22px; display: block; pointer-events: none; }
-    .button:disabled { cursor: not-allowed; opacity: .45; }
-    .close { border: 0; background: transparent; font-size: 22px; line-height: 1; padding: 0 4px; color: var(--muted); }
-    @media (max-width: 760px) {
-      .app {
-        display: flex; flex-direction: column; min-height: 100dvh;
-      }
-      .controls {
-        display: contents;
-        border-right: 0;
-      }
-      .intro {
-        order: 1; padding: 28px 20px 0;
-      }
-      .brand-note { margin-bottom: 20px; }
-      .section-photo {
-        order: 2; margin: 0 20px; padding: 20px 0;
-      }
-      .preview {
-        order: 3; min-height: auto; padding: 8px 20px 28px;
-      }
-      .section-write {
-        order: 4; margin: 0 20px; padding: 20px 0;
-      }
-      .actions {
-        order: 5; margin: 0 20px 8px;
-      }
-      .status {
-        order: 6; margin: 0 20px 28px;
-      }
-      .camera-button { width: 100%; }
-      .preview-stage { width: min(100%, 540px); margin: 0 auto; }
-      .camera-box { padding: 12px; border-radius: 16px; width: 100%; max-height: calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
-      .camera-box video { max-height: min(42dvh, 360px); min-height: 160px; }
-      .rotate-hint { font-size: 12px; padding: 8px 10px; }
-      .camera-note { font-size: 12px; }
-      .camera-shutter { width: 64px; height: 64px; }
-      .camera-actions { margin-top: 10px; }
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .button, .field { transition: background 120ms ease, border-color 120ms ease, opacity 120ms ease; }
-    }
-  </style>
-</head>
-<body>
-  <main id="app-root" class="app" aria-live="polite"></main>
-  <script>
-(function () {
-  var root = document.getElementById("app-root");
-  var DRAFT_KEY = "postcard-simple-draft";
-  var CONTACTS_KEY = "postcard-simple-contacts";
-  var SENT_KEY = "postcard-simple-sent";
-  var stream = null;
-  var draft = loadDraft();
-  var POSTCARD_FRONT_RATIO = 1.55;
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+} from "react";
+import "./posty.css";
 
-  function loadDraft() {
-    try {
-      var saved = JSON.parse(localStorage.getItem(DRAFT_KEY) || "{}");
-      return {
-        photo: saved.photo || "",
-        location: saved.location || "",
-        date: saved.date || "",
-        sender: saved.sender || "",
-        recipients: saved.recipients || "",
-        message: saved.message || ""
-      };
-    } catch (e) {
-      return { photo: "", location: "", date: "", sender: "", recipients: "", message: "" };
-    }
+type Draft = {
+  photo: string;
+  location: string;
+  date: string;
+  sender: string;
+  recipients: string;
+  message: string;
+};
+
+type Status = { kind: "error" | "success" | ""; text: string };
+
+const DRAFT_KEY = "postcard-simple-draft";
+const CONTACTS_KEY = "postcard-simple-contacts";
+const SENT_KEY = "postcard-simple-sent";
+const POSTCARD_FRONT_RATIO = 1.55;
+const DEFAULT_PHOTO = "/images/posty/default.jpg";
+
+function emptyDraft(): Draft {
+  return {
+    photo: "",
+    location: "",
+    date: "",
+    sender: "",
+    recipients: "",
+    message: "",
+  };
+}
+
+function loadDraft(): Draft {
+  try {
+    const saved = JSON.parse(localStorage.getItem(DRAFT_KEY) || "{}") as Partial<Draft>;
+    return {
+      photo: saved.photo || "",
+      location: saved.location || "",
+      date: saved.date || "",
+      sender: saved.sender || "",
+      recipients: saved.recipients || "",
+      message: saved.message || "",
+    };
+  } catch {
+    return emptyDraft();
   }
+}
 
-  function escapeHtml(value) {
-    return value.replace(/[&<>"']/g, function (char) {
-      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char];
-    });
+function wordCount(value: string) {
+  return value.trim() ? value.trim().split(/\s+/).length : 0;
+}
+
+function formatDate(value: string) {
+  const source = value || new Date().toISOString().slice(0, 10);
+  const parsed = new Date(`${source}T12:00:00`);
+  if (Number.isNaN(parsed.getTime())) return value || "";
+  return parsed.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function currentRecipients(recipients: string) {
+  return recipients
+    .split(/[\n,]+/)
+    .map((value) => value.trim())
+    .filter(Boolean);
+}
+
+function contacts(): string[] {
+  try {
+    return JSON.parse(localStorage.getItem(CONTACTS_KEY) || "[]") as string[];
+  } catch {
+    return [];
   }
+}
 
-  function wordCount(value) {
-    return value.trim() ? value.trim().split(/\\s+/).length : 0;
-  }
+function dataUrlToFile(dataUrl: string, filename: string): File {
+  const [header, base64] = dataUrl.split(",");
+  const mime = /data:(.*?);base64/.exec(header)?.[1] || "image/jpeg";
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new File([bytes], filename, { type: mime });
+}
 
-  function saveDraft() {
+function downloadPhoto(dataUrl: string, filename: string) {
+  const link = document.createElement("a");
+  link.href = dataUrl;
+  link.download = filename;
+  document.body.append(link);
+  link.click();
+  link.remove();
+}
+
+async function photoWithWhiteBorder(dataUrl: string): Promise<string> {
+  const photo = new Image();
+  await new Promise<void>((resolve, reject) => {
+    photo.onload = () => resolve();
+    photo.onerror = () =>
+      reject(new Error("The postcard photo could not be prepared."));
+    photo.src = dataUrl;
+  });
+  const border = Math.max(12, Math.round(photo.naturalWidth * 0.018));
+  const canvas = document.createElement("canvas");
+  canvas.width = photo.naturalWidth + border * 2;
+  canvas.height = photo.naturalHeight + border * 2;
+  const context = canvas.getContext("2d");
+  if (!context) return dataUrl;
+  context.fillStyle = "#fffefb";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(photo, border, border, photo.naturalWidth, photo.naturalHeight);
+  return canvas.toDataURL("image/jpeg", 0.9);
+}
+
+export default function PostyPage() {
+  const [draft, setDraft] = useState<Draft>(emptyDraft);
+  const [ready, setReady] = useState(false);
+  const [cameraOpen, setCameraOpen] = useState(false);
+  const [cameraNote, setCameraNote] = useState("Opening your back camera…");
+  const [cameraError, setCameraError] = useState(false);
+  const [canCapture, setCanCapture] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [status, setStatus] = useState<Status>({ kind: "", text: "" });
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
+  useEffect(() => {
+    setDraft(loadDraft());
+    setReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
     localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
-  }
+  }, [draft, ready]);
 
-  function contacts() {
-    try {
-      return JSON.parse(localStorage.getItem(CONTACTS_KEY) || "[]");
-    } catch (e) {
-      return [];
+  const stopCamera = useCallback(() => {
+    streamRef.current?.getTracks().forEach((track) => track.stop());
+    streamRef.current = null;
+    if (videoRef.current) videoRef.current.srcObject = null;
+  }, []);
+
+  const closeCamera = useCallback(() => {
+    stopCamera();
+    setCameraOpen(false);
+    setCanCapture(false);
+    setCameraError(false);
+    setCameraNote("Opening your back camera…");
+  }, [stopCamera]);
+
+  useEffect(() => {
+    if (!cameraOpen) return;
+
+    let cancelled = false;
+    setCameraNote("Opening your back camera…");
+    setCameraError(false);
+    setCanCapture(false);
+
+    async function openStream() {
+      if (!navigator.mediaDevices?.getUserMedia) {
+        setCameraNote("This browser cannot open a camera.");
+        setCameraError(true);
+        return;
+      }
+
+      try {
+        let stream: MediaStream;
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              facingMode: { ideal: "environment" },
+              width: { ideal: 1920 },
+              height: { ideal: 1080 },
+            },
+            audio: false,
+          });
+          if (!cancelled) {
+            setCameraNote("Rotate your phone to landscape, then take the photo.");
+          }
+        } catch {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: false,
+          });
+          if (!cancelled) {
+            setCameraNote("Line up your shot, then take the photo.");
+          }
+        }
+
+        if (cancelled) {
+          stream.getTracks().forEach((track) => track.stop());
+          return;
+        }
+
+        streamRef.current = stream;
+        const video = videoRef.current;
+        if (video) {
+          video.srcObject = stream;
+          video.onloadedmetadata = () => {
+            if (!cancelled) setCanCapture(true);
+          };
+        }
+      } catch (error) {
+        if (cancelled) return;
+        const denied =
+          error instanceof DOMException &&
+          (error.name === "NotAllowedError" ||
+            error.name === "PermissionDeniedError");
+        setCameraNote(
+          denied
+            ? "Camera permission was blocked. Allow camera access for this site and try again."
+            : "Camera access is needed to make a postcard. Check permission and try again.",
+        );
+        setCameraError(true);
+      }
     }
+
+    void openStream();
+    return () => {
+      cancelled = true;
+      stopCamera();
+    };
+  }, [cameraOpen, stopCamera]);
+
+  function updateField<K extends keyof Draft>(key: K, value: Draft[K]) {
+    setDraft((prev) => ({ ...prev, [key]: value }));
+    setStatus({ kind: "", text: "" });
   }
 
-  function renderedPhoto() {
-    return draft.photo || "/images/posty/default.jpg";
-  }
-
-  function emptyDraft() {
-    return { photo: "", location: "", date: "", sender: "", recipients: "", message: "" };
+  function onFieldChange(
+    key: keyof Draft,
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) {
+    updateField(key, event.target.value);
   }
 
   function clearDraft() {
-    draft = emptyDraft();
-    saveDraft();
-    render();
+    setDraft(emptyDraft());
+    setStatus({ kind: "", text: "" });
   }
 
-  function currentRecipients() {
-    return draft.recipients.split(/[\\n,]+/).map(function (value) {
-      return value.trim();
-    }).filter(Boolean);
-  }
+  function capture() {
+    const video = videoRef.current;
+    if (!video?.videoWidth || !video.videoHeight) return;
 
-  function formatDate(value) {
-    var source = value || new Date().toISOString().slice(0, 10);
-    var parsed = new Date(source + "T12:00:00");
-    if (Number.isNaN(parsed.getTime())) return value || "";
-    return parsed.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-  }
-
-  function dataUrlToFile(dataUrl, filename) {
-    var parts = dataUrl.split(",");
-    var header = parts[0];
-    var base64 = parts[1];
-    var mimeMatch = /data:(.*?);base64/.exec(header);
-    var mime = mimeMatch ? mimeMatch[1] : "image/jpeg";
-    var binary = atob(base64);
-    var bytes = new Uint8Array(binary.length);
-    for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-    return new File([bytes], filename, { type: mime });
-  }
-
-  function downloadPhoto(dataUrl, filename) {
-    var link = document.createElement("a");
-    link.href = dataUrl;
-    link.download = filename;
-    document.body.append(link);
-    link.click();
-    link.remove();
-  }
-
-  function photoWithWhiteBorder(dataUrl) {
-    return new Promise(function (resolve, reject) {
-      var photo = new Image();
-      photo.onload = function () {
-        var border = Math.max(12, Math.round(photo.naturalWidth * 0.018));
-        var canvas = document.createElement("canvas");
-        canvas.width = photo.naturalWidth + border * 2;
-        canvas.height = photo.naturalHeight + border * 2;
-        var context = canvas.getContext("2d");
-        if (!context) {
-          resolve(dataUrl);
-          return;
-        }
-        context.fillStyle = "#fffefb";
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(photo, border, border, photo.naturalWidth, photo.naturalHeight);
-        resolve(canvas.toDataURL("image/jpeg", 0.9));
-      };
-      photo.onerror = function () {
-        reject(new Error("The postcard photo could not be prepared."));
-      };
-      photo.src = dataUrl;
-    });
-  }
-
-  function postcardMarkup() {
-    var photo = renderedPhoto();
-    var hasMessage = Boolean(draft.message.trim());
-    var message = hasMessage ? draft.message : "Your message will appear here as you write it.";
-    var sender = draft.sender.trim() || "<3 grace";
-    var dateLabel = formatDate(draft.date);
-    var location = draft.location.trim() || "playing at glassell park";
-    var leftMeta = [dateLabel, location].filter(Boolean).join(" · ");
-    return '<div class="preview-stage">' +
-      '<p class="preview-label">preview</p>' +
-      '<article class="sent-card" aria-label="Postcard as it will be sent">' +
-        '<div class="sent-card-photo">' +
-          '<img src="' + photo + '" alt="Current postcard photograph" />' +
-        "</div>" +
-        '<div class="sent-card-body">' +
-          '<p class="sent-card-message' + (hasMessage ? "" : " is-placeholder") + '">' + escapeHtml(message) + "</p>" +
-          '<div class="sent-card-meta">' +
-            "<span>" + escapeHtml(leftMeta) + "</span>" +
-            '<span class="sender">' + escapeHtml(sender) + "</span>" +
-          "</div>" +
-        "</div>" +
-      "</article>" +
-    "</div>";
-  }
-
-  function render() {
-    root.innerHTML =
-      '<section class="controls" aria-label="Postcard controls">' +
-        '<div class="intro">' +
-          '<h1 class="brand">posty</h1>' +
-          '<p class="brand-note">send a postcard, well get it to them sometime in the next 7-14 days</p>' +
-        "</div>" +
-        '<section class="section section-photo"><h2 class="section-title"><span>Photo</span></h2><div class="section-inner">' +
-          '<div class="camera-line"><button class="button primary camera-button" type="button" data-action="camera">Take photo</button></div>' +
-        "</div></section>" +
-        '<section class="section section-write"><h2 class="section-title"><span>Write</span></h2><div class="section-inner">' +
-          '<label class="label" for="recipients">To</label>' +
-          '<input id="recipients" class="field" type="email" value="' + escapeHtml(draft.recipients) + '" placeholder="recipient@email.com" autocomplete="email" />' +
-          '<label class="label" for="sender" style="margin-top:18px">From</label>' +
-          '<input id="sender" class="field" value="' + escapeHtml(draft.sender) + '" placeholder="<3 grace" autocomplete="off" />' +
-          '<label class="label" for="location" style="margin-top:18px">Location <span class="hint" style="display:inline">optional</span></label>' +
-          '<input id="location" class="field" value="' + escapeHtml(draft.location) + '" placeholder="playing at glassell park" autocomplete="off" />' +
-          '<label class="label" for="date" style="margin-top:18px">Date <span class="hint" style="display:inline">optional</span></label>' +
-          '<input id="date" type="date" class="field" value="' + escapeHtml(draft.date) + '" autocomplete="off" />' +
-          '<div class="message-head"><label class="label" for="message" style="margin:18px 0 0">Message</label>' +
-          '<span class="counter" id="counter">' + wordCount(draft.message) + " / 150 words</span></div>" +
-          '<textarea id="message" class="field" placeholder="Write your message…">' + escapeHtml(draft.message) + "</textarea>" +
-        "</div></section>" +
-        '<div class="camera-line actions">' +
-          '<button class="button" type="button" data-action="clear">Clear</button>' +
-          '<button class="button primary" type="button" data-action="send">Send postcard' +
-            (currentRecipients().length > 1 ? "s" : "") +
-          "</button>" +
-        "</div>" +
-        '<p id="status" class="status"></p>' +
-      "</section>" +
-      '<section class="preview" aria-label="Postcard preview">' + postcardMarkup() + "</section>";
-    bind();
-  }
-
-  function updateFromInputs() {
-    draft.location = document.getElementById("location").value;
-    draft.date = document.getElementById("date").value;
-    draft.sender = document.getElementById("sender").value;
-    draft.recipients = document.getElementById("recipients").value;
-    draft.message = document.getElementById("message").value;
-    saveDraft();
-    var counter = document.getElementById("counter");
-    if (counter) counter.textContent = wordCount(draft.message) + " / 150 words";
-    updatePreviewOnly();
-  }
-
-  function updatePreviewOnly() {
-    var preview = root.querySelector(".preview");
-    if (!preview) return;
-    preview.innerHTML = postcardMarkup();
-  }
-
-  function showCamera() {
-    var modal = document.createElement("section");
-    modal.className = "modal";
-    modal.innerHTML =
-      '<div class="camera-box" role="dialog" aria-modal="true" aria-label="Back camera">' +
-        '<div class="camera-bar"><strong>Back camera</strong>' +
-        '<button class="close" aria-label="Close camera" data-action="close-camera">×</button></div>' +
-        '<div class="rotate-hint" aria-hidden="true">' +
-          '<svg width="18" height="18" viewBox="0 0 24 24" fill="none">' +
-            '<path d="M4 12a8 8 0 0 1 13.66-5.66M20 12a8 8 0 0 1-13.66 5.66" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>' +
-            '<path d="M14 3.5 17.66 6.34 14.6 8.6M10 20.5 6.34 17.66 9.4 15.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
-          "</svg>" +
-          "<span>Turn your phone sideways — the postcard is landscape.</span>" +
-        "</div>" +
-        '<div class="camera-stage"><video id="camera-video" autoplay muted playsinline></video></div>' +
-        '<p class="camera-note" id="camera-note">Opening your back camera…</p>' +
-        '<div class="camera-actions">' +
-          '<button class="camera-shutter" type="button" data-action="capture" aria-label="Take photo" disabled>' +
-            '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
-              '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>' +
-              '<circle cx="12" cy="13" r="3.25" stroke="currentColor" stroke-width="1.8"/>' +
-            "</svg>" +
-          "</button>" +
-        "</div>" +
-      "</div>";
-    document.body.append(modal);
-    var video = modal.querySelector("video");
-    var note = modal.querySelector("#camera-note");
-    var captureButton = modal.querySelector('[data-action="capture"]');
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      note.textContent = "This browser cannot open a camera.";
-      note.classList.add("error");
-      return;
-    }
-
-    function attachStream(value, label) {
-      stream = value;
-      video.srcObject = value;
-      video.addEventListener(
-        "loadedmetadata",
-        function () {
-          note.textContent = label;
-          note.classList.remove("error");
-          captureButton.disabled = false;
-        },
-        { once: true }
-      );
-    }
-
-    // Prefer the back camera on phones; fall back to any camera (needed on desktop).
-    // exact environment facingMode fails silently on Macs with no rear camera and never prompts.
-    navigator.mediaDevices
-      .getUserMedia({
-        video: {
-          facingMode: { ideal: "environment" },
-          width: { ideal: 1920 },
-          height: { ideal: 1080 }
-        },
-        audio: false
-      })
-      .then(function (value) {
-        attachStream(
-          value,
-          "Rotate your phone to landscape, then take the photo."
-        );
-      })
-      .catch(function () {
-        return navigator.mediaDevices
-          .getUserMedia({ video: true, audio: false })
-          .then(function (value) {
-            attachStream(value, "Line up your shot, then take the photo.");
-          });
-      })
-      .catch(function (error) {
-        var denied = error && (error.name === "NotAllowedError" || error.name === "PermissionDeniedError");
-        note.textContent = denied
-          ? "Camera permission was blocked. Allow camera access for this site and try again."
-          : "Camera access is needed to make a postcard. Check permission and try again.";
-        note.classList.add("error");
-      });
-    modal.addEventListener("click", function (event) {
-      var actionEl = event.target.closest("[data-action]");
-      if (!actionEl) return;
-      var action = actionEl.dataset.action;
-      if (action === "close-camera") closeCamera();
-      if (action === "capture") capture(video);
-    });
-  }
-
-  function closeCamera() {
-    if (stream) stream.getTracks().forEach(function (track) { track.stop(); });
-    stream = null;
-    var modal = document.querySelector(".modal");
-    if (modal) modal.remove();
-  }
-
-  function capture(video) {
-    if (!video.videoWidth || !video.videoHeight) return;
-    var vw = video.videoWidth;
-    var vh = video.videoHeight;
-    var sw = vw;
-    var sh = vw / POSTCARD_FRONT_RATIO;
+    const vw = video.videoWidth;
+    const vh = video.videoHeight;
+    let sw = vw;
+    let sh = vw / POSTCARD_FRONT_RATIO;
     if (sh > vh) {
       sh = vh;
       sw = vh * POSTCARD_FRONT_RATIO;
     }
-    var sx = (vw - sw) / 2;
-    var sy = (vh - sh) / 2;
-    var canvas = document.createElement("canvas");
-    var targetWidth = Math.min(1000, sw);
+    const sx = (vw - sw) / 2;
+    const sy = (vh - sh) / 2;
+    const canvas = document.createElement("canvas");
+    const targetWidth = Math.min(1000, sw);
     canvas.width = Math.round(targetWidth);
     canvas.height = Math.round(targetWidth / POSTCARD_FRONT_RATIO);
-    var ctx = canvas.getContext("2d");
-    if (ctx) ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
-    draft.photo = canvas.toDataURL("image/jpeg", 0.82);
-    saveDraft();
+    canvas
+      .getContext("2d")
+      ?.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+    updateField("photo", canvas.toDataURL("image/jpeg", 0.82));
     closeCamera();
-    render();
   }
 
-  function shareFallback(emails, subject, body, filename) {
-    return photoWithWhiteBorder(draft.photo)
-      .catch(function () {
-        return draft.photo;
-      })
-      .then(function (finishedPhoto) {
-        try {
-          var file = dataUrlToFile(finishedPhoto, filename);
-          if (navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
-            return navigator
-              .share({
-                files: [file],
-                title: subject,
-                text: body + "\\n\\nSend to: " + emails.join(", ")
-              })
-              .then(function () {
-                return "device share";
-              });
-          }
-        } catch (e) {
-          /* Fall through */
-        }
-        downloadPhoto(finishedPhoto, filename);
-        window.location.href =
-          "mailto:" +
-          emails.map(function (email) {
-            return encodeURIComponent(email);
-          }).join(",") +
-          "?subject=" +
-          encodeURIComponent(subject) +
-          "&body=" +
-          encodeURIComponent(body);
-        return "mail app";
-      });
-  }
-
-  function rememberSend(emails, method) {
-    var sent = JSON.parse(localStorage.getItem(SENT_KEY) || "[]");
+  function rememberSend(emails: string[], method: string, snapshot: Draft) {
+    const sent = JSON.parse(localStorage.getItem(SENT_KEY) || "[]") as unknown[];
     sent.push({
-      photo: draft.photo,
-      location: draft.location,
-      date: draft.date,
-      sender: draft.sender,
-      message: draft.message,
+      ...snapshot,
       recipients: emails,
       sentAt: Date.now(),
-      method: method
+      method,
     });
     localStorage.setItem(SENT_KEY, JSON.stringify(sent));
     localStorage.setItem(
       CONTACTS_KEY,
-      JSON.stringify(Array.from(new Set(contacts().concat(emails))))
+      JSON.stringify(Array.from(new Set([...contacts(), ...emails]))),
     );
   }
 
-  function send() {
-    updateFromInputs();
-    var status = document.getElementById("status");
-    var emails = currentRecipients();
-    var words = wordCount(draft.message);
+  async function shareFallback(
+    emails: string[],
+    subject: string,
+    body: string,
+    filename: string,
+    photo: string,
+  ): Promise<"device share" | "mail app"> {
+    let finishedPhoto = photo;
+    try {
+      finishedPhoto = await photoWithWhiteBorder(photo);
+    } catch {
+      /* keep original */
+    }
+    try {
+      const file = dataUrlToFile(finishedPhoto, filename);
+      const nav = navigator as Navigator & {
+        canShare?: (data: { files: File[] }) => boolean;
+        share?: (data: {
+          files?: File[];
+          title?: string;
+          text?: string;
+        }) => Promise<void>;
+      };
+      if (nav.canShare?.({ files: [file] }) && nav.share) {
+        await nav.share({
+          files: [file],
+          title: subject,
+          text: `${body}\n\nSend to: ${emails.join(", ")}`,
+        });
+        return "device share";
+      }
+    } catch {
+      /* fall through */
+    }
+    downloadPhoto(finishedPhoto, filename);
+    window.location.href = `mailto:${emails.map((email) => encodeURIComponent(email)).join(",")}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    return "mail app";
+  }
+
+  async function send() {
+    const emails = currentRecipients(draft.recipients);
+    const words = wordCount(draft.message);
     if (!draft.photo) {
-      status.className = "status error";
-      status.textContent = "Take a photo with the back camera first.";
+      setStatus({
+        kind: "error",
+        text: "Take a photo with the back camera first.",
+      });
       return;
     }
-    if (!emails.length || emails.some(function (email) {
-      return !/^\\S+@\\S+\\.\\S+$/.test(email);
-    })) {
-      status.className = "status error";
-      status.textContent = "Add at least one valid email address.";
+    if (!emails.length || emails.some((email) => !/^\S+@\S+\.\S+$/.test(email))) {
+      setStatus({ kind: "error", text: "Add at least one valid email address." });
       return;
     }
     if (words > 150) {
-      status.className = "status error";
-      status.textContent = "Your message must be 150 words or fewer.";
+      setStatus({
+        kind: "error",
+        text: "Your message must be 150 words or fewer.",
+      });
       return;
     }
 
-    var sendButton = root.querySelector('[data-action="send"]');
-    if (sendButton) {
-      sendButton.disabled = true;
-      sendButton.textContent = "Sending…";
-    }
-    status.className = "status";
-    status.textContent = "Sending your postcard securely…";
+    setSending(true);
+    setStatus({ kind: "", text: "Sending your postcard securely…" });
 
-    var senderName = draft.sender.trim() || "a friend";
-    var dateLabel = formatDate(draft.date);
-    var subject = "A postcard from " + senderName;
-    var body = [
-      draft.message,
+    const snapshot = { ...draft };
+    const senderName = snapshot.sender.trim() || "a friend";
+    const dateLabel = formatDate(snapshot.date);
+    const subject = `A postcard from ${senderName}`;
+    const body = [
+      snapshot.message,
       "",
-      "— " +
-        senderName +
-        (draft.location ? " · " + draft.location : "") +
-        (dateLabel ? " · " + dateLabel : "")
-    ].join("\\n");
-    var filename = "postcard-" + Date.now() + ".jpg";
+      `— ${senderName}${snapshot.location ? ` · ${snapshot.location}` : ""}${dateLabel ? ` · ${dateLabel}` : ""}`,
+    ].join("\n");
+    const filename = `postcard-${Date.now()}.jpg`;
 
-    fetch("/api/posty/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        photo: draft.photo,
-        location: draft.location,
-        date: draft.date,
-        sender: draft.sender,
-        recipients: emails,
-        message: draft.message
-      })
-    })
-      .then(function (response) {
-        return response.json().catch(function () {
-          return {};
-        }).then(function (result) {
-          return { response: response, result: result };
-        });
-      })
-      .then(function (payload) {
-        var response = payload.response;
-        var result = payload.result;
-        if (response.ok && result.sent) {
-          rememberSend(emails, "postcard backend");
-          status.className = "status success";
-          var recipientLabel =
-            "Sent to " +
-            emails.length +
-            " recipient" +
-            (emails.length > 1 ? "s" : "") +
-            ". ";
-          if (result.immediate) {
-            status.textContent =
-              recipientLabel + "Delivered immediately (dev mode).";
-          } else if (result.delayDays) {
-            status.textContent =
-              recipientLabel +
-              "Your postcard is on its way — delivery in about " +
-              result.delayDays +
-              " days.";
-          } else {
-            status.textContent = recipientLabel + "Your postcard is on its way.";
-          }
-          return;
-        }
-        if (result.code === "EMAIL_NOT_CONFIGURED") {
-          return shareFallback(emails, subject, body, filename).then(function (method) {
-            rememberSend(emails, method);
-            status.className = "status success";
-            status.textContent =
-              method === "device share"
-                ? "The backend still needs its Resend settings, so your device share sheet opened with the photo attached."
-                : "The backend still needs its Resend settings, so your mail app opened and the photo downloaded for attachment.";
+    try {
+      const response = await fetch("/api/posty/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          photo: snapshot.photo,
+          location: snapshot.location,
+          date: snapshot.date,
+          sender: snapshot.sender,
+          recipients: emails,
+          message: snapshot.message,
+        }),
+      });
+      const result = (await response.json().catch(() => ({}))) as {
+        sent?: boolean;
+        code?: string;
+        error?: string;
+        immediate?: boolean;
+        delayDays?: number | null;
+      };
+
+      if (response.ok && result.sent) {
+        rememberSend(emails, "postcard backend", snapshot);
+        const recipientLabel = `Sent to ${emails.length} recipient${emails.length > 1 ? "s" : ""}. `;
+        if (result.immediate) {
+          setStatus({
+            kind: "success",
+            text: `${recipientLabel}Delivered immediately (dev mode).`,
+          });
+        } else if (result.delayDays) {
+          setStatus({
+            kind: "success",
+            text: `${recipientLabel}Your postcard is on its way — delivery in about ${result.delayDays} days.`,
+          });
+        } else {
+          setStatus({
+            kind: "success",
+            text: `${recipientLabel}Your postcard is on its way.`,
           });
         }
-        throw new Error(result.error || "The postcard could not be sent.");
-      })
-      .catch(function (error) {
-        status.className = "status error";
-        status.textContent =
+        return;
+      }
+
+      if (result.code === "EMAIL_NOT_CONFIGURED") {
+        const method = await shareFallback(
+          emails,
+          subject,
+          body,
+          filename,
+          snapshot.photo,
+        );
+        rememberSend(emails, method, snapshot);
+        setStatus({
+          kind: "success",
+          text:
+            method === "device share"
+              ? "The backend still needs its Resend settings, so your device share sheet opened with the photo attached."
+              : "The backend still needs its Resend settings, so your mail app opened and the photo downloaded for attachment.",
+        });
+        return;
+      }
+
+      throw new Error(result.error || "The postcard could not be sent.");
+    } catch (error) {
+      setStatus({
+        kind: "error",
+        text:
           error instanceof Error
             ? error.message
-            : "The postcard could not be sent. Please try again.";
-      })
-      .finally(function () {
-        if (sendButton) {
-          sendButton.disabled = false;
-          sendButton.textContent =
-            "Send postcard" + (currentRecipients().length > 1 ? "s" : "");
-        }
+            : "The postcard could not be sent. Please try again.",
       });
+    } finally {
+      setSending(false);
+    }
   }
 
-  function bind() {
-    var cameraBtn = root.querySelector('[data-action="camera"]');
-    var sendBtn = root.querySelector('[data-action="send"]');
-    var clearBtn = root.querySelector('[data-action="clear"]');
-    if (cameraBtn) cameraBtn.addEventListener("click", showCamera);
-    if (sendBtn) sendBtn.addEventListener("click", send);
-    if (clearBtn) clearBtn.addEventListener("click", clearDraft);
-    ["location", "date", "sender", "recipients", "message"].forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) el.addEventListener("input", updateFromInputs);
-    });
-  }
+  const photo = draft.photo || DEFAULT_PHOTO;
+  const hasMessage = Boolean(draft.message.trim());
+  const message = hasMessage
+    ? draft.message
+    : "Your message will appear here as you write it.";
+  const sender = draft.sender.trim() || "<3 grace";
+  const location = draft.location.trim() || "playing at glassell park";
+  const leftMeta = [formatDate(draft.date), location].filter(Boolean).join(" · ");
+  const recipientCount = currentRecipients(draft.recipients).length;
 
-  render();
-})();
-  <\/script>
-</body>
-</html>`;
-
-export default function PostyPage() {
   return (
-    <iframe
-      srcDoc={APP_HTML}
-      title="posty"
-      className="w-full h-screen border-0 block"
-      allow="camera; microphone"
-      sandbox="allow-scripts allow-same-origin allow-popups allow-downloads"
-    />
+    <main className="posty" aria-live="polite">
+      <section className="posty-controls" aria-label="Postcard controls">
+        <div className="posty-intro">
+          <h1 className="posty-brand">posty</h1>
+          <p className="posty-brand-note">
+            send a postcard, well get it to them sometime in the next 7-14 days
+          </p>
+        </div>
+
+        <section className="posty-section posty-section-photo">
+          <h2 className="posty-section-title">
+            <span>Photo</span>
+          </h2>
+          <div className="posty-row">
+            <button
+              className="posty-button primary"
+              type="button"
+              onClick={() => setCameraOpen(true)}
+            >
+              Take photo
+            </button>
+          </div>
+        </section>
+
+        <section className="posty-section posty-section-write">
+          <h2 className="posty-section-title">
+            <span>Write</span>
+          </h2>
+          <label className="posty-label" htmlFor="recipients">
+            To
+          </label>
+          <input
+            id="recipients"
+            className="posty-field"
+            type="email"
+            value={draft.recipients}
+            placeholder="recipient@email.com"
+            autoComplete="email"
+            onChange={(event) => onFieldChange("recipients", event)}
+          />
+          <label className="posty-label posty-field-gap" htmlFor="sender">
+            From
+          </label>
+          <input
+            id="sender"
+            className="posty-field"
+            value={draft.sender}
+            placeholder="<3 grace"
+            autoComplete="off"
+            onChange={(event) => onFieldChange("sender", event)}
+          />
+          <label className="posty-label posty-field-gap" htmlFor="location">
+            Location <span className="posty-hint">optional</span>
+          </label>
+          <input
+            id="location"
+            className="posty-field"
+            value={draft.location}
+            placeholder="playing at glassell park"
+            autoComplete="off"
+            onChange={(event) => onFieldChange("location", event)}
+          />
+          <label className="posty-label posty-field-gap" htmlFor="date">
+            Date <span className="posty-hint">optional</span>
+          </label>
+          <input
+            id="date"
+            type="date"
+            className="posty-field"
+            value={draft.date}
+            autoComplete="off"
+            onChange={(event) => onFieldChange("date", event)}
+          />
+          <div className="posty-message-head">
+            <label className="posty-label" htmlFor="message" style={{ margin: 0 }}>
+              Message
+            </label>
+            <span className="posty-counter">
+              {wordCount(draft.message)} / 150 words
+            </span>
+          </div>
+          <textarea
+            id="message"
+            className="posty-field"
+            placeholder="Write your message…"
+            value={draft.message}
+            onChange={(event) => onFieldChange("message", event)}
+          />
+        </section>
+
+        <div className="posty-row posty-actions">
+          <button className="posty-button" type="button" onClick={clearDraft}>
+            Clear
+          </button>
+          <button
+            className="posty-button primary"
+            type="button"
+            disabled={sending}
+            onClick={() => void send()}
+          >
+            {sending
+              ? "Sending…"
+              : `Send postcard${recipientCount > 1 ? "s" : ""}`}
+          </button>
+        </div>
+        <p className={`posty-status ${status.kind}`.trim()}>{status.text}</p>
+      </section>
+
+      <section className="posty-preview" aria-label="Postcard preview">
+        <div className="posty-preview-stage">
+          <p className="posty-preview-label">preview</p>
+          <article
+            className="posty-card"
+            aria-label="Postcard as it will be sent"
+          >
+            <div className="posty-card-photo">
+              <img src={photo} alt="Current postcard photograph" />
+            </div>
+            <div className="posty-card-body">
+              <p
+                className={`posty-card-message${hasMessage ? "" : " is-placeholder"}`}
+              >
+                {message}
+              </p>
+              <div className="posty-card-meta">
+                <span>{leftMeta}</span>
+                <span className="sender">{sender}</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      {cameraOpen ? (
+        <section className="posty-modal">
+          <div
+            className="posty-camera-box"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Back camera"
+          >
+            <div className="posty-camera-bar">
+              <strong>Back camera</strong>
+              <button
+                className="posty-close"
+                aria-label="Close camera"
+                type="button"
+                onClick={closeCamera}
+              >
+                ×
+              </button>
+            </div>
+            <div className="posty-rotate-hint" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M4 12a8 8 0 0 1 13.66-5.66M20 12a8 8 0 0 1-13.66 5.66"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M14 3.5 17.66 6.34 14.6 8.6M10 20.5 6.34 17.66 9.4 15.4"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span>Turn your phone sideways — the postcard is landscape.</span>
+            </div>
+            <div className="posty-camera-stage">
+              <video ref={videoRef} autoPlay muted playsInline />
+            </div>
+            <p
+              className={`posty-camera-note${cameraError ? " error" : ""}`.trim()}
+            >
+              {cameraNote}
+            </p>
+            <div className="posty-camera-actions">
+              <button
+                className="posty-shutter"
+                type="button"
+                aria-label="Take photo"
+                disabled={!canCapture}
+                onClick={capture}
+              >
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinejoin="round"
+                  />
+                  <circle
+                    cx="12"
+                    cy="13"
+                    r="3.25"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </section>
+      ) : null}
+    </main>
   );
 }
