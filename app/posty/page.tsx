@@ -452,9 +452,13 @@ export default function PostyPage() {
     <main className="posty" aria-live="polite">
       <section className="posty-controls" aria-label="Postcard controls">
         <div className="posty-intro">
-          <h1 className="posty-brand">posty</h1>
+          <h1 className="posty-brand">posty ✉</h1>
           <p className="posty-brand-note">
-            send a postcard, well get it to them sometime in the next 7-14 days
+            send someone adigital postcard
+            <br />
+            <em className="posty-brand-note-sub">
+              estimated delivery time: 7-14 days
+            </em>
           </p>
         </div>
 

@@ -56,6 +56,11 @@
   max-width: 28em;
 }
 
+.posty-brand-note-sub {
+  font-style: italic;
+  font-weight: 400;
+}
+
 .posty-section {
   border-top: 1px solid var(--line);
   padding: 26px 0;
