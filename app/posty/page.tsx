@@ -78,10 +78,6 @@ const APP_HTML = `<!doctype html>
       border-radius: 0;
     }
     .sent-card-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
-    .sent-card-photo .empty-photo {
-      height: 100%; display: grid; place-items: center; color: var(--muted);
-      font-size: 15px; text-align: center; padding: 30px; line-height: 1.4;
-    }
     .sent-card-body {
       padding: 22px 24px 26px; color: rgba(29,29,29,0.9);
     }
@@ -188,7 +184,17 @@ const APP_HTML = `<!doctype html>
   }
 
   function renderedPhoto() {
-    return draft.photo || "";
+    return draft.photo || "/images/posty/default.jpg";
+  }
+
+  function emptyDraft() {
+    return { photo: "", location: "", date: "", sender: "", recipients: "", message: "" };
+  }
+
+  function clearDraft() {
+    draft = emptyDraft();
+    saveDraft();
+    render();
   }
 
   function currentRecipients() {
@@ -254,16 +260,15 @@ const APP_HTML = `<!doctype html>
     var photo = renderedPhoto();
     var hasMessage = Boolean(draft.message.trim());
     var message = hasMessage ? draft.message : "Your message will appear here as you write it.";
-    var sender = draft.sender.trim() || "someone you know";
+    var sender = draft.sender.trim() || "<3 grace";
     var dateLabel = formatDate(draft.date);
-    var leftMeta = [dateLabel, draft.location.trim()].filter(Boolean).join(" · ");
+    var location = draft.location.trim() || "playing at glassell park";
+    var leftMeta = [dateLabel, location].filter(Boolean).join(" · ");
     return '<div class="preview-stage">' +
       '<p class="preview-label">preview</p>' +
       '<article class="sent-card" aria-label="Postcard as it will be sent">' +
         '<div class="sent-card-photo">' +
-          (photo
-            ? '<img src="' + photo + '" alt="Current postcard photograph" />'
-            : '<div class="empty-photo">Your landscape photo<br>will appear here.</div>') +
+          '<img src="' + photo + '" alt="Current postcard photograph" />' +
         "</div>" +
         '<div class="sent-card-body">' +
           '<p class="sent-card-message' + (hasMessage ? "" : " is-placeholder") + '">' + escapeHtml(message) + "</p>" +
@@ -280,7 +285,7 @@ const APP_HTML = `<!doctype html>
     root.innerHTML =
       '<section class="controls" aria-label="Postcard controls">' +
         '<h1 class="brand">posty</h1>' +
-        '<p class="brand-note">send a digital postcard of where you are, right now. estimated delivery time: sometime in 7-14 days.</p>' +
+        '<p class="brand-note">send a postcard, well get it to them sometime in the next 7-14 days</p>' +
         '<section class="section"><h2 class="section-title"><span>Photo</span></h2><div class="section-inner">' +
           '<div class="camera-line"><button class="button primary camera-button" type="button" data-action="camera">Take photo</button></div>' +
 
@@ -291,17 +296,19 @@ const APP_HTML = `<!doctype html>
           '<label class="label" for="sender" style="margin-top:18px">From</label>' +
           '<input id="sender" class="field" value="' + escapeHtml(draft.sender) + '" placeholder="<3 grace" autocomplete="off" />' +
           '<label class="label" for="location" style="margin-top:18px">Location <span class="hint" style="display:inline">optional</span></label>' +
-          '<input id="location" class="field" value="' + escapeHtml(draft.location) + '" placeholder="outside in the grass" autocomplete="off" />' +
+          '<input id="location" class="field" value="' + escapeHtml(draft.location) + '" placeholder="playing at glassell park" autocomplete="off" />' +
           '<label class="label" for="date" style="margin-top:18px">Date <span class="hint" style="display:inline">optional</span></label>' +
           '<input id="date" type="date" class="field" value="' + escapeHtml(draft.date) + '" autocomplete="off" />' +
           '<div class="message-head"><label class="label" for="message" style="margin:18px 0 0">Message</label>' +
           '<span class="counter" id="counter">' + wordCount(draft.message) + " / 150 words</span></div>" +
           '<textarea id="message" class="field" placeholder="Write your message…">' + escapeHtml(draft.message) + "</textarea>" +
         "</div></section>" +
-        '<button class="button primary" type="button" data-action="send">Send postcard' +
-          (currentRecipients().length > 1 ? "s" : "") +
-        "</button>" +
-        '<span class="hint">Sent by the postcard email backend. If delivery is not configured yet, you can use your device\\'s share sheet instead.</span>' +
+        '<div class="camera-line" style="margin-top:8px">' +
+          '<button class="button" type="button" data-action="clear">Clear</button>' +
+          '<button class="button primary" type="button" data-action="send">Send postcard' +
+            (currentRecipients().length > 1 ? "s" : "") +
+          "</button>" +
+        "</div>" +
         '<p id="status" class="status"></p>' +
       "</section>" +
       '<section class="preview" aria-label="Postcard preview">' + postcardMarkup() + "</section>";
@@ -625,8 +632,10 @@ const APP_HTML = `<!doctype html>
   function bind() {
     var cameraBtn = root.querySelector('[data-action="camera"]');
     var sendBtn = root.querySelector('[data-action="send"]');
+    var clearBtn = root.querySelector('[data-action="clear"]');
     if (cameraBtn) cameraBtn.addEventListener("click", showCamera);
     if (sendBtn) sendBtn.addEventListener("click", send);
+    if (clearBtn) clearBtn.addEventListener("click", clearDraft);
     ["location", "date", "sender", "recipients", "message"].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.addEventListener("input", updateFromInputs);
