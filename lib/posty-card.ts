@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import path from "path";
-import opentype from "opentype.js";
+import { parse as parseFont, type Font } from "opentype.js";
 import sharp from "sharp";
 
 const CARD_WIDTH = 1080;
@@ -16,13 +16,13 @@ const INK = "#1d1d1d";
 const MUTED = "#8a8680";
 const FONT_PATH = path.join(process.cwd(), "fonts", "NotoSans-Regular.ttf");
 
-let postcardFont: opentype.Font | null = null;
+let postcardFont: Font | null = null;
 
-function getPostcardFont(): opentype.Font {
+function getPostcardFont(): Font {
   if (!postcardFont) {
     const file = readFileSync(FONT_PATH);
     // Node Buffers share a larger ArrayBuffer; slice to the font bytes only.
-    postcardFont = opentype.parse(
+    postcardFont = parseFont(
       file.buffer.slice(file.byteOffset, file.byteOffset + file.byteLength),
     );
   }
