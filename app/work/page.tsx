@@ -12,22 +12,22 @@ import {
 const SECTIONS = [
   {
     key: "visitorShort" as const,
-    label: "fun for you as a visitor (5-10 mins)",
+    label: "fun for anyone visiting (5-10 mins)",
     projects: visitorShort,
   },
   {
     key: "visitorLong" as const,
-    label: "fun for you as a visitor (10+ mins)",
+    label: "and if you have more time (10+ mins)",
     projects: visitorLong,
   },
   {
     key: "archives" as const,
-    label: "fun for me - my personal archives (maybe you too)",
+    label: "my personal archives, collections",
     projects: myArchivesCollections,
   },
   {
     key: "hands" as const,
-    label: "things i made with my hands",
+    label: "my hands",
     projects: myHands,
   },
 ] as const;

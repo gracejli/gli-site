@@ -138,6 +138,25 @@ export const myArchivesCollections = [
     link: "https://www.youtube.com/watch?v=l9wLJL_0NQ0",
     newTab: true,
   },
+  {
+    id: 14,
+    title: "2011 email sign off archive",
+    desc: "real emails from 2009-2011, wishes and sign offs",
+    img: "/images/email-signoffs.png",
+    hoverGif: "images/project-images/email-signoffs.gif",
+    link: "/email-signoffs",
+    newTab: false,
+  },
+  {
+    id: 15,
+    title: "gli are.na photo album",
+    desc: "12 photo are.na albums of what i've collected",
+    img: "/images/gli-albums.png",
+    hoverGif: "images/project-images/are-na.gif",
+    link: "/arena-channels",
+    newTab: false,
+  },
+  
 ];
 
 export const myHands = [
