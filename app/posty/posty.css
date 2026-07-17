@@ -135,18 +135,6 @@
   box-shadow: 0 0 0 3px rgba(29, 29, 29, 0.06);
 }
 
-input.posty-field[type="date"] {
-  height: 44px;
-  min-height: 44px;
-  line-height: 1.2;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-input.posty-field[type="date"]::-webkit-date-and-time-value {
-  text-align: left;
-}
-
 textarea.posty-field {
   min-height: 150px;
   line-height: 1.45;

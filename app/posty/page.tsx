@@ -12,7 +12,6 @@ import "./posty.css";
 type Draft = {
   photo: string;
   location: string;
-  date: string;
   sender: string;
   recipients: string;
   message: string;
@@ -30,7 +29,6 @@ function emptyDraft(): Draft {
   return {
     photo: "",
     location: "",
-    date: "",
     sender: "",
     recipients: "",
     message: "",
@@ -43,7 +41,6 @@ function loadDraft(): Draft {
     return {
       photo: saved.photo || "",
       location: saved.location || "",
-      date: saved.date || "",
       sender: saved.sender || "",
       recipients: saved.recipients || "",
       message: saved.message || "",
@@ -57,11 +54,9 @@ function wordCount(value: string) {
   return value.trim() ? value.trim().split(/\s+/).length : 0;
 }
 
-function formatDate(value: string) {
-  const source = value || new Date().toISOString().slice(0, 10);
-  const parsed = new Date(`${source}T12:00:00`);
-  if (Number.isNaN(parsed.getTime())) return value || "";
-  return parsed.toLocaleDateString("en-US", {
+/** Today's date in the sender's local timezone (not UTC). */
+function localDateLabel(now = new Date()) {
+  return now.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -384,12 +379,12 @@ export default function PostyPage() {
 
     const snapshot = { ...draft };
     const senderName = snapshot.sender.trim() || "a friend";
-    const dateLabel = formatDate(snapshot.date);
+    const dateLabel = localDateLabel();
     const subject = `a postcard from ${senderName}`;
     const body = [
       snapshot.message,
       "",
-      `— ${senderName}${snapshot.location ? ` · ${snapshot.location}` : ""}${dateLabel ? ` · ${dateLabel}` : ""}`,
+      `— ${senderName}${snapshot.location ? ` · ${snapshot.location}` : ""} · ${dateLabel}`,
     ].join("\n");
     const filename = `postcard-${Date.now()}.jpg`;
 
@@ -400,7 +395,7 @@ export default function PostyPage() {
         body: JSON.stringify({
           photo: snapshot.photo,
           location: snapshot.location,
-          date: snapshot.date,
+          date: dateLabel,
           sender: snapshot.sender,
           recipients: emails,
           message: snapshot.message,
@@ -476,7 +471,7 @@ export default function PostyPage() {
     : "your message will appear here~";
   const sender = draft.sender.trim() || "<3 grace";
   const location = draft.location.trim() || "playing at glassell park";
-  const leftMeta = [formatDate(draft.date), location].filter(Boolean).join(" · ");
+  const leftMeta = [localDateLabel(), location].filter(Boolean).join(" · ");
 
   return (
     <main className="posty" aria-live="polite">
@@ -560,7 +555,7 @@ export default function PostyPage() {
             onChange={(event) => onFieldChange("sender", event)}
           />
           <label className="posty-label posty-field-gap" htmlFor="location">
-            Location <span className="posty-hint">optional</span>
+            Location
           </label>
           <input
             id="location"
@@ -569,17 +564,6 @@ export default function PostyPage() {
             placeholder="playing at glassell park"
             autoComplete="off"
             onChange={(event) => onFieldChange("location", event)}
-          />
-          <label className="posty-label posty-field-gap" htmlFor="date">
-            Date <span className="posty-hint">optional</span>
-          </label>
-          <input
-            id="date"
-            type="date"
-            className="posty-field"
-            value={draft.date}
-            autoComplete="off"
-            onChange={(event) => onFieldChange("date", event)}
           />
           <div className="posty-message-head">
             <label className="posty-label" htmlFor="message" style={{ margin: 0 }}>

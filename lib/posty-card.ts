@@ -14,7 +14,9 @@ const META_GAP = 28;
 const PAPER = "#ffffff";
 const INK = "#1d1d1d";
 const MUTED = "#8a8680";
-const FONT_PATH = path.join(process.cwd(), "fonts", "NotoSans-Regular.ttf");
+// Arimo is metrically compatible with Arial and safe to ship on Vercel
+// (system Arial is not available in serverless).
+const FONT_PATH = path.join(process.cwd(), "fonts", "Arimo-Regular.ttf");
 
 let postcardFont: Font | null = null;
 
@@ -56,20 +58,22 @@ function wrapLines(text: string, maxChars: number): string[] {
   return lines;
 }
 
+/**
+ * Prefer the client-provided label (already in the sender's timezone).
+ * Only reformat bare YYYY-MM-DD, using UTC noon so the calendar day
+ * does not shift on a UTC serverless host.
+ */
 function formatDateLabel(date: string): string {
-  if (!date) {
-    return new Date().toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  }
-  const parsed = new Date(`${date}T12:00:00`);
-  if (Number.isNaN(parsed.getTime())) return date;
+  const value = date.trim();
+  if (!value) return "";
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+  const parsed = new Date(`${value}T12:00:00.000Z`);
+  if (Number.isNaN(parsed.getTime())) return value;
   return parsed.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",
+    timeZone: "UTC",
   });
 }
 
