@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Bundle postcard font into the send API so serverless can outline text.
+  outputFileTracingIncludes: {
+    "/api/posty/send": ["./fonts/**/*"],
+  },
 };
 
 export default nextConfig;
