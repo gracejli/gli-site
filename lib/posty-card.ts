@@ -31,8 +31,22 @@ function getPostcardFont(): Font {
   return postcardFont;
 }
 
-/** Rough wrap for postcard body copy — assumes ~0.52em average char width. */
-function wrapLines(text: string, maxChars: number): string[] {
+/** Width of a string at a given size, measured from real glyph advances. */
+function measureWidth(text: string, fontSize: number): number {
+  const font = getPostcardFont();
+  const scale = fontSize / font.unitsPerEm;
+  let width = 0;
+  for (const ch of text) {
+    width += (font.charToGlyph(ch).advanceWidth || 0) * scale;
+  }
+  return width;
+}
+
+/**
+ * Word-wrap using measured pixel widths so the rendered image breaks lines
+ * at the same place the on-screen preview does (which wraps by real width).
+ */
+function wrapLines(text: string, maxWidth: number, fontSize: number): string[] {
   const normalized = text.replace(/\r\n/g, "\n").trim();
   if (!normalized) return [];
 
@@ -46,7 +60,7 @@ function wrapLines(text: string, maxChars: number): string[] {
     let current = "";
     for (const word of words) {
       const next = current ? `${current} ${word}` : word;
-      if (next.length > maxChars && current) {
+      if (current && measureWidth(next, fontSize) > maxWidth) {
         lines.push(current);
         current = word;
       } else {
@@ -128,8 +142,11 @@ export async function buildPostcardCardImage(options: {
 
   const { height: photoHeight = CARD_WIDTH } = await sharp(resized).metadata();
 
-  const maxChars = Math.floor((CARD_WIDTH - PAD_X * 2) / (MESSAGE_SIZE * 0.52));
-  const messageLines = wrapLines(options.message || " ", maxChars);
+  const messageLines = wrapLines(
+    options.message || " ",
+    CARD_WIDTH - PAD_X * 2,
+    MESSAGE_SIZE,
+  );
   const messageBlockHeight = Math.max(messageLines.length, 1) * MESSAGE_LINE;
 
   const dateLabel = formatDateLabel(options.date);
