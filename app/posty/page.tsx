@@ -540,7 +540,7 @@ export default function PostyPage() {
             className="posty-field"
             type="email"
             value={draft.recipients}
-            placeholder="recipient@email.com, friend@emai.."
+            placeholder="recipient@email.com, friend@email.com.."
             autoComplete="email"
             onChange={(event) => onFieldChange("recipients", event)}
           />
@@ -667,7 +667,7 @@ export default function PostyPage() {
           >
             <div className="posty-camera-bar">
               <strong>
-                {facingMode === "user" ? "Front camera" : "Back camera"}
+                {"Camera"}
               </strong>
               <button
                 className="posty-close"
