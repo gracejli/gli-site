@@ -131,6 +131,9 @@ export default function PostyPage() {
   const [cameraError, setCameraError] = useState(false);
   const [canCapture, setCanCapture] = useState(false);
   const [mirrorPreview, setMirrorPreview] = useState(false);
+  const [facingMode, setFacingMode] = useState<"environment" | "user">(
+    "environment",
+  );
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState<Status>({ kind: "", text: "" });
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -161,6 +164,7 @@ export default function PostyPage() {
     setCameraOpen(false);
     setCanCapture(false);
     setMirrorPreview(false);
+    setFacingMode("environment");
     setCameraError(false);
     setCameraNote("Opening your back camera…");
   }, [stopCamera]);
@@ -178,7 +182,10 @@ export default function PostyPage() {
     if (!cameraOpen) return;
 
     let cancelled = false;
-    setCameraNote("Opening your back camera…");
+    const usingBack = facingMode === "environment";
+    setCameraNote(
+      usingBack ? "Opening your back camera…" : "Opening your front camera…",
+    );
     setCameraError(false);
     setCanCapture(false);
     setMirrorPreview(false);
@@ -195,23 +202,18 @@ export default function PostyPage() {
         try {
           stream = await navigator.mediaDevices.getUserMedia({
             video: {
-              facingMode: { ideal: "environment" },
+              facingMode: { ideal: facingMode },
               width: { ideal: 1920 },
               height: { ideal: 1080 },
             },
             audio: false,
           });
-          if (!cancelled) {
-            setCameraNote("Frame your postcard, then take the photo.");
-          }
         } catch {
+          if (facingMode !== "environment") throw new Error("front camera unavailable");
           stream = await navigator.mediaDevices.getUserMedia({
             video: true,
             audio: false,
           });
-          if (!cancelled) {
-            setCameraNote("Frame your postcard, then take the photo.");
-          }
         }
 
         if (cancelled) {
@@ -222,6 +224,7 @@ export default function PostyPage() {
         streamRef.current = stream;
         if (!cancelled) {
           setMirrorPreview(shouldMirrorCamera(stream));
+          setCameraNote("Frame your postcard, then take the photo.");
         }
         const video = videoRef.current;
         if (video) {
@@ -239,7 +242,9 @@ export default function PostyPage() {
         setCameraNote(
           denied
             ? "Camera permission was blocked. Allow camera access for this site and try again."
-            : "Camera access is needed to make a postcard. Check permission and try again.",
+            : facingMode === "user"
+              ? "Could not open the front camera. Try flipping back."
+              : "Camera access is needed to make a postcard. Check permission and try again.",
         );
         setCameraError(true);
       }
@@ -250,7 +255,11 @@ export default function PostyPage() {
       cancelled = true;
       stopCamera();
     };
-  }, [cameraOpen, stopCamera]);
+  }, [cameraOpen, facingMode, stopCamera]);
+
+  function flipCamera() {
+    setFacingMode((prev) => (prev === "environment" ? "user" : "environment"));
+  }
 
   function updateField<K extends keyof Draft>(key: K, value: Draft[K]) {
     setDraft((prev) => ({ ...prev, [key]: value }));
@@ -354,23 +363,15 @@ export default function PostyPage() {
 
   async function send() {
     const emails = currentRecipients(draft.recipients);
-    const words = wordCount(draft.message);
     if (!draft.photo) {
       setStatus({
         kind: "error",
-        text: "Take a photo with the back camera first.",
+        text: "Take a photo first.",
       });
       return;
     }
     if (!emails.length || emails.some((email) => !/^\S+@\S+\.\S+$/.test(email))) {
       setStatus({ kind: "error", text: "Add at least one valid email address." });
-      return;
-    }
-    if (words > 150) {
-      setStatus({
-        kind: "error",
-        text: "Your message must be 150 words or fewer.",
-      });
       return;
     }
 
@@ -386,7 +387,7 @@ export default function PostyPage() {
       "",
       `— ${senderName}${snapshot.location ? ` · ${snapshot.location}` : ""} · ${dateLabel}`,
     ].join("\n");
-    const filename = `postcard-${Date.now()}.jpg`;
+    const filename = `posty-${Date.now()}.jpg`;
 
     try {
       const response = await fetch("/api/posty/send", {
@@ -522,7 +523,7 @@ export default function PostyPage() {
               type="button"
               onClick={() => setCameraOpen(true)}
             >
-              Take photo
+              {draft.photo ? "Retake photo" : "Snap a photo"}
             </button>
           </div>
         </section>
@@ -539,7 +540,7 @@ export default function PostyPage() {
             className="posty-field"
             type="email"
             value={draft.recipients}
-            placeholder="recipient@email.com"
+            placeholder="recipient@email.com, friend@emai.."
             autoComplete="email"
             onChange={(event) => onFieldChange("recipients", event)}
           />
@@ -662,10 +663,12 @@ export default function PostyPage() {
             className="posty-camera-box"
             role="dialog"
             aria-modal="true"
-            aria-label={mirrorPreview ? "Camera" : "Back camera"}
+            aria-label={facingMode === "user" ? "Front camera" : "Back camera"}
           >
             <div className="posty-camera-bar">
-              <strong>{mirrorPreview ? "Camera" : "Back camera"}</strong>
+              <strong>
+                {facingMode === "user" ? "Front camera" : "Back camera"}
+              </strong>
               <button
                 className="posty-close"
                 aria-label="Close camera"
@@ -710,6 +713,45 @@ export default function PostyPage() {
                     r="3.25"
                     stroke="currentColor"
                     strokeWidth="1.8"
+                  />
+                </svg>
+              </button>
+              <button
+                className="posty-flip"
+                type="button"
+                aria-label={
+                  facingMode === "user"
+                    ? "Switch to back camera"
+                    : "Switch to front camera"
+                }
+                onClick={flipCamera}
+              >
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M3.75 9.75A8.25 8.25 0 0 1 19.5 8.2"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M19.5 4.5v3.75H15.75"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M20.25 14.25A8.25 8.25 0 0 1 4.5 15.8"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M4.5 19.5v-3.75H8.25"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
               </button>

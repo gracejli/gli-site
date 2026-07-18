@@ -66,7 +66,6 @@ export async function POST(request: NextRequest) {
   const date =
     typeof body.date === "string" ? body.date.trim().slice(0, 40) : "";
   const photo = typeof body.photo === "string" ? body.photo : "";
-  const words = message ? message.split(/\s+/).length : 0;
 
   if (
     !recipients.length ||
@@ -77,12 +76,6 @@ export async function POST(request: NextRequest) {
       {
         error: "Add between 1 and 20 valid recipient email addresses.",
       },
-      { status: 400 },
-    );
-  }
-  if (words > 150) {
-    return NextResponse.json(
-      { error: "The message must be 150 words or fewer." },
       { status: 400 },
     );
   }
@@ -155,7 +148,7 @@ export async function POST(request: NextRequest) {
     html,
     attachments: [
       {
-        filename: `postcard-${Date.now()}.jpg`,
+        filename: `posty-${Date.now()}.jpg`,
         content: cardBase64,
         content_id: "postcard",
         content_type: "image/jpeg",
