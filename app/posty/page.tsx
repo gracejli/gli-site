@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
   type ChangeEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import "./posty.css";
 
@@ -13,9 +14,11 @@ type Draft = {
   photo: string;
   location: string;
   sender: string;
-  recipients: string;
+  recipients: string[];
   message: string;
 };
+
+const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 
 type Status = { kind: "error" | "success" | ""; text: string };
 
@@ -30,19 +33,37 @@ function emptyDraft(): Draft {
     photo: "",
     location: "",
     sender: "",
-    recipients: "",
+    recipients: [],
     message: "",
   };
 }
 
+function parseLegacyRecipients(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value
+      .filter((entry): entry is string => typeof entry === "string")
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+  }
+  if (typeof value === "string") {
+    return value
+      .split(/[\n,]+/)
+      .map((entry) => entry.trim())
+      .filter(Boolean);
+  }
+  return [];
+}
+
 function loadDraft(): Draft {
   try {
-    const saved = JSON.parse(localStorage.getItem(DRAFT_KEY) || "{}") as Partial<Draft>;
+    const saved = JSON.parse(localStorage.getItem(DRAFT_KEY) || "{}") as Partial<
+      Draft & { recipients?: string | string[] }
+    >;
     return {
       photo: saved.photo || "",
       location: saved.location || "",
       sender: saved.sender || "",
-      recipients: saved.recipients || "",
+      recipients: parseLegacyRecipients(saved.recipients),
       message: saved.message || "",
     };
   } catch {
@@ -61,13 +82,6 @@ function localDateLabel(now = new Date()) {
     day: "numeric",
     year: "numeric",
   });
-}
-
-function currentRecipients(recipients: string) {
-  return recipients
-    .split(/[\n,]+/)
-    .map((value) => value.trim())
-    .filter(Boolean);
 }
 
 function contacts(): string[] {
@@ -122,6 +136,187 @@ async function photoWithWhiteBorder(dataUrl: string): Promise<string> {
   return canvas.toDataURL("image/jpeg", 0.9);
 }
 
+function recipientLabel(emails: string[]) {
+  if (emails.length === 0) return "recipient";
+  if (emails.length === 1) return emails[0]!;
+  if (emails.length === 2) return `${emails[0]} and ${emails[1]}`;
+  return `${emails.length} people`;
+}
+
+function successSuffix(
+  emails: string[],
+  immediate: boolean,
+  delayDays: number | null | undefined,
+) {
+  const to = recipientLabel(emails);
+  if (immediate) {
+    return `Sent to ${to}. Delivered immediately (dev mode).`;
+  }
+  if (delayDays) {
+    return `Success, your postcard is on its way to ${to}, estimated delivery in about ${delayDays} days.`;
+  }
+  return `Sent to ${to}. Your postcard is on its way.`;
+}
+
+type RecipientsFieldProps = {
+  value: string[];
+  onChange: (emails: string[]) => void;
+  savedContacts: string[];
+  onClearStatus: () => void;
+};
+
+function RecipientsField({
+  value,
+  onChange,
+  savedContacts,
+  onClearStatus,
+}: RecipientsFieldProps) {
+  const [draftEmail, setDraftEmail] = useState("");
+  const [fieldError, setFieldError] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function commitEmail(raw: string, options?: { silent?: boolean }) {
+    const email = raw.trim().replace(/[,;]+$/, "");
+    if (!email) return false;
+    if (!EMAIL_PATTERN.test(email)) {
+      if (!options?.silent) setFieldError("Enter a valid email address.");
+      return false;
+    }
+    if (value.includes(email)) {
+      if (options?.silent) {
+        setDraftEmail("");
+        setFieldError("");
+      } else {
+        setFieldError("That address is already added.");
+      }
+      return false;
+    }
+    if (value.length >= 20) {
+      if (!options?.silent) setFieldError("You can add up to 20 recipients.");
+      return false;
+    }
+    onChange([...value, email]);
+    setDraftEmail("");
+    setFieldError("");
+    onClearStatus();
+    return true;
+  }
+
+  function removeEmail(email: string) {
+    onChange(value.filter((entry) => entry !== email));
+    setFieldError("");
+    onClearStatus();
+  }
+
+  function addSavedContact(email: string) {
+    if (value.includes(email)) return;
+    if (value.length >= 20) {
+      setFieldError("You can add up to 20 recipients.");
+      return;
+    }
+    onChange([...value, email]);
+    setFieldError("");
+    onClearStatus();
+  }
+
+  function onInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const next = event.target.value;
+    if (/[,\s]$/.test(next)) {
+      const candidate = next.trim().replace(/[,;]+$/, "");
+      if (candidate && EMAIL_PATTERN.test(candidate)) {
+        commitEmail(candidate);
+        return;
+      }
+    }
+    setDraftEmail(next);
+    setFieldError("");
+    onClearStatus();
+  }
+
+  function onInputBlur() {
+    commitEmail(draftEmail, { silent: true });
+  }
+
+  function onInputKeyDown(event: ReactKeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      commitEmail(draftEmail);
+    }
+    if (event.key === "Backspace" && !draftEmail && value.length) {
+      removeEmail(value[value.length - 1]!);
+    }
+  }
+
+  const suggestions = savedContacts.filter((email) => !value.includes(email));
+
+  return (
+    <div className="posty-recipients-wrap">
+      <div
+        className="posty-recipients"
+        onClick={() => inputRef.current?.focus()}
+      >
+        {value.map((email) => (
+          <span key={email} className="posty-chip">
+            {email}
+            <button
+              type="button"
+              className="posty-chip-remove"
+              aria-label={`Remove ${email}`}
+              onClick={(event) => {
+                event.stopPropagation();
+                removeEmail(email);
+              }}
+            >
+              ×
+            </button>
+          </span>
+        ))}
+        <input
+          ref={inputRef}
+          id="recipients"
+          className="posty-recipients-input"
+          type="text"
+          inputMode="email"
+          autoComplete="email"
+          value={draftEmail}
+          placeholder={
+            value.length ? "" : "recipient@email.com, friend@email.com.."
+          }
+          onChange={onInputChange}
+          onBlur={onInputBlur}
+          onKeyDown={onInputKeyDown}
+        />
+      </div>
+      {value.length ? (
+        <p className="posty-recipients-meta">
+          {value.length === 1 ? (
+            <>Sending to {value[0]}</>
+          ) : (
+            <>Sending to {value.length} people</>
+          )}
+        </p>
+      ) : null}
+      {fieldError ? (
+        <p className="posty-recipients-error">{fieldError}</p>
+      ) : null}
+      {suggestions.length ? (
+        <div className="posty-contacts">
+          {suggestions.map((email) => (
+            <button
+              key={email}
+              type="button"
+              className="posty-contact"
+              onClick={() => addSavedContact(email)}
+            >
+              {email}
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export default function PostyPage() {
   const [draft, setDraft] = useState<Draft>(emptyDraft);
   const [ready, setReady] = useState(false);
@@ -136,11 +331,13 @@ export default function PostyPage() {
   );
   const [sending, setSending] = useState(false);
   const [status, setStatus] = useState<Status>({ kind: "", text: "" });
+  const [savedContacts, setSavedContacts] = useState<string[]>([]);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
   useEffect(() => {
     setDraft(loadDraft());
+    setSavedContacts(contacts());
     setReady(true);
   }, []);
 
@@ -171,7 +368,7 @@ export default function PostyPage() {
 
   useEffect(() => {
     if (!aboutOpen) return;
-    function onKeyDown(event: KeyboardEvent) {
+    function onKeyDown(event: globalThis.KeyboardEvent) {
       if (event.key === "Escape") closeAbout();
     }
     document.addEventListener("keydown", onKeyDown);
@@ -320,6 +517,7 @@ export default function PostyPage() {
       CONTACTS_KEY,
       JSON.stringify(Array.from(new Set([...contacts(), ...emails]))),
     );
+    setSavedContacts(contacts());
   }
 
   async function shareFallback(
@@ -362,7 +560,7 @@ export default function PostyPage() {
   }
 
   async function send() {
-    const emails = currentRecipients(draft.recipients);
+    const emails = draft.recipients;
     if (!draft.photo) {
       setStatus({
         kind: "error",
@@ -370,7 +568,7 @@ export default function PostyPage() {
       });
       return;
     }
-    if (!emails.length || emails.some((email) => !/^\S+@\S+\.\S+$/.test(email))) {
+    if (!emails.length || emails.some((email) => !EMAIL_PATTERN.test(email))) {
       setStatus({ kind: "error", text: "Add at least one valid email address." });
       return;
     }
@@ -412,23 +610,10 @@ export default function PostyPage() {
 
       if (response.ok && result.sent) {
         rememberSend(emails, "postcard backend", snapshot);
-        const to = emails[0] ?? "recipient";
-        if (result.immediate) {
-          setStatus({
-            kind: "success",
-            text: `Sent to ${to}. Delivered immediately (dev mode).`,
-          });
-        } else if (result.delayDays) {
-          setStatus({
-            kind: "success",
-            text: `Success, your postcard is on its way to ${to}, estimated delivery in about ${result.delayDays} days.`,
-          });
-        } else {
-          setStatus({
-            kind: "success",
-            text: `Sent to ${to}. Your postcard is on its way.`,
-          });
-        }
+        setStatus({
+          kind: "success",
+          text: successSuffix(emails, Boolean(result.immediate), result.delayDays),
+        });
         return;
       }
 
@@ -535,14 +720,11 @@ export default function PostyPage() {
           <label className="posty-label" htmlFor="recipients">
             To
           </label>
-          <input
-            id="recipients"
-            className="posty-field"
-            type="email"
+          <RecipientsField
             value={draft.recipients}
-            placeholder="recipient@email.com, friend@email.com.."
-            autoComplete="email"
-            onChange={(event) => onFieldChange("recipients", event)}
+            onChange={(recipients) => updateField("recipients", recipients)}
+            savedContacts={savedContacts}
+            onClearStatus={() => setStatus({ kind: "", text: "" })}
           />
           <label className="posty-label posty-field-gap" htmlFor="sender">
             From

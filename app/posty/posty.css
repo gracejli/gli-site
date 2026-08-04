@@ -119,6 +119,113 @@
   line-height: 1.35;
 }
 
+.posty-recipients-wrap {
+  margin: 0;
+}
+
+.posty-recipients {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.35);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  cursor: text;
+}
+
+.posty-recipients:focus-within {
+  border-color: rgba(29, 29, 29, 0.35);
+  box-shadow: 0 0 0 3px rgba(29, 29, 29, 0.06);
+}
+
+.posty-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  padding: 4px 6px 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.65);
+  font-size: 14px;
+  line-height: 1.2;
+  word-break: break-all;
+}
+
+.posty-chip-remove {
+  flex-shrink: 0;
+  border: 0;
+  background: transparent;
+  padding: 0 2px;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.posty-chip-remove:hover,
+.posty-chip-remove:focus-visible {
+  color: var(--ink);
+  outline: 0;
+}
+
+.posty-recipients-input {
+  flex: 1 1 140px;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 6px 4px;
+  outline: 0;
+  color: var(--ink);
+  font: inherit;
+}
+
+.posty-recipients-meta {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.posty-recipients-error {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--error);
+  line-height: 1.35;
+}
+
+.posty-contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.posty-contact {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.35);
+  padding: 4px 10px;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  max-width: 100%;
+  word-break: break-all;
+  text-align: left;
+}
+
+.posty-contact:hover,
+.posty-contact:focus-visible {
+  background: rgba(29, 29, 29, 0.04);
+  color: var(--ink);
+  outline: 0;
+}
+
 .posty-field {
   width: 100%;
   min-height: 44px;
