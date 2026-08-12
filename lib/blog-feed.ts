@@ -47,7 +47,7 @@ export async function getBlogFeed(): Promise<BlogPost[]> {
 
   try {
     const arena = await fetchArenaBlogPosts(channelSlug, {
-      token: process.env.ARENA_ACCESS_TOKEN,
+      token: process.env.ARENA_API_KEY,
       fetchInit,
     });
     arenaPosts = arena.map(arenaPostToBlogPost);
