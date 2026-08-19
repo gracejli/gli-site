@@ -68,6 +68,17 @@ export default function HomeToggleableIntro() {
                 guestbook
               </a>
             </li>
+            <li>  
+              <a
+                href="www.instagram.com/gli.site/"
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-4 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_6px_rgba(253,224,71,0.8)]"
+              >
+                project instagram
+              </a>
+
+            </li>
             <li>
               {/* <a
                 href="https://gli.cargo.site"
