@@ -46,37 +46,49 @@ function firstLine(text: string): string {
   return line?.trim() ?? "";
 }
 
-const ARENA_TYPE_LINE = /^type:\s*(dropdown|text|link)\s*$/i;
+const ARENA_TYPE_LINE = /^type:\s*"?(dropdown|text|link)"?\s*$/i;
+const ARENA_PUBLISHED_LINE = /^isPublished:\s*"?(true|false)"?\s*$/i;
 
-/** Strip an optional `type: dropdown|text|link` directive from the first non-empty line. */
+/** Strip optional leading `type:` / `isPublished:` directives from the description. */
 export function parseArenaDescription(raw: string): {
   type: ArenaBlogPostType;
+  isPublished: boolean;
   body: string;
 } {
   const lines = raw.split("\n");
-  let type: ArenaBlogPostType = "dropdown";
+  let type: ArenaBlogPostType = "text";
+  let isPublished = true;
   let bodyStart = 0;
 
   for (let i = 0; i < lines.length; i++) {
     const trimmed = lines[i].trim();
     if (!trimmed) continue;
 
-    const match = trimmed.match(ARENA_TYPE_LINE);
-    if (match) {
-      type = match[1].toLowerCase() as ArenaBlogPostType;
+    const typeMatch = trimmed.match(ARENA_TYPE_LINE);
+    if (typeMatch) {
+      type = typeMatch[1].toLowerCase() as ArenaBlogPostType;
       bodyStart = i + 1;
+      continue;
     }
+
+    const publishedMatch = trimmed.match(ARENA_PUBLISHED_LINE);
+    if (publishedMatch) {
+      isPublished = publishedMatch[1].toLowerCase() !== "false";
+      bodyStart = i + 1;
+      continue;
+    }
+
     break;
   }
 
-  return { type, body: lines.slice(bodyStart).join("\n").trim() };
+  return { type, isPublished, body: lines.slice(bodyStart).join("\n").trim() };
 }
 
 function normalizeImageBlock(raw: ArenaV3BlockRaw): ArenaBlogPost | null {
   const img = raw.image;
   if (!img?.src) return null;
 
-  const { type, body } = parseArenaDescription(
+  const { type, isPublished, body } = parseArenaDescription(
     descriptionMarkdown(raw.description),
   );
   const title =
@@ -99,6 +111,7 @@ function normalizeImageBlock(raw: ArenaV3BlockRaw): ArenaBlogPost | null {
     summary,
     body,
     type,
+    isPublished,
     date: raw.connection?.connected_at ?? raw.created_at ?? "",
     arenaUrl: `https://www.are.na/block/${raw.id}`,
   };

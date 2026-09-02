@@ -22,7 +22,7 @@ function arenaPostToBlogPost(arena: ArenaBlogPost): BlogPost {
     image: arena.image,
     alt: arena.alt,
     type: arena.type,
-    isPublished: true,
+    isPublished: arena.isPublished,
     summary: arena.summary,
     body: arena.body,
     date: arena.date,
@@ -50,7 +50,9 @@ export async function getBlogFeed(): Promise<BlogPost[]> {
       token: process.env.ARENA_API_KEY,
       fetchInit,
     });
-    arenaPosts = arena.map(arenaPostToBlogPost);
+    arenaPosts = arena
+      .map(arenaPostToBlogPost)
+      .filter((post) => post.isPublished !== false);
   } catch (error) {
     console.error("[blog-feed] Failed to load Are.na posts:", error);
   }

@@ -9,6 +9,7 @@ export type ArenaBlogPost = {
   summary: string;
   body: string;
   type: ArenaBlogPostType;
+  isPublished: boolean;
   date: string;
   arenaUrl: string;
 };

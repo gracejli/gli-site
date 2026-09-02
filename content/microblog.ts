@@ -4,5 +4,8 @@
  * Links use markdown: [link label](https://your-url-here)
  * Paste a full URL inside the parentheses.
  */
-export const MICROBLOG_INFO_TEXT =
- `microblog built with the are.na API ([what is a microblog?](https://www.are.na/gli/notes-journaling-blogging-online)) <3`;
+export const MICROBLOG_INFO_TEXT = `microblog built with the are.na API
+
+what is a microblog? ([here](https://www.are.na/gli/notes-journaling-blogging-online))
+
+about this microblog + other amazing ones ([here](https://www.are.na/block/49656034))`;

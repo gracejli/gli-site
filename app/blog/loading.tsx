@@ -6,7 +6,7 @@ export default function Loading() {
   return (
     <div className="min-h-screen background py-12 px-4">
       <div className="max-w-md mx-auto">
-        <div className="flex items-center justify-end mb-6">
+        <div className="relative z-20 flex items-center justify-end mb-6">
           <InfoChip text={MICROBLOG_INFO_TEXT} placement="below" />
         </div>
         <div className="flex flex-col">

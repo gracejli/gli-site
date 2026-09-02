@@ -58,13 +58,14 @@ export default function InfoChip({
       ? "top-7 right-0 -translate-y-1 group-hover:translate-y-0"
       : "bottom-7 right-0 translate-y-1 group-hover:translate-y-0";
 
-  const popupVisible =
-    open ? "opacity-100 translate-y-0" : "opacity-0 group-hover:opacity-100";
+  const popupVisible = open
+    ? "pointer-events-auto opacity-100 translate-y-0"
+    : "pointer-events-none opacity-0 group-hover:pointer-events-auto group-hover:opacity-100";
 
   return (
     <div
       ref={rootRef}
-      className="group relative flex h-6 w-6 items-center justify-center"
+      className="group relative z-20 flex h-6 w-6 items-center justify-center"
     >
       <button
         type="button"
@@ -81,7 +82,7 @@ export default function InfoChip({
         i
       </button>
       <div
-        className={`pointer-events-auto absolute ${popupPosition} w-52 rounded-lg border border-amber-200/60 bg-black/90 p-3 text-left text-[11px] font-fe leading-snug text-amber-50 shadow-xl backdrop-blur-sm transition-all duration-150 ${popupVisible}`}
+        className={`absolute z-50 ${popupPosition} w-64 rounded-lg border border-amber-200/60 bg-black/90 p-3 text-left text-[11px] font-fe leading-snug text-amber-50 shadow-xl backdrop-blur-sm transition-all duration-150 ${popupVisible}`}
       >
         <ReactMarkdown components={markdownComponents}>{text}</ReactMarkdown>
       </div>

@@ -27,7 +27,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
     <div className="min-h-screen background px-4 pb-12 pt-6">
       <ShootingStarCursor />
       <div className="max-w-md mx-auto">
-        <div className="flex items-center justify-end mb-6">
+        <div className="relative z-20 flex items-center justify-end mb-6">
           <InfoChip text={MICROBLOG_INFO_TEXT} placement="below" />
         </div>
 
