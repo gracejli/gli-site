@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/portfolio",
+        destination: "https://gli.cargo.site/portfolio",
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
