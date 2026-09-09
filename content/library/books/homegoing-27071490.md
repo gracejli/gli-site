@@ -3,6 +3,7 @@ title: "Homegoing"
 author: "Yaa Gyasi"
 dateRead: "2023-07-18"
 genre: "relationships over time"
+cover: "https://covers.openlibrary.org/b/id/8081171-L.jpg?default=false"
 ---
 
 a book that feels like a gift 

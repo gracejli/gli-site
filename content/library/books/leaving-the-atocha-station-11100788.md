@@ -2,6 +2,7 @@
 title: "Leaving the Atocha Station"
 author: "Ben Lerner"
 dateRead: "2025-09-02"
+cover: "https://covers.openlibrary.org/b/id/9159099-L.jpg?default=false"
 ---
 
 notes:

@@ -2,7 +2,9 @@
 title: "Demon Copperhead"
 author: "Barbara Kingsolver"
 dateRead: "2025-09-09"
+cover: "https://covers.openlibrary.org/b/isbn/9780063251922-L.jpg?default=false"
 ---
+read in one huge gulp 
 
 notes: 
 hunger, city-poor and Country-poor, what it means to relocate between the small town world you are from to the coast, to the ocean. Opioid addiction, the 'juice' communities that hold us and that are around us. Julia Fox Memoir, East of Eden, a Little Life. Howard and the relationships with Ms. Annie. The scene with the kite and Mr. Dick. Tommy’s two Graves at each home. 

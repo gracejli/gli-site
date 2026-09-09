@@ -2,6 +2,7 @@
 title: "Drive Your Plow Over the Bones of the Dead"
 author: "Olga Tokarczuk"
 dateRead: "2025-08-23"
+cover: "https://covers.openlibrary.org/b/isbn/9780525541349-L.jpg?default=false"
 ---
 by recommendation of angie, and sort of dua lipa.
 

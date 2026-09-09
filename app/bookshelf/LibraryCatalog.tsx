@@ -291,7 +291,7 @@ function libraryHref({
   if (view === "grid" && size === "large") params.set("size", "large");
   if (filter && filter !== "all") params.set("filter", filter);
   const query = params.toString();
-  return query ? `/library?${query}` : "/library";
+  return query ? `/bookshelf?${query}` : "/bookshelf";
 }
 
 function navLinkClass(active: boolean) {
@@ -1133,6 +1133,11 @@ export default function LibraryCatalog({
 
   return (
     <div className={`mx-auto ${view === "grid" ? "max-w-5xl" : "max-w-4xl"}`}>
+      <div className="mb-3">
+        <h1 className="text-md font-rasterGrotesk">
+          bookshelf
+        </h1>
+      </div>
       <div className="flex items-start justify-between gap-4">
         <FilterBar filter={filter} view={view} size={size} />
         <ViewToggle view={view} filter={filter} size={size} />
@@ -1147,7 +1152,7 @@ export default function LibraryCatalog({
           <div className="mx-auto flex max-w-md flex-col gap-14">
             {months.map((month) => (
               <section key={month.key}>
-                <h2 className="mb-6 font-bianzhidai text-lg text-[var(--foreground)]">
+                <h2 className="mb-6 text-md font-rasterGrotesk text-[var(--foreground)]">
                   {month.label}
                 </h2>
                 <div className="flex flex-col gap-8">

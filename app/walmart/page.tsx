@@ -96,6 +96,8 @@ export default function WalmartPage() {
                 * read the interviews{" "}
                 <a
                   href="https://gracejieyi.wixsite.com/home/walmartinterviews"
+                  target="_blank"
+                  rel="noreferrer"
                   className={inlineLinkClass}
                 >
                   here

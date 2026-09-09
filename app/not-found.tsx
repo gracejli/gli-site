@@ -13,6 +13,7 @@ export default function NotFound() {
           </p>
           <p className="text-sm font-bold font-fe mt-4">
             but maybe soon, you could convince me.{" "}
+            <br /><br />
             <a
               href={GUESTBOOK_URL}
               target="_blank"

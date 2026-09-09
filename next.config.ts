@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         destination: "https://gli.cargo.site/portfolio",
         permanent: true,
       },
+      {
+        source: "/library",
+        destination: "/bookshelf",
+        permanent: true,
+      },
     ];
   },
   images: {

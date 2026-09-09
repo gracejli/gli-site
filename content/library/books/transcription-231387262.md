@@ -2,6 +2,7 @@
 title: "Transcription"
 author: "Ben Lerner"
 dateRead: "2026-05-24"
+cover: "https://covers.openlibrary.org/b/id/15252595-L.jpg?default=false"
 ---
 
 read for bookclub. finished during memorial day camping weekend. is more like a short story, than anything. 

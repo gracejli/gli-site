@@ -135,12 +135,8 @@ export default function ProjectItem({ project = defaultProject }: { project?: Pr
   );
 
   if (href) {
-    const isExternal = project.newTab === true;
     return (
-      <a
-        href={href}
-        {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
-      >
+      <a href={href} target="_blank" rel="noreferrer">
         {content}
       </a>
     );

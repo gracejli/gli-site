@@ -142,7 +142,7 @@ function AboutModal({ open, onClose }: { open: boolean; onClose: () => void }) {
           these are real text and image blocks that I have from massive forwards and chains from the years of 2009-2011 when I was in elementary and middle school. 
           <br />
           <br />
-          They are stored in my arena channel <a href="https://www.are.na/gli/2011-text-sign-offs" className={linkClass}>2011 text sign-offs</a>, 
+          They are stored in my arena channel <a href="https://www.are.na/gli/2011-text-sign-offs" target="_blank" rel="noreferrer" className={linkClass}>2011 text sign-offs</a>, 
           All of it feels like a memory. 
         </p>
         <button

@@ -2,6 +2,7 @@
 title: "Bliss Montage"
 author: "Ling  Ma"
 dateRead: "2024-12-22"
+cover: "https://covers.openlibrary.org/b/isbn/9781250893543-L.jpg?default=false"
 ---
 > "she asked so many questions… it doesn’t take much to come into your own; all it takes is someone’s gaze. It’s not totally accurate to say I felt seen. It was more that: Beheld by her, I learned to become myself. Her interest actualized me."
 

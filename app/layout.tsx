@@ -19,8 +19,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     pathname.startsWith("/blog/") ||
     pathname === "/work" ||
     pathname.startsWith("/work/") ||
-    pathname === "/library" ||
-    pathname.startsWith("/library/");
+    pathname === "/bookshelf" ||
+    pathname.startsWith("/bookshelf/");
   const fullBleedPrefixes = [
     "/walmart",
     "/triumvirate",

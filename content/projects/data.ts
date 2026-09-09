@@ -1,6 +1,6 @@
 // Shared project data for /work and /all views
 // Optional `link` is a full URL or path
-// Optional `newTab` controls whether the link opens in a new tab
+// Project links always open in a new tab
 
 export const visitorShort = [
   {
@@ -9,7 +9,7 @@ export const visitorShort = [
     desc: "a small tool for non-algorithmic image inspiration from flickr. my alternative to pinterest.",
     link: "/flickr-surf",
     img: "/images/project-images/flickr-surf.png",
-    newTab: false,
+    newTab: true,
   },
   {
     id: 22, 
@@ -17,7 +17,7 @@ export const visitorShort = [
     desc: "create and send someone a digital postcard, itll deliver sometime in the 7-14 days",
     link: "/posty",
     img: "/images/posty/posty-preview.png",
-    newTab: false,
+    newTab: true,
   },
   {
     id: 14,
@@ -26,7 +26,7 @@ export const visitorShort = [
     img: "/images/email-signoffs.png",
     hoverGif: "images/project-images/email-signoffs.gif",
     link: "/email-signoffs",
-    newTab: false,
+    newTab: true,
   },
   {
     id: 15,
@@ -35,7 +35,7 @@ export const visitorShort = [
     img: "/images/gli-albums.png",
     hoverGif: "images/project-images/are-na.gif",
     link: "/arena-channels",
-    newTab: false,
+    newTab: true,
   },
   {
     id: 10,
@@ -44,7 +44,7 @@ export const visitorShort = [
     img: "/images/oldenborg-room.png",
     link: "/dorm-room-vr",
     hoverGif: "images/dormRoom.gif",
-    newTab: false,
+    newTab: true,
   },
 ];
 
@@ -56,7 +56,7 @@ export const visitorLong = [
     img: "/images/project-images/12-hours.png",
     link: "/walmart",
     hoverGif: "images/project-images/12-hours.gif",
-    newTab: false,
+    newTab: true,
   },
   {
     id: 8,
@@ -73,7 +73,7 @@ export const visitorLong = [
     img: "/images/shiny-objects2.png",
     link: "/shiny-objects",
     hoverGif: "images/animation.gif",
-    newTab: false,
+    newTab: true,
   },
   {
     id: 1,
@@ -82,7 +82,7 @@ export const visitorLong = [
     img: "/images/triumvirate-arena.png",
     link: "/triumvirate",
     hoverGif: "images/triumvirate.gif",
-    newTab: false,
+    newTab: true,
   },
   {
     id: 4,
@@ -91,7 +91,7 @@ export const visitorLong = [
     img: "/images/odins-passage.png",
     link: "/odinspassage",
     hoverGif: "images/odins.gif",
-    newTab: false,
+    newTab: true,
   },
   {
     id: 5,
@@ -99,7 +99,7 @@ export const visitorLong = [
     desc: "unity game: story based game about someone who returns to their hometown",
     img: "/images/ghost-town2.png",
     link: "/ghost-town",
-    newTab: false,
+    newTab: true,
   },
 ];
 
@@ -145,7 +145,7 @@ export const myArchivesCollections = [
     img: "/images/email-signoffs.png",
     hoverGif: "images/project-images/email-signoffs.gif",
     link: "/email-signoffs",
-    newTab: false,
+    newTab: true,
   },
   {
     id: 15,
@@ -154,7 +154,7 @@ export const myArchivesCollections = [
     img: "/images/gli-albums.png",
     hoverGif: "images/project-images/are-na.gif",
     link: "/arena-channels",
-    newTab: false,
+    newTab: true,
   },
   
 ];
