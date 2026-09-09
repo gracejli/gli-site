@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Convert a Goodreads library export into content/library/books.json.
+"""Convert a Goodreads library export into content/library/books/*.md.
 
 Keeps Exclusive Shelf = read with Date Read on or after 2019-01-01.
+Skips slugs that already have a markdown file so a re-import does not wipe notes.
 Usage: python3 scripts/import-goodreads.py path/to/goodreads_library_export.csv
 """
 
@@ -19,7 +20,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "content" / "library" / "books.json"
+OUT_DIR = ROOT / "content" / "library" / "books"
 
 SKIP_SHELVES = {
     "to-read",
@@ -90,22 +91,51 @@ def cover_exists(isbn: str) -> bool:
         return False
 
 
-def import_csv(src: Path) -> list[dict]:
+def existing_slugs() -> set[str]:
+    if not OUT_DIR.exists():
+        return set()
+    return {path.stem for path in OUT_DIR.glob("*.md")}
+
+
+def write_book_md(book: dict) -> None:
+    lines = ["---"]
+    lines.append(f"title: {json.dumps(book['title'], ensure_ascii=False)}")
+    lines.append(f"author: {json.dumps(book['author'], ensure_ascii=False)}")
+    lines.append(f"dateRead: {json.dumps(book['dateRead'])}")
+    if book.get("genre"):
+        lines.append(f"genre: {json.dumps(book['genre'], ensure_ascii=False)}")
+    if book.get("cover"):
+        lines.append(f"cover: {json.dumps(book['cover'])}")
+    lines.append("---")
+    notes = (book.get("notes") or "").strip()
+    if notes:
+        lines.append("")
+        lines.append(notes)
+    lines.append("")
+    OUT_DIR.joinpath(f"{book['slug']}.md").write_text("\n".join(lines), encoding="utf-8")
+
+
+def import_csv(src: Path, skip: set[str]) -> tuple[list[dict], int]:
     with src.open(newline="", encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
 
     candidates: list[tuple[dict, str]] = []
+    skipped = 0
     for row in rows:
         if row["Exclusive Shelf"] != "read":
             continue
         date_read = parse_date(row["Date Read"])
         if not date_read or date_read < "2019-01-01":
             continue
+        slug = slugify(row["Title"], row["Book Id"])
+        if slug in skip:
+            skipped += 1
+            continue
         isbn = clean_isbn(row.get("ISBN13") or "") or clean_isbn(
             row.get("ISBN") or ""
         )
         book = {
-            "slug": slugify(row["Title"], row["Book Id"]),
+            "slug": slug,
             "title": row["Title"].strip(),
             "author": row["Author"].strip(),
             "genre": genre_from_shelves(row.get("Bookshelves") or ""),
@@ -128,17 +158,23 @@ def import_csv(src: Path) -> list[dict]:
         books.append(book)
 
     books.sort(key=lambda b: b["dateRead"], reverse=True)
-    return books
+    return books, skipped
 
 
 def main() -> None:
     if len(sys.argv) < 2:
         sys.exit("Usage: python3 scripts/import-goodreads.py <goodreads.csv>")
     src = Path(sys.argv[1])
-    books = import_csv(src)
-    OUT.write_text(json.dumps(books, indent=2, ensure_ascii=False) + "\n")
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    skip = existing_slugs()
+    books, skipped = import_csv(src, skip)
+    for book in books:
+        write_book_md(book)
     covers = sum(1 for book in books if "cover" in book)
-    print(f"wrote {len(books)} books ({covers} with covers) to {OUT}")
+    print(
+        f"wrote {len(books)} new books ({covers} with covers) to {OUT_DIR}"
+        + (f"; skipped {skipped} existing" if skipped else "")
+    )
 
 
 if __name__ == "__main__":

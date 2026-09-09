@@ -9,8 +9,45 @@ import {
   useRef,
   useState,
 } from "react";
+import ReactMarkdown from "react-markdown";
 import { filterSlug, type Book, type BookMonthGroup } from "@/content/library/books";
 import { skeletonToneClass } from "@/lib/skeleton-tone";
+
+type MarkdownParagraphProps = React.ComponentPropsWithoutRef<"p">;
+type MarkdownListProps = React.ComponentPropsWithoutRef<"ul">;
+type MarkdownOrderedListProps = React.ComponentPropsWithoutRef<"ol">;
+type MarkdownQuoteProps = React.ComponentPropsWithoutRef<"blockquote">;
+
+const notesMarkdownComponents = {
+  p: ({ children }: MarkdownParagraphProps) => (
+    <p className="mb-2 last:mb-0">{children}</p>
+  ),
+  ul: ({ children }: MarkdownListProps) => (
+    <ul className="my-2 list-disc pl-4 last:mb-0">{children}</ul>
+  ),
+  ol: ({ children }: MarkdownOrderedListProps) => (
+    <ol className="my-2 list-decimal pl-4 last:mb-0">{children}</ol>
+  ),
+  blockquote: ({ children }: MarkdownQuoteProps) => (
+    <blockquote className="my-2 border-l-2 border-amber-400/70 pl-3 last:mb-0">
+      {children}
+    </blockquote>
+  ),
+};
+
+function BookNotes({
+  notes,
+  className,
+}: {
+  notes: string;
+  className?: string;
+}) {
+  return (
+    <div className={className}>
+      <ReactMarkdown components={notesMarkdownComponents}>{notes}</ReactMarkdown>
+    </div>
+  );
+}
 
 export type LibraryView = "grid" | "list";
 export type GridSize = "small" | "large";
@@ -185,11 +222,10 @@ function ExpandableNotes({
 
   return (
     <div className="mt-1.5 w-full">
-      <p
-        className={`whitespace-pre-line ${className} ${isOpen ? "" : "line-clamp-3"}`}
-      >
-        {notes}
-      </p>
+      <BookNotes
+        notes={notes}
+        className={`${className} ${isOpen ? "" : "line-clamp-3"}`}
+      />
       <button
         type="button"
         onClick={() => setIsOpen((value) => !value)}
@@ -533,9 +569,10 @@ function SelectedBookPane({
             data-library-notes
             className="mt-2 max-h-[18vh] overflow-y-auto overscroll-contain pr-1 lg:mt-3 lg:max-h-[min(28vh,14rem)]"
           >
-            <p className="font-louize text-sm leading-relaxed whitespace-pre-line text-[var(--foreground)]/90">
-              {book.notes}
-            </p>
+            <BookNotes
+              notes={book.notes}
+              className="font-louize text-sm leading-relaxed text-[var(--foreground)]/90"
+            />
           </div>
         ) : (
           <p className="mt-2 font-louize text-sm opacity-50 lg:mt-3">

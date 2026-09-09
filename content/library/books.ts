@@ -1,5 +1,3 @@
-import booksJson from "./books.json";
-
 export type Book = {
   slug: string;
   title: string;
@@ -17,8 +15,6 @@ export type BookMonthGroup = {
   label: string;
   books: Book[];
 };
-
-export const books: Book[] = booksJson as Book[];
 
 export function filterSlug(label: string): string {
   return label.trim().toLowerCase().replace(/\s+/g, "-");

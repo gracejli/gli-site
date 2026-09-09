@@ -1,9 +1,9 @@
 import { ShootingStarCursor } from "@/components/shooting-star-cursor";
 import {
-  books,
   booksMatchingFilter,
   groupBooksByMonth,
 } from "@/content/library/books";
+import { getBooks } from "@/content/library/loadBooks";
 import LibraryCatalog from "./LibraryCatalog";
 
 type LibraryPageProps = {
@@ -15,6 +15,7 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
   const view = params.view === "list" ? "list" : "grid";
   const filter = params.filter === "favorites" ? "favorites" : "all";
   const size = params.size === "large" ? "large" : "small";
+  const books = getBooks();
   const months = groupBooksByMonth(
     view === "list" ? booksMatchingFilter(books, filter) : books,
   );
