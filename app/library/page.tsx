@@ -7,13 +7,14 @@ import {
 import LibraryCatalog from "./LibraryCatalog";
 
 type LibraryPageProps = {
-  searchParams?: Promise<{ view?: string; filter?: string }>;
+  searchParams?: Promise<{ view?: string; filter?: string; size?: string }>;
 };
 
 export default async function LibraryPage({ searchParams }: LibraryPageProps) {
   const params = searchParams ? await searchParams : {};
   const view = params.view === "list" ? "list" : "grid";
   const filter = params.filter === "favorites" ? "favorites" : "all";
+  const size = params.size === "large" ? "large" : "small";
   const months = groupBooksByMonth(
     view === "list" ? booksMatchingFilter(books, filter) : books,
   );
@@ -21,7 +22,7 @@ export default async function LibraryPage({ searchParams }: LibraryPageProps) {
   return (
     <div className="min-h-screen px-4 pb-12 pt-6">
       <ShootingStarCursor />
-      <LibraryCatalog months={months} view={view} filter={filter} />
+      <LibraryCatalog months={months} view={view} filter={filter} size={size} />
     </div>
   );
 }
