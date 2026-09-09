@@ -3,6 +3,7 @@ import {
   booksMatchingFilter,
   groupBooksByMonth,
 } from "@/content/library/books";
+import { parseLibraryFilter } from "@/content/library/filters";
 import { getBooks } from "@/content/library/loadBooks";
 import LibraryCatalog from "./LibraryCatalog";
 
@@ -13,7 +14,7 @@ type LibraryPageProps = {
 export default async function LibraryPage({ searchParams }: LibraryPageProps) {
   const params = searchParams ? await searchParams : {};
   const view = params.view === "list" ? "list" : "grid";
-  const filter = params.filter === "favorites" ? "favorites" : "all";
+  const filter = parseLibraryFilter(params.filter);
   const size = params.size === "large" ? "large" : "small";
   const books = getBooks();
   const months = groupBooksByMonth(

@@ -6,4 +6,4 @@ cover: "https://covers.openlibrary.org/b/isbn/9781555977078-L.jpg?default=false"
 genre: "book club"
 ---
 bookclub read with A, S, L. 
-notes (here) [https://www.are.na/gli/notes-from-suite-book-club]
+notes [here](https://www.are.na/gli/notes-from-suite-book-club)

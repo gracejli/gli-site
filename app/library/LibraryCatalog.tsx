@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
+  useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -10,15 +11,35 @@ import {
   useState,
 } from "react";
 import ReactMarkdown from "react-markdown";
-import { filterSlug, type Book, type BookMonthGroup } from "@/content/library/books";
+import {
+  bookMatchesFilter,
+  type Book,
+  type BookMonthGroup,
+} from "@/content/library/books";
+import {
+  extraLibraryFilterItems,
+  isExtraLibraryFilter,
+  primaryLibraryFilters,
+} from "@/content/library/filters";
 import { skeletonToneClass } from "@/lib/skeleton-tone";
 
+type MarkdownAnchorProps = React.ComponentPropsWithoutRef<"a">;
 type MarkdownParagraphProps = React.ComponentPropsWithoutRef<"p">;
 type MarkdownListProps = React.ComponentPropsWithoutRef<"ul">;
 type MarkdownOrderedListProps = React.ComponentPropsWithoutRef<"ol">;
 type MarkdownQuoteProps = React.ComponentPropsWithoutRef<"blockquote">;
 
 const notesMarkdownComponents = {
+  a: ({ href, children }: MarkdownAnchorProps) => (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline underline-offset-2 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_8px_rgba(253,224,71,0.8)]"
+    >
+      {children}
+    </a>
+  ),
   p: ({ children }: MarkdownParagraphProps) => (
     <p className="mb-2 last:mb-0">{children}</p>
   ),
@@ -29,7 +50,7 @@ const notesMarkdownComponents = {
     <ol className="my-2 list-decimal pl-4 last:mb-0">{children}</ol>
   ),
   blockquote: ({ children }: MarkdownQuoteProps) => (
-    <blockquote className="my-2 border-l-2 border-amber-400/70 pl-3 last:mb-0">
+    <blockquote className="my-2 border-l-2 border-amber-400/70 pl-3 italic last:mb-0">
       {children}
     </blockquote>
   ),
@@ -38,12 +59,14 @@ const notesMarkdownComponents = {
 function BookNotes({
   notes,
   className,
+  ref,
 }: {
   notes: string;
   className?: string;
+  ref?: React.Ref<HTMLDivElement>;
 }) {
   return (
-    <div className={className}>
+    <div ref={ref} className={className}>
       <ReactMarkdown components={notesMarkdownComponents}>{notes}</ReactMarkdown>
     </div>
   );
@@ -89,10 +112,6 @@ const GRID_LAYOUT: Record<
     gapClass: "gap-x-3 gap-y-6",
   },
 };
-
-function isFavorite(book: Book) {
-  return filterSlug(book.genre) === "favorites";
-}
 
 function coverTone(index: number) {
   return COVER_TONES[index % COVER_TONES.length];
@@ -219,21 +238,41 @@ function ExpandableNotes({
   className: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [canExpand, setCanExpand] = useState(false);
+  const notesRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const el = notesRef.current;
+    if (!el) return;
+
+    const update = () => {
+      if (isOpen) return;
+      setCanExpand(el.scrollHeight > el.clientHeight + 1);
+    };
+
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [notes, isOpen, className]);
 
   return (
     <div className="mt-1.5 w-full">
       <BookNotes
+        ref={notesRef}
         notes={notes}
         className={`${className} ${isOpen ? "" : "line-clamp-3"}`}
       />
-      <button
-        type="button"
-        onClick={() => setIsOpen((value) => !value)}
-        className="mt-0.5 cursor-pointer font-fe text-xs underline underline-offset-2 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_8px_rgba(253,224,71,0.8)] focus:outline-none"
-        aria-expanded={isOpen}
-      >
-        {isOpen ? "less" : "more..."}
-      </button>
+      {canExpand ? (
+        <button
+          type="button"
+          onClick={() => setIsOpen((value) => !value)}
+          className="mt-0.5 cursor-pointer font-fe text-xs underline underline-offset-2 transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_8px_rgba(253,224,71,0.8)] focus:outline-none"
+          aria-expanded={isOpen}
+        >
+          {isOpen ? "less" : "more..."}
+        </button>
+      ) : null}
     </div>
   );
 }
@@ -280,31 +319,75 @@ function FilterBar({
   view: LibraryView;
   size: GridSize;
 }) {
-  const filters = [
-    { slug: "all", label: "all" },
-    { slug: "favorites", label: "favorites" },
-  ] as const;
+  const extraFilters = extraLibraryFilterItems();
+  const extraActive = isExtraLibraryFilter(filter);
+  const [expanded, setExpanded] = useState(extraActive);
+
+  useEffect(() => {
+    if (extraActive) setExpanded(true);
+  }, [extraActive]);
 
   return (
-    <nav
-      className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-1 font-fe text-xs uppercase tracking-[0.14em]"
-      aria-label="Library filters"
-    >
-      {filters.map((item) => {
-        const active = item.slug === filter;
-        return (
-          <Link
-            key={item.slug}
-            href={libraryHref({ view, filter: item.slug, size })}
-            className={navLinkClass(active)}
-            aria-current={active ? "page" : undefined}
-            scroll={false}
+    <div className="flex min-w-0 flex-col gap-y-1 font-fe text-xs uppercase tracking-[0.14em]">
+      <nav
+        className="flex shrink-0 flex-wrap items-baseline gap-x-4 gap-y-1"
+        aria-label="Library filters"
+      >
+        {primaryLibraryFilters.map((item) => {
+          const active = item.slug === filter;
+          return (
+            <Link
+              key={item.slug}
+              href={libraryHref({ view, filter: item.slug, size })}
+              className={navLinkClass(active)}
+              aria-current={active ? "page" : undefined}
+              scroll={false}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+        {extraFilters.length > 0 ? (
+          <button
+            type="button"
+            onClick={() => setExpanded((value) => !value)}
+            className="-my-1 -ml-1 inline-flex h-[1.25em] cursor-pointer items-center px-1.5 leading-none tracking-normal transition-all duration-200 hover:text-white hover:drop-shadow-[0_0_8px_rgba(253,224,71,0.8)] focus:outline-none"
+            aria-expanded={expanded}
+            aria-label={expanded ? "Hide more filters" : "Show more filters"}
           >
-            {item.label}
-          </Link>
-        );
-      })}
-    </nav>
+            <span
+              className={`inline-block transition-transform duration-200 ${
+                expanded ? "rotate-90" : ""
+              }`}
+              aria-hidden
+            >
+              &gt;
+            </span>
+          </button>
+        ) : null}
+      </nav>
+      {expanded && extraFilters.length > 0 ? (
+        <nav
+          className="flex flex-wrap items-center gap-x-4 gap-y-1"
+          aria-label="More library filters"
+        >
+          {extraFilters.map((item) => {
+            const active = item.slug === filter;
+            return (
+              <Link
+                key={item.slug}
+                href={libraryHref({ view, filter: item.slug, size })}
+                className={navLinkClass(active)}
+                aria-current={active ? "page" : undefined}
+                scroll={false}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+        </nav>
+      ) : null}
+    </div>
   );
 }
 
@@ -534,13 +617,15 @@ function SelectedBookPane({
   book,
   toneIndex,
   monthLabel,
+  notesFill = false,
 }: {
   book: Book;
   toneIndex: number;
   monthLabel: string;
+  notesFill?: boolean;
 }) {
   return (
-    <div className="flex gap-3 lg:flex-col lg:gap-0">
+    <div className="flex h-full min-h-0 gap-3 lg:flex-col lg:gap-0">
       <div className="w-fit shrink-0">
         <BookCover
           book={book}
@@ -549,7 +634,7 @@ function SelectedBookPane({
           sizes="(max-width: 1024px) 64px, 112px"
         />
       </div>
-      <div className="min-w-0 lg:mt-3">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col lg:mt-3">
         <h3 className="font-fe text-base leading-snug text-white drop-shadow-[0_0_12px_rgba(253,224,71,0.7)] lg:text-lg">
           {book.title}
         </h3>
@@ -564,21 +649,124 @@ function SelectedBookPane({
             </>
           ) : null}
         </p>
+        {book.notes ? null : (
+          <p className="mt-2 font-louize text-sm opacity-50 lg:mt-3">
+            read {monthLabel}
+          </p>
+        )}
         {book.notes ? (
           <div
             data-library-notes
-            className="mt-2 max-h-[18vh] overflow-y-auto overscroll-contain pr-1 lg:mt-3 lg:max-h-[min(28vh,14rem)]"
+            className={`mt-2 overflow-y-auto overscroll-contain pr-1 ${
+              notesFill
+                ? "min-h-0 flex-1"
+                : "max-h-[18vh] lg:max-h-[min(28vh,14rem)]"
+            }`}
           >
             <BookNotes
               notes={book.notes}
               className="font-louize text-sm leading-relaxed text-[var(--foreground)]/90"
             />
           </div>
-        ) : (
-          <p className="mt-2 font-louize text-sm opacity-50 lg:mt-3">
-            read {monthLabel}
-          </p>
-        )}
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+const PANE_WIDTH_KEY = "library-pane-width";
+const PANE_HEIGHT_KEY = "library-pane-height";
+const PANE_WIDTH_MIN = 160;
+const PANE_WIDTH_MAX = 520;
+const PANE_WIDTH_DEFAULT = 280;
+const PANE_HEIGHT_MIN = 140;
+
+function PaneResizeHandle({
+  axis,
+  onDelta,
+  onDraggingChange,
+  onDragStart,
+}: {
+  axis: "x" | "y";
+  onDelta: (delta: number) => void;
+  onDraggingChange: (dragging: boolean) => void;
+  onDragStart?: () => void;
+}) {
+  const draggingRef = useRef(false);
+  const lastPos = useRef(0);
+  const [active, setActive] = useState(false);
+  const vertical = axis === "x";
+
+  useEffect(() => {
+    const onMove = (event: PointerEvent) => {
+      if (!draggingRef.current) return;
+      const pos = vertical ? event.clientX : event.clientY;
+      const delta = pos - lastPos.current;
+      lastPos.current = pos;
+      onDelta(vertical ? -delta : delta);
+    };
+    const onUp = () => {
+      if (!draggingRef.current) return;
+      draggingRef.current = false;
+      setActive(false);
+      onDraggingChange(false);
+      document.body.style.removeProperty("cursor");
+      document.body.style.removeProperty("user-select");
+    };
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+    };
+  }, [onDelta, onDraggingChange, vertical]);
+
+  const shown = active
+    ? "opacity-100"
+    : "opacity-0 group-hover/resize:opacity-100";
+
+  return (
+    <div
+      role="separator"
+      aria-orientation={vertical ? "vertical" : "horizontal"}
+      aria-label="Resize details panel"
+      onPointerDown={(event) => {
+        event.preventDefault();
+        draggingRef.current = true;
+        lastPos.current = vertical ? event.clientX : event.clientY;
+        setActive(true);
+        onDraggingChange(true);
+        onDragStart?.();
+        document.body.style.cursor = vertical ? "col-resize" : "row-resize";
+        document.body.style.userSelect = "none";
+      }}
+      className={`group/resize absolute z-30 touch-none ${
+        vertical
+          ? "inset-y-0 left-0 hidden w-6 -translate-x-1/2 cursor-col-resize lg:flex"
+          : "inset-x-0 bottom-0 flex h-6 translate-y-1/2 cursor-row-resize lg:hidden"
+      } items-center justify-center`}
+    >
+      <div
+        className={`pointer-events-none absolute bg-amber-400 transition-opacity duration-150 ${shown} ${
+          vertical
+            ? "inset-y-0 left-1/2 w-px -translate-x-1/2"
+            : "inset-x-0 top-1/2 h-px -translate-y-1/2"
+        }`}
+      />
+      <div
+        className={`pointer-events-none relative flex size-6 items-center justify-center rounded-full border border-amber-400 bg-[var(--background)] shadow-[0_0_12px_rgba(253,224,71,0.35)] transition-opacity duration-150 ${shown}`}
+      >
+        <span
+          className={`flex h-2.5 items-center gap-[3px] ${
+            vertical ? "" : "rotate-90"
+          }`}
+          aria-hidden
+        >
+          <span className="h-full w-[1.5px] rounded-full bg-amber-400" />
+          <span className="h-full w-[1.5px] rounded-full bg-amber-400" />
+        </span>
       </div>
     </div>
   );
@@ -610,10 +798,10 @@ function LibraryGrid({
         monthToneIndex: monthIndex,
       })),
     );
-    if (filter !== "favorites") return flat;
+    if (filter === "all") return flat;
     return [
-      ...flat.filter((item) => isFavorite(item.book)),
-      ...flat.filter((item) => !isFavorite(item.book)),
+      ...flat.filter((item) => bookMatchesFilter(item.book, filter)),
+      ...flat.filter((item) => !bookMatchesFilter(item.book, filter)),
     ];
   }, [months, filter]);
 
@@ -631,7 +819,68 @@ function LibraryGrid({
   const sentinelRef = useRef<HTMLDivElement>(null);
   const asideRef = useRef<HTMLElement>(null);
   const gridWrapRef = useRef<HTMLDivElement>(null);
+  const shellRef = useRef<HTMLDivElement>(null);
   const [previewDocked, setPreviewDocked] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [resizing, setResizing] = useState(false);
+  const [paneWidth, setPaneWidth] = useState(PANE_WIDTH_DEFAULT);
+  const [paneHeight, setPaneHeight] = useState<number | null>(null);
+  const [paneHydrated, setPaneHydrated] = useState(false);
+
+  useEffect(() => {
+    const storedWidth = Number(window.localStorage.getItem(PANE_WIDTH_KEY));
+    const storedHeight = Number(window.localStorage.getItem(PANE_HEIGHT_KEY));
+    if (storedWidth >= PANE_WIDTH_MIN) setPaneWidth(storedWidth);
+    if (storedHeight >= PANE_HEIGHT_MIN) setPaneHeight(storedHeight);
+    setPaneHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!paneHydrated) return;
+    window.localStorage.setItem(PANE_WIDTH_KEY, String(paneWidth));
+  }, [paneHydrated, paneWidth]);
+
+  useEffect(() => {
+    if (!paneHydrated || paneHeight == null) return;
+    window.localStorage.setItem(PANE_HEIGHT_KEY, String(paneHeight));
+  }, [paneHydrated, paneHeight]);
+
+  useEffect(() => {
+    const mobile = window.matchMedia("(max-width: 1023px)");
+    const update = () => setIsMobile(mobile.matches);
+    update();
+    mobile.addEventListener("change", update);
+    return () => mobile.removeEventListener("change", update);
+  }, []);
+
+  const handleWidthDelta = useCallback((delta: number) => {
+    setPaneWidth((width) => {
+      const shell = shellRef.current;
+      const max = shell
+        ? Math.min(
+            PANE_WIDTH_MAX,
+            Math.max(PANE_WIDTH_MIN, shell.clientWidth - 240),
+          )
+        : PANE_WIDTH_MAX;
+      return Math.min(max, Math.max(PANE_WIDTH_MIN, width + delta));
+    });
+  }, []);
+
+  const handleHeightDelta = useCallback((delta: number) => {
+    const max = Math.round(window.innerHeight * 0.75);
+    setPaneHeight((height) => {
+      const current =
+        height ?? asideRef.current?.getBoundingClientRect().height ?? 220;
+      return Math.min(max, Math.max(PANE_HEIGHT_MIN, current + delta));
+    });
+  }, []);
+
+  const handleDragStartHeight = useCallback(() => {
+    setPaneHeight((height) => {
+      if (height != null) return height;
+      return asideRef.current?.getBoundingClientRect().height ?? 220;
+    });
+  }, []);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -686,7 +935,7 @@ function LibraryGrid({
       window.removeEventListener("resize", updateClip);
       gridWrap.style.clipPath = "";
     };
-  }, [previewDocked, selectedIndex]);
+  }, [previewDocked, selectedIndex, paneHeight]);
 
   useLayoutEffect(() => {
     const root = gridRef.current;
@@ -714,7 +963,7 @@ function LibraryGrid({
     const observer = new ResizeObserver(updateCols);
     observer.observe(root);
     return () => observer.disconnect();
-  }, [paneOpen, layout]);
+  }, [paneOpen, layout, paneWidth]);
 
   useLayoutEffect(() => {
     const root = gridRef.current;
@@ -724,22 +973,24 @@ function LibraryGrid({
       ...root.querySelectorAll<HTMLElement>("[data-book-slug]"),
     ];
 
-    for (const node of nodes) {
-      const slug = node.dataset.bookSlug;
-      if (!slug) continue;
-      const prev = prevRects.current.get(slug);
-      if (!prev) continue;
-      const next = node.getBoundingClientRect();
-      const dx = prev.left - next.left;
-      const dy = prev.top - next.top;
-      if (dx === 0 && dy === 0) continue;
-      node.animate(
-        [
-          { transform: `translate(${dx}px, ${dy}px)` },
-          { transform: "translate(0, 0)" },
-        ],
-        { duration: 420, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
-      );
+    if (!resizing) {
+      for (const node of nodes) {
+        const slug = node.dataset.bookSlug;
+        if (!slug) continue;
+        const prev = prevRects.current.get(slug);
+        if (!prev) continue;
+        const next = node.getBoundingClientRect();
+        const dx = prev.left - next.left;
+        const dy = prev.top - next.top;
+        if (dx === 0 && dy === 0) continue;
+        node.animate(
+          [
+            { transform: `translate(${dx}px, ${dy}px)` },
+            { transform: "translate(0, 0)" },
+          ],
+          { duration: 420, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+        );
+      }
     }
 
     prevRects.current = new Map(
@@ -748,13 +999,19 @@ function LibraryGrid({
         return slug ? [[slug, node.getBoundingClientRect()] as const] : [];
       }),
     );
-  }, [items, columnCount, cellPx]);
+  }, [items, columnCount, cellPx, resizing]);
 
   return (
     <div
+      ref={shellRef}
       className={
         paneOpen
-          ? "flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(9rem,0.4fr)] lg:items-start lg:gap-8"
+          ? "flex flex-col gap-8 lg:grid lg:items-start lg:gap-8"
+          : undefined
+      }
+      style={
+        paneOpen
+          ? { gridTemplateColumns: `minmax(0,1fr) ${paneWidth}px` }
           : undefined
       }
     >
@@ -785,7 +1042,9 @@ function LibraryGrid({
                 monthToneIndex={item.monthToneIndex}
                 connectLeft={connectLeft}
                 connectRight={connectRight}
-                dimmed={filter === "favorites" && !isFavorite(item.book)}
+                dimmed={
+                  filter !== "all" && !bookMatchesFilter(item.book, filter)
+                }
                 selected={index === selectedIndex}
                 compact={compact}
                 onSelect={() =>
@@ -808,28 +1067,51 @@ function LibraryGrid({
       {selected ? (
         <aside
           ref={asideRef}
-          className={`sticky z-20 order-1 lg:top-24 lg:order-2 ${
+          className={`relative sticky z-20 order-1 flex min-h-0 min-w-0 flex-col overflow-visible lg:top-24 lg:order-2 ${
             previewDocked
-              ? "top-0 -mx-4 border-b-2 border-dotted border-amber-400 bg-transparent px-4 pb-3 pt-20"
+              ? "top-0 -mx-4 border-b-2 border-dotted border-amber-400 bg-transparent px-4 pt-20"
               : "top-20"
           }`}
+          style={
+            isMobile && paneHeight != null ? { height: paneHeight } : undefined
+          }
         >
-          <div className="mb-3 flex justify-end">
-            <button
-              type="button"
-              onClick={() => setSelectedIndex(null)}
-              className={`font-fe text-xs uppercase tracking-[0.14em] ${navLinkClass(false)}`}
-              aria-label="Hide book details"
-            >
-              hide
-            </button>
-          </div>
-          <SelectedBookPane
-            key={selected.book.slug}
-            book={selected.book}
-            toneIndex={selectedIndex ?? 0}
-            monthLabel={selected.monthLabel}
+          <PaneResizeHandle
+            axis="x"
+            onDelta={handleWidthDelta}
+            onDraggingChange={setResizing}
           />
+          <PaneResizeHandle
+            axis="y"
+            onDelta={handleHeightDelta}
+            onDraggingChange={setResizing}
+            onDragStart={handleDragStartHeight}
+          />
+          <div
+            className={`flex min-h-0 min-w-0 flex-1 flex-col pb-6 pl-1 lg:pb-0 lg:pl-7 ${
+              isMobile && paneHeight != null ? "overflow-hidden" : ""
+            }`}
+          >
+            <div className="mb-3 flex shrink-0 justify-end">
+              <button
+                type="button"
+                onClick={() => setSelectedIndex(null)}
+                className={`font-fe text-xs uppercase tracking-[0.14em] ${navLinkClass(false)}`}
+                aria-label="Hide book details"
+              >
+                hide
+              </button>
+            </div>
+            <div className="min-h-0 min-w-0 flex-1">
+              <SelectedBookPane
+                key={selected.book.slug}
+                book={selected.book}
+                toneIndex={selectedIndex ?? 0}
+                monthLabel={selected.monthLabel}
+                notesFill={isMobile && paneHeight != null}
+              />
+            </div>
+          </div>
         </aside>
       ) : null}
     </div>
@@ -851,7 +1133,7 @@ export default function LibraryCatalog({
 
   return (
     <div className={`mx-auto ${view === "grid" ? "max-w-5xl" : "max-w-4xl"}`}>
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-start justify-between gap-4">
         <FilterBar filter={filter} view={view} size={size} />
         <ViewToggle view={view} filter={filter} size={size} />
       </div>

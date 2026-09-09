@@ -25,20 +25,15 @@ export type LibraryFilter = {
   label: string;
 };
 
-export function listLibraryFilters(list: Book[]): LibraryFilter[] {
-  const labels = [
-    ...new Set(list.map((book) => book.genre).filter(Boolean)),
-  ].sort((a, b) => a.localeCompare(b));
-
-  return [
-    { slug: "all", label: "all" },
-    ...labels.map((label) => ({ slug: filterSlug(label), label })),
-  ];
+export function bookMatchesFilter(book: Book, filter: string): boolean {
+  if (!filter || filter === "all") return true;
+  if (filter === "notes") return Boolean(book.notes);
+  return filterSlug(book.genre) === filter;
 }
 
 export function booksMatchingFilter(list: Book[], filter: string): Book[] {
   if (!filter || filter === "all") return list;
-  return list.filter((book) => filterSlug(book.genre) === filter);
+  return list.filter((book) => bookMatchesFilter(book, filter));
 }
 
 const monthFormatter = new Intl.DateTimeFormat("en-US", {

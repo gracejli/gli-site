@@ -2,7 +2,7 @@
 title: "Perfection"
 author: "Vincenzo Latronico"
 dateRead: "2025-11-23"
-genre: "favorites"
+genre: "book club"
 ---
 
 personal history x history of the city 
