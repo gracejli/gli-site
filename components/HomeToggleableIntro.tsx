@@ -103,11 +103,11 @@ export default function HomeToggleableIntro() {
                 guestbook
               </a>
             </li>
-            <li>
+            {/* <li>
               <Link href="/bookshelf?filter=favorites" className={textLinkClass}>
                 bookshelf
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
