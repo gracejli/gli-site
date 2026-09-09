@@ -104,7 +104,7 @@ export default function HomeToggleableIntro() {
               </a>
             </li>
             <li>
-              <Link href="/library" className={textLinkClass}>
+              <Link href="/library?filter=favorites" className={textLinkClass}>
                 bookshelf
               </Link>
             </li>
