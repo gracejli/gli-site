@@ -4,6 +4,7 @@ author: "Michael Cunningham"
 dateRead: "2023-12-31"
 genre: "favorites"
 cover: "https://covers.openlibrary.org/b/isbn/9780312305062-L.jpg?default=false"
+recommend: "yes"
 ---
 
 jesus. one of the best things i’ve read in years.

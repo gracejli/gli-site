@@ -2,11 +2,11 @@
 title: "In the Dream House"
 author: "Carmen Maria Machado"
 dateRead: "2024-01-14"
+recommend: "yes"
+genre: "favorites" 
 cover: "https://covers.openlibrary.org/b/isbn/9781644450031-L.jpg?default=false"
 ---
-
-notes:
-
+notes: 
 - joel relationship (the older religious teacher that she was in love with) , like the professor in in tomorrow tomorrow tomorrow, the waiting for emails and stressing (like in the idiot, like this summer)
 - The tightness of the relationship, the being on edge, the idea of the honey sick sweetness that comes with it. 
 - the usage of the second person, talking about yourself in first/third/second conversation 2022 summer 

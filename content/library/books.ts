@@ -2,10 +2,13 @@ export type Book = {
   slug: string;
   title: string;
   author: string;
-  genre: string;
+  /** One or more labels from front matter (`genre: "sci fi"` or a YAML list). */
+  genre: string[];
   notes: string;
   /** ISO date (YYYY-MM-DD). Used to group by month. */
   dateRead: string;
+  /** True when front matter has `recommend: "yes"`. */
+  recommend: boolean;
   /** Optional path under `public/` or a remote cover URL. */
   cover?: string;
 };
@@ -20,6 +23,31 @@ export function filterSlug(label: string): string {
   return label.trim().toLowerCase().replace(/\s+/g, "-");
 }
 
+export function isRecommended(value: unknown): boolean {
+  if (value === true) return true;
+  if (typeof value === "string") return value.trim().toLowerCase() === "yes";
+  return false;
+}
+
+export function parseGenres(value: unknown): string[] {
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    return trimmed ? [trimmed] : [];
+  }
+  if (Array.isArray(value)) {
+    return value.flatMap((item) => {
+      if (typeof item !== "string") return [];
+      const trimmed = item.trim();
+      return trimmed ? [trimmed] : [];
+    });
+  }
+  return [];
+}
+
+export function genreLabel(genre: string[]): string {
+  return genre.join(" · ");
+}
+
 export type LibraryFilter = {
   slug: string;
   label: string;
@@ -28,7 +56,8 @@ export type LibraryFilter = {
 export function bookMatchesFilter(book: Book, filter: string): boolean {
   if (!filter || filter === "all") return true;
   if (filter === "notes") return Boolean(book.notes);
-  return filterSlug(book.genre) === filter;
+  if (filter === "recommend") return book.recommend;
+  return book.genre.some((label) => filterSlug(label) === filter);
 }
 
 export function booksMatchingFilter(list: Book[], filter: string): Book[] {

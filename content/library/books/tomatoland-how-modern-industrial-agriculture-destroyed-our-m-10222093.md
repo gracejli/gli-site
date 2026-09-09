@@ -3,9 +3,9 @@ title: "Tomatoland: How Modern Industrial Agriculture Destroyed Our Most Allurin
 author: "Barry Estabrook"
 dateRead: "2023-06-24"
 cover: "https://covers.openlibrary.org/b/isbn/9781449401092-L.jpg?default=false"
+recommend: "yes"
 ---
-
-notes: 
+recommendation from justin. 
 - modern day slavery (debt) and human trafficking 
 - pesticide natural + human damage 
 - local grown farms as means of change (farm in NYC)

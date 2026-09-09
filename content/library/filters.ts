@@ -7,10 +7,11 @@ export const primaryLibraryFilters: LibraryFilter[] = [
 
 /**
  * Extra filters shown under the caret. Add a label here to surface it.
- * "notes" is reserved (books with notes). Any other label matches `genre`.
+ * "notes" is reserved (books with notes). "recommend" is reserved
+ * (`recommend: "yes"`). Any other label matches a `genre`.
  * A genre on a book does not appear as a filter unless it is listed here.
  */
-export const extraLibraryFilters = ["notes", "book club"] as const;
+export const extraLibraryFilters = ["notes", "recommend", "book club"] as const;
 
 export function extraLibraryFilterItems(): LibraryFilter[] {
   return extraLibraryFilters.map((label) => ({

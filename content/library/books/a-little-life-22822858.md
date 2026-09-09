@@ -4,6 +4,7 @@ author: "Hanya Yanagihara"
 dateRead: "2020-05-25"
 genre: "favorites"
 cover: "https://covers.openlibrary.org/b/isbn/9780385539258-L.jpg?default=false"
+recommend: "yes"
 ---
 a book that grows with you, and means something different every time as you grow up with the four boys. in high school, in college, post college. I can only begin to imagine it again, later, reading it as a parent, sitting with Harold. 
 

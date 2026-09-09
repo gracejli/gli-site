@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import type { Book } from "./books";
+import { isRecommended, parseGenres, type Book } from "./books";
 
 const booksDir = path.join(process.cwd(), "content/library/books");
 
@@ -29,9 +29,10 @@ export function getBooks(): Book[] {
       slug: filename.replace(/\.md$/, ""),
       title: typeof data.title === "string" ? data.title : "",
       author: typeof data.author === "string" ? data.author : "",
-      genre: typeof data.genre === "string" ? data.genre : "",
+      genre: parseGenres(data.genre),
       notes: content.trim(),
       dateRead: toDateRead(data.dateRead),
+      recommend: isRecommended(data.recommend),
     };
 
     if (typeof data.cover === "string" && data.cover.length > 0) {

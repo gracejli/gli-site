@@ -3,7 +3,8 @@ title: "Kafka on the Shore"
 author: "Haruki Murakami"
 dateRead: "2019-12-25"
 genre: "favorites"
-cover: "https://covers.openlibrary.org/b/id/4982600-L.jpg?default=false"
+cover: "https://covers.openlibrary.org/b/isbn/9781400079278-L.jpg?default=false"
+recommend: "yes"
 ---
 every time I reread this book I find something new. my second time reading in 2018, i had made a [playlist](https://open.spotify.com/playlist/0i2wdS8Buy0CMtsNOMMHQ9?si=c1abe0a86e194161) to accompany.
 

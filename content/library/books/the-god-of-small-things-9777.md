@@ -4,6 +4,7 @@ author: "Arundhati Roy"
 dateRead: "2024-01-12"
 genre: "favorites"
 cover: "https://covers.openlibrary.org/b/isbn/9780679457312-L.jpg?default=false"
+recommend: "yes"
 ---
 
 notes 

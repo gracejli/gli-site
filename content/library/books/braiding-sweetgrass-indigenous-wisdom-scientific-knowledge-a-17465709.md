@@ -3,6 +3,7 @@ title: "Braiding Sweetgrass: Indigenous Wisdom, Scientific Knowledge, and the Te
 author: "Robin Wall Kimmerer"
 dateRead: "2024-01-28"
 cover: "https://covers.openlibrary.org/b/isbn/9781571313355-L.jpg?default=false"
+recommend: "yes"
 ---
 
 notes: 

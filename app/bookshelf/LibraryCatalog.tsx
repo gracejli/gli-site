@@ -13,6 +13,7 @@ import {
 import ReactMarkdown from "react-markdown";
 import {
   bookMatchesFilter,
+  genreLabel,
   type Book,
   type BookMonthGroup,
 } from "@/content/library/books";
@@ -593,11 +594,11 @@ function ListBook({
         </h3>
         <p className="mt-1 font-editorial text-sm text-[var(--foreground)]">
           {book.author}
-          {book.genre ? (
+          {book.genre.length > 0 ? (
             <>
               <span className="mx-1.5 opacity-50">·</span>
               <span className="font-fe text-xs uppercase tracking-wide opacity-80">
-                {book.genre}
+                {genreLabel(book.genre)}
               </span>
             </>
           ) : null}
@@ -640,11 +641,11 @@ function SelectedBookPane({
         </h3>
         <p className="mt-1 font-editorial text-sm text-[var(--foreground)]">
           {book.author}
-          {book.genre ? (
+          {book.genre.length > 0 ? (
             <>
               <span className="mx-1.5 opacity-50">·</span>
               <span className="font-fe text-xs uppercase tracking-wide opacity-80">
-                {book.genre}
+                {genreLabel(book.genre)}
               </span>
             </>
           ) : null}

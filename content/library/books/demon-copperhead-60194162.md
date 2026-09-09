@@ -3,6 +3,7 @@ title: "Demon Copperhead"
 author: "Barbara Kingsolver"
 dateRead: "2025-09-09"
 cover: "https://covers.openlibrary.org/b/isbn/9780063251922-L.jpg?default=false"
+recommend: "yes"
 ---
 read in one huge gulp 
 

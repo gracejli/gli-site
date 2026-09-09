@@ -3,6 +3,7 @@ title: "Intimacies"
 author: "Katie Kitamura"
 dateRead: "2025-08-23"
 cover: "https://covers.openlibrary.org/b/isbn/9780399576164-L.jpg?default=false"
+recommend: "yes"
 ---
 
 notes:

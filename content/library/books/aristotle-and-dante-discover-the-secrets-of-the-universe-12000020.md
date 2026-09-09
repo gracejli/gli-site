@@ -4,4 +4,5 @@ author: "Benjamin Alire Sáenz"
 dateRead: "2023-05-27"
 genre: "favorites"
 cover: "https://covers.openlibrary.org/b/isbn/9781442408920-L.jpg?default=false"
+recommend: "yes"
 ---
