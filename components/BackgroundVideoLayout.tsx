@@ -82,7 +82,7 @@ export default function BackgroundVideoLayout({
   contentClassName = "relative z-10 min-h-screen w-full",
 }: BackgroundVideoLayoutProps) {
   const [showText, setShowText] = useState(true);
-  const [videoMuted, setVideoMuted] = useState(true);
+  const [videoMuted, setVideoMuted] = useState(false);
   const [showSlowDown, setShowSlowDown] = useState(false);
   const [currentStep, setCurrentStep] = useState<DialogStep>("initial");
   const teleportClickTimesRef = useRef<number[]>([]);

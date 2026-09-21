@@ -833,6 +833,8 @@ export default function PostyPage() {
                 take a photo for someone, and write them. they&apos;ll get your digital postcard in about{" "}
                 7–14 days from no-reply [at] posty.gracejli.com. 
               </p>
+              <br /> 
+              <p>it's nice when things take a little longer. it works, i promise. happy sending!</p>
               <p className="posty-about-signoff"></p>
             </div>
           </div>

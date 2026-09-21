@@ -6,7 +6,7 @@ export const visitorShort = [
   {
     id: 21,
     title: "flickr surf",
-    desc: "a small tool for non-algorithmic image inspiration from flickr. my alternative to pinterest.",
+    desc: "surf the 10 billion+ human uploaded images on flickr. my alternative to pinterest sorta.",
     link: "/flickr-surf",
     img: "/images/project-images/flickr-surf.png",
     newTab: true,
@@ -14,7 +14,7 @@ export const visitorShort = [
   {
     id: 22, 
     title: "posty",
-    desc: "create and send someone a digital postcard, itll deliver sometime in the 7-14 days",
+    desc: "create and send someone a digital postcard, itll deliver sometime in the 7-14 days. (it works!)",
     link: "/posty",
     img: "/images/posty/posty-preview.png",
     newTab: true,

@@ -17,7 +17,7 @@ export default function GridShellWithVideo({
   sources?: BackgroundVideoSource[];
 }) {
   const { currentVideo, handleShuffle } = useBackgroundVideoPlaylist(sources);
-  const [videoMuted, setVideoMuted] = useState(true);
+  const [videoMuted, setVideoMuted] = useState(false);
 
   return (
     <>

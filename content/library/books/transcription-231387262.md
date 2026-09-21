@@ -3,6 +3,7 @@ title: "Transcription"
 author: "Ben Lerner"
 dateRead: "2026-05-24"
 recommend: "yes"
+genre: "book club"
 ---
 read for bookclub. finished during memorial day camping weekend. is more like a short story, than anything. 
 

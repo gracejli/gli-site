@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type SyntheticEvent,
+} from "react";
 import type { BackgroundVideoSource } from "@/content/backgroundVideos";
 
 function getYouTubeId(url: string): string | null {
@@ -28,12 +35,26 @@ function getYouTubeId(url: string): string | null {
   }
 }
 
+function youtubePosterUrl(id: string, quality: "maxres" | "hq") {
+  return quality === "maxres"
+    ? `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`
+    : `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+}
+
+function isAutomatedBrowser(): boolean {
+  return typeof navigator !== "undefined" && Boolean(navigator.webdriver);
+}
+
 const YT_ENDED = 0;
+const YT_PLAYING = 1;
 const YT_PAUSED = 2;
+const EMBED_FAIL_MS = 4_000;
+const BACKGROUND_VOLUME = 0.5;
 
 type YoutubePlayerInstance = {
   mute: () => void;
   unMute: () => void;
+  setVolume: (volume: number) => void;
   destroy: () => void;
   playVideo: () => void;
 };
@@ -54,6 +75,7 @@ declare global {
               data: number;
               target: YoutubePlayerInstance;
             }) => void;
+            onError?: (e: { data: number }) => void;
           };
         },
       ) => YoutubePlayerInstance;
@@ -90,15 +112,47 @@ export default function BackgroundVideo({
   source: BackgroundVideoSource | null;
   muted: boolean;
 }) {
-  const youtubeHostRef = useRef<HTMLDivElement>(null);
+  const youtubeMountRef = useRef<HTMLDivElement>(null);
   const youtubePlayerRef = useRef<YoutubePlayerInstance | null>(null);
+  const fileVideoRef = useRef<HTMLVideoElement>(null);
   const mutedRef = useRef(muted);
+  const canPlaySoundRef = useRef(false);
+
+  const teardownYoutubePlayer = useCallback(() => {
+    try {
+      youtubePlayerRef.current?.destroy();
+    } catch {
+      /* YouTube may have already swapped or removed the iframe. */
+    }
+    youtubePlayerRef.current = null;
+    youtubeMountRef.current?.replaceChildren();
+  }, []);
 
   const [isDesktop, setIsDesktop] = useState(false);
+  const [allowYoutubeEmbed, setAllowYoutubeEmbed] = useState(false);
+  const [canPlaySound, setCanPlaySound] = useState(false);
+  const [embedPlaying, setEmbedPlaying] = useState(false);
+  const [embedFailed, setEmbedFailed] = useState(false);
+  const [posterUrl, setPosterUrl] = useState<string | null>(null);
 
   useEffect(() => {
     mutedRef.current = muted;
   }, [muted]);
+
+  useEffect(() => {
+    canPlaySoundRef.current = canPlaySound;
+  }, [canPlaySound]);
+
+  const applyYoutubeAudio = useCallback(
+    (player: YoutubePlayerInstance) => {
+      player.setVolume(Math.round(BACKGROUND_VOLUME * 100));
+      if (muted || !canPlaySound) player.mute();
+      else player.unMute();
+    },
+    [canPlaySound, muted],
+  );
+  const applyYoutubeAudioRef = useRef(applyYoutubeAudio);
+  applyYoutubeAudioRef.current = applyYoutubeAudio;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -114,44 +168,125 @@ export default function BackgroundVideo({
     };
   }, []);
 
-  const youtubeUrl =
-    source?.type === "youtube" ? source.url : null;
+  useEffect(() => {
+    if (allowYoutubeEmbed || isAutomatedBrowser()) return;
+
+    const enable = () => setAllowYoutubeEmbed(true);
+    let lastX: number | null = null;
+    let lastY: number | null = null;
+    const onPointerMove = (e: PointerEvent) => {
+      if (lastX !== null && lastY !== null) {
+        const dx = e.clientX - lastX;
+        const dy = e.clientY - lastY;
+        if (dx * dx + dy * dy >= 4) enable();
+      }
+      lastX = e.clientX;
+      lastY = e.clientY;
+    };
+
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerdown", enable);
+    window.addEventListener("touchstart", enable, { passive: true });
+    window.addEventListener("keydown", enable);
+    window.addEventListener("scroll", enable, { passive: true, capture: true });
+    window.addEventListener("wheel", enable, { passive: true });
+
+    return () => {
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerdown", enable);
+      window.removeEventListener("touchstart", enable);
+      window.removeEventListener("keydown", enable);
+      window.removeEventListener("scroll", enable, true);
+      window.removeEventListener("wheel", enable);
+    };
+  }, [allowYoutubeEmbed]);
 
   useEffect(() => {
-    if (!youtubeUrl || !isDesktop) {
-      youtubePlayerRef.current?.destroy();
-      youtubePlayerRef.current = null;
-      return;
-    }
+    if (canPlaySound) return;
 
-    const id = getYouTubeId(youtubeUrl);
-    if (!id) {
-      youtubePlayerRef.current?.destroy();
-      youtubePlayerRef.current = null;
+    const enableSound = () => setCanPlaySound(true);
+    window.addEventListener("pointerdown", enableSound);
+    window.addEventListener("touchstart", enableSound, { passive: true });
+    window.addEventListener("keydown", enableSound);
+
+    return () => {
+      window.removeEventListener("pointerdown", enableSound);
+      window.removeEventListener("touchstart", enableSound);
+      window.removeEventListener("keydown", enableSound);
+    };
+  }, [canPlaySound]);
+
+  const youtubeUrl = source?.type === "youtube" ? source.url : null;
+  const youtubeId = youtubeUrl ? getYouTubeId(youtubeUrl) : null;
+
+  useEffect(() => {
+    setEmbedPlaying(false);
+    setEmbedFailed(false);
+    setPosterUrl(youtubeId ? youtubePosterUrl(youtubeId, "maxres") : null);
+    if (youtubeId && isAutomatedBrowser()) setEmbedFailed(true);
+  }, [youtubeId]);
+
+  const handlePosterLoad = (e: SyntheticEvent<HTMLImageElement>) => {
+    if (!youtubeId) return;
+    if (e.currentTarget.naturalWidth < 200) {
+      setPosterUrl(youtubePosterUrl(youtubeId, "hq"));
+    }
+  };
+
+  const handlePosterError = () => {
+    if (!youtubeId) return;
+    setPosterUrl((current) =>
+      current?.includes("maxresdefault")
+        ? youtubePosterUrl(youtubeId, "hq")
+        : current,
+    );
+  };
+
+  useLayoutEffect(() => {
+    if (!youtubeUrl || !youtubeId || !isDesktop || !allowYoutubeEmbed) {
+      teardownYoutubePlayer();
       return;
     }
 
     let cancelled = false;
+    setEmbedPlaying(false);
+    setEmbedFailed(false);
+
+    const markFailed = () => {
+      if (cancelled) return;
+      teardownYoutubePlayer();
+      setEmbedPlaying(false);
+      setEmbedFailed(true);
+    };
+
+    const failTimer = window.setTimeout(markFailed, EMBED_FAIL_MS);
 
     void ensureYoutubeIframeApi().then(() => {
-      if (cancelled || !youtubeHostRef.current || !window.YT?.Player) return;
+      const mount = youtubeMountRef.current;
+      if (cancelled || !mount || !window.YT?.Player) {
+        markFailed();
+        return;
+      }
 
-      youtubePlayerRef.current?.destroy();
-      youtubePlayerRef.current = null;
+      teardownYoutubePlayer();
+      const host = document.createElement("div");
+      host.style.width = "100%";
+      host.style.height = "100%";
+      mount.appendChild(host);
 
-      const player = new window.YT.Player(youtubeHostRef.current, {
+      const player = new window.YT.Player(host, {
         height: "100%",
         width: "100%",
-        videoId: id,
+        videoId: youtubeId,
         playerVars: {
           autoplay: 1,
-          mute: mutedRef.current ? 1 : 0,
+          mute: mutedRef.current || !canPlaySoundRef.current ? 1 : 0,
           controls: 0,
           modestbranding: 1,
           playsinline: 1,
           rel: 0,
           loop: 1,
-          playlist: id,
+          playlist: youtubeId,
           /** Hide fullscreen control */
           fs: 0,
           /** Hide keyboard shortcuts (can still surface UI on some clients) */
@@ -165,11 +300,22 @@ export default function BackgroundVideo({
         events: {
           onReady: (e) => {
             if (cancelled) return;
-            if (mutedRef.current) e.target.mute();
-            else e.target.unMute();
+            applyYoutubeAudioRef.current(e.target);
+            try {
+              e.target.playVideo();
+            } catch {
+              /* Autoplay can be blocked until mute settles */
+            }
           },
           onStateChange: (e) => {
             if (cancelled) return;
+            if (e.data === YT_PLAYING) {
+              window.clearTimeout(failTimer);
+              setEmbedFailed(false);
+              setEmbedPlaying(true);
+              applyYoutubeAudioRef.current(e.target);
+              return;
+            }
             // Loop/restart can hit ENDED or a flash of PAUSED; that surfaces YouTube’s
             // center controls even with controls=0. Resume immediately.
             if (e.data === YT_ENDED || e.data === YT_PAUSED) {
@@ -183,6 +329,10 @@ export default function BackgroundVideo({
               });
             }
           },
+          onError: () => {
+            window.clearTimeout(failTimer);
+            markFailed();
+          },
         },
       });
 
@@ -191,36 +341,53 @@ export default function BackgroundVideo({
 
     return () => {
       cancelled = true;
-      youtubePlayerRef.current?.destroy();
-      youtubePlayerRef.current = null;
+      window.clearTimeout(failTimer);
+      teardownYoutubePlayer();
     };
-  }, [isDesktop, youtubeUrl]);
-
-  const syncYoutubeMute = useCallback(() => {
-    const p = youtubePlayerRef.current;
-    if (!p) return;
-    if (muted) p.mute();
-    else p.unMute();
-  }, [muted]);
+  }, [
+    allowYoutubeEmbed,
+    isDesktop,
+    teardownYoutubePlayer,
+    youtubeId,
+    youtubeUrl,
+  ]);
 
   useEffect(() => {
-    if (source?.type !== "youtube") return;
-    syncYoutubeMute();
-  }, [source?.type, syncYoutubeMute]);
+    const player = youtubePlayerRef.current;
+    if (source?.type !== "youtube" || !player) return;
+    applyYoutubeAudio(player);
+  }, [applyYoutubeAudio, source?.type]);
+
+  useEffect(() => {
+    const video = fileVideoRef.current;
+    if (!video || source?.type !== "file") return;
+    video.volume = BACKGROUND_VOLUME;
+    video.muted = muted || !canPlaySound;
+    void video.play().catch(() => {
+      /* Autoplay can be blocked until a click/key */
+    });
+  }, [canPlaySound, muted, source]);
 
   if (!source || !isDesktop) return null;
+
+  const showYoutubePoster =
+    source.type === "youtube" && embedFailed && Boolean(posterUrl);
 
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden bg-black">
       <div className="absolute inset-0 opacity-60">
         {source.type === "file" ? (
           <video
+            ref={fileVideoRef}
             className="h-full w-full object-cover"
             src={source.src}
             autoPlay
-            muted={muted}
+            muted={muted || !canPlaySound}
             loop
             playsInline
+            onLoadedMetadata={(e) => {
+              e.currentTarget.volume = BACKGROUND_VOLUME;
+            }}
           />
         ) : null}
 
@@ -230,12 +397,26 @@ export default function BackgroundVideo({
             title={source.caption}
           >
             <div
-              ref={youtubeHostRef}
-              className="h-full w-full [&_iframe]:pointer-events-none [&_iframe]:select-none"
+              ref={youtubeMountRef}
+              className={
+                embedPlaying
+                  ? "h-full w-full [&_iframe]:pointer-events-none [&_iframe]:select-none"
+                  : "h-full w-full opacity-0 [&_iframe]:pointer-events-none [&_iframe]:select-none"
+              }
             />
+            {showYoutubePoster ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={posterUrl ?? undefined}
+                alt=""
+                onLoad={handlePosterLoad}
+                onError={handlePosterError}
+                className="absolute inset-0 z-[2] h-full w-full object-cover"
+              />
+            ) : null}
             {/* Block pointer/focus from reaching the embed (prevents YouTube’s center controls). */}
             <div
-              className="pointer-events-auto absolute inset-0 z-[1]"
+              className="pointer-events-auto absolute inset-0 z-[3]"
               aria-hidden
             />
           </div>
