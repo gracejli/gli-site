@@ -835,6 +835,8 @@ export default function PostyPage() {
               </p>
               <br /> 
               <p>it's nice when things take a little longer. it works, i promise. happy sending!</p>
+              <br /> 
+              <p><i>ps: have no service? the photo saves locally, so you can send it later when you do.</i></p>
               <p className="posty-about-signoff"></p>
             </div>
           </div>
