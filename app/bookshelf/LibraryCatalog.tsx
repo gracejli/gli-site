@@ -118,6 +118,103 @@ function coverTone(index: number) {
   return COVER_TONES[index % COVER_TONES.length];
 }
 
+const COVER_TITLE_MAX = { compact: 9, regular: 11.2 };
+const COVER_TITLE_BASIS = { compact: 35, regular: 74 };
+
+function CoverCaption({
+  book,
+  compact,
+  className,
+}: {
+  book: Book;
+  compact: boolean;
+  className?: string;
+}) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLParagraphElement>(null);
+  const authorRef = useRef<HTMLParagraphElement>(null);
+
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    const titleEl = titleRef.current;
+    const authorEl = authorRef.current;
+    if (!root || !titleEl || !authorEl) return;
+
+    const fit = () => {
+      const cs = getComputedStyle(root);
+      const innerW =
+        root.clientWidth -
+        parseFloat(cs.paddingLeft) -
+        parseFloat(cs.paddingRight);
+      const innerH =
+        root.clientHeight -
+        parseFloat(cs.paddingTop) -
+        parseFloat(cs.paddingBottom);
+      if (innerW <= 0 || innerH <= 0) return;
+
+      const cap = compact ? COVER_TITLE_MAX.compact : COVER_TITLE_MAX.regular;
+      const basis = compact
+        ? COVER_TITLE_BASIS.compact
+        : COVER_TITLE_BASIS.regular;
+      const maxTitle = Math.min(cap, (innerW / basis) * cap);
+      const minTitle = 4;
+
+      const apply = (titlePx: number) => {
+        titleEl.style.fontSize = `${titlePx}px`;
+        authorEl.style.fontSize = `${Math.max(minTitle, titlePx * 0.9)}px`;
+      };
+
+      const overflows = () =>
+        titleEl.scrollWidth > titleEl.clientWidth ||
+        authorEl.scrollWidth > authorEl.clientWidth ||
+        titleEl.offsetHeight + authorEl.offsetHeight > innerH;
+
+      apply(maxTitle);
+      if (!overflows()) return;
+
+      let lo = minTitle;
+      let hi = maxTitle;
+      for (let i = 0; i < 10; i++) {
+        const mid = (lo + hi) / 2;
+        apply(mid);
+        if (overflows()) hi = mid;
+        else lo = mid;
+      }
+      apply(lo);
+    };
+
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, [book.title, book.author, compact]);
+
+  return (
+    <div
+      ref={rootRef}
+      aria-hidden
+      className={`flex min-h-0 min-w-0 flex-col justify-between overflow-hidden ${
+        compact ? "px-1.5 py-1.5" : "px-3 py-4"
+      } ${className ?? ""}`}
+    >
+      <p
+        ref={titleRef}
+        className="min-w-0 font-editorial leading-snug tracking-wide"
+        style={{ fontSize: compact ? COVER_TITLE_MAX.compact : "0.7rem" }}
+      >
+        {book.title}
+      </p>
+      <p
+        ref={authorRef}
+        className="min-w-0 font-louize leading-tight opacity-80"
+        style={{ fontSize: compact ? 8 : "0.65rem" }}
+      >
+        {book.author}
+      </p>
+    </div>
+  );
+}
+
 function TypographicCover({
   book,
   toneIndex,
@@ -132,27 +229,11 @@ function TypographicCover({
   const tone = coverTone(toneIndex);
 
   return (
-    <div
-      className={`flex flex-col justify-between overflow-hidden ${
-        compact ? "px-1.5 py-1.5" : "px-3 py-4"
-      } ${tone.bg} ${tone.fg} ${className ?? ""}`}
-      aria-hidden
-    >
-      <p
-        className={`font-editorial leading-snug tracking-wide ${
-          compact ? "text-[9px]" : "text-[0.7rem]"
-        }`}
-      >
-        {book.title}
-      </p>
-      <p
-        className={`font-louize opacity-80 ${
-          compact ? "text-[8px]" : "text-[0.65rem]"
-        }`}
-      >
-        {book.author}
-      </p>
-    </div>
+    <CoverCaption
+      book={book}
+      compact={compact}
+      className={`${tone.bg} ${tone.fg} ${className ?? ""}`}
+    />
   );
 }
 
@@ -206,26 +287,11 @@ function BookCover({
         onError={() => setFailed(true)}
       />
       {hoverCaption ? (
-        <div
-          className={`pointer-events-none absolute inset-0 flex flex-col justify-between text-[#f4ead8] opacity-0 transition-opacity duration-300 group-hover/cover:opacity-100 ${
-            compact ? "px-1.5 py-1.5" : "px-3 py-4"
-          }`}
-        >
-          <p
-            className={`font-editorial leading-snug tracking-wide ${
-              compact ? "text-[9px]" : "text-[0.7rem]"
-            }`}
-          >
-            {book.title}
-          </p>
-          <p
-            className={`font-louize opacity-80 ${
-              compact ? "text-[8px]" : "text-[0.65rem]"
-            }`}
-          >
-            {book.author}
-          </p>
-        </div>
+        <CoverCaption
+          book={book}
+          compact={compact}
+          className="pointer-events-none absolute inset-0 text-[#f4ead8] opacity-0 transition-opacity duration-300 group-hover/cover:opacity-100"
+        />
       ) : null}
     </div>
   );

@@ -1,8 +1,14 @@
 import type { NextConfig } from "next";
+import { GUESTBOOK_EXTERNAL_URL } from "./content/backgroundVideos";
 
 const nextConfig: NextConfig = {
   async redirects() {
     return [
+      {
+        source: "/guestbook",
+        destination: GUESTBOOK_EXTERNAL_URL,
+        permanent: false,
+      },
       {
         source: "/portfolio",
         destination: "https://gli.cargo.site/portfolio",

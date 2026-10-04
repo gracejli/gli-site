@@ -1,5 +1,8 @@
-/** Guestbook (Your World of Text). Used by the homepage intro and the slow-down dialog. */
-export const GUESTBOOK_URL =
+/** On-site guestbook path. /guestbook redirects to Your World of Text. */
+export const GUESTBOOK_URL = "/guestbook" as const;
+
+/** External guestbook. Destination for the /guestbook redirect. */
+export const GUESTBOOK_EXTERNAL_URL =
   "https://www.yourworldoftext.com/%7Egracejli/" as const;
 
 export type BackgroundVideoSource =
@@ -289,9 +292,44 @@ export const backgroundVideos: BackgroundVideoSource[] = [
     caption: "the rhythmic, hypnotic shadow of my trekking pole on my solo backpacking trip. catalina island, 2026" 
   }, 
   {
-    type: "youtube",
+    type: "youtube", 
     url: "https://youtu.be/2T_uggX_VxQ", 
     caption: "wind blowing on the trans catalina trail 2026"
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/GY7DzXnPKmc",
+    caption: "free music event at barnsdall park in los angeles. thought the framing was nice. my last full day in LA before moving to NYC, 2026"
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/BUgn-dvHLpw",
+    caption: "geller + katz free music event at barnsdall park, one of my favorites 2026"
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/nc1iyp4JBXs",
+    caption: "my last sunset watch before moving to NYC, santa monica beach. 2026"
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/mf_5TGU1bL0",
+    caption: "rain, thunder, and lightning out my window in michigan. living out west you forget the rain can envelop an entire day 2026"
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/5EzXhRuxSs0",
+    caption: "bison in a protected area in the middle of denver. one of me and my brother's favorite sights in our cross country road trip 2026"
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/U30kr3nQHz0",
+    caption: "my friend's song playing amidst the red rocks of utah, cross country road trip with my brother 2026"
+  },
+  {
+    type: "youtube",
+    url: "https://youtu.be/yecrSC2hiJ4",
+    caption: "LA sunset making the clouds glow as we descend, 2026"
   }
 ];
 
