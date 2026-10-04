@@ -2,8 +2,10 @@
 
 import { useCallback, useState, type ComponentProps } from "react";
 import { FoldVertical, UnfoldVertical } from "lucide-react";
+import InfoChip from "@/components/InfoChip";
 import ProjectItem from "@/components/ProjectItem";
 import { workProjectKey } from "@/content/projects/data";
+import { WORK_INFO_TEXT } from "@/content/work";
 
 type WorkProject = NonNullable<ComponentProps<typeof ProjectItem>["project"]>;
 
@@ -36,7 +38,8 @@ export default function WorkSections({
 
   return (
     <div className="relative max-w-2xl mx-auto">
-      <div className="flex justify-end mb-2 min-h-9">
+      <div className="relative z-20 mb-2 flex min-h-9 items-center justify-end gap-1.5">
+        <InfoChip text={WORK_INFO_TEXT} placement="below" />
         <button
           type="button"
           onClick={toggleAllSections}

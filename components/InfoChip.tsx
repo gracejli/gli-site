@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 type AnchorProps = React.ComponentPropsWithoutRef<"a">;
@@ -70,16 +71,22 @@ export default function InfoChip({
       <button
         type="button"
         aria-expanded={open}
-        aria-label="More information"
+        aria-label={open ? "Close information" : "More information"}
         onClick={(event) => {
           event.stopPropagation();
           setOpen((value) => !value);
         }}
-        className={`flex h-5 w-5 items-center justify-center rounded-full border border-amber-300/80 bg-black/70 text-[10px] font-fe text-amber-100 shadow-md transition group-hover:bg-amber-400/90 group-hover:text-black ${
-          open ? "bg-amber-400/90 text-black" : ""
+        className={`relative z-[60] flex h-5 w-5 items-center justify-center rounded-full border border-amber-300/80 text-[10px] font-fe shadow-md transition ${
+          open
+            ? "bg-amber-400/90 text-black"
+            : "bg-black/70 text-amber-100 group-hover:bg-amber-400/90 group-hover:text-black"
         }`}
       >
-        i
+        {open ? (
+          <X className="size-3" strokeWidth={2.25} aria-hidden />
+        ) : (
+          "i"
+        )}
       </button>
       <div
         className={`absolute z-50 ${popupPosition} w-64 rounded-lg border border-amber-200/60 bg-black/90 p-3 text-left text-[11px] font-fe leading-snug text-amber-50 shadow-xl backdrop-blur-sm transition-all duration-150 ${popupVisible}`}
