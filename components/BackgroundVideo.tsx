@@ -145,9 +145,23 @@ export default function BackgroundVideo({
 
   const applyYoutubeAudio = useCallback(
     (player: YoutubePlayerInstance) => {
-      player.setVolume(Math.round(BACKGROUND_VOLUME * 100));
-      if (muted || !canPlaySound) player.mute();
-      else player.unMute();
+      // mute/setVolume/playVideo are not on YT.Player at construction. YouTube
+      // copies them on after the iframe's initialDelivery message. Calling them
+      // earlier throws "setVolume is not a function".
+      if (
+        typeof player.setVolume !== "function" ||
+        typeof player.mute !== "function" ||
+        typeof player.unMute !== "function"
+      ) {
+        return;
+      }
+      try {
+        player.setVolume(Math.round(BACKGROUND_VOLUME * 100));
+        if (muted || !canPlaySound) player.mute();
+        else player.unMute();
+      } catch {
+        /* Iframe can be mid-swap when mute state changes. */
+      }
     },
     [canPlaySound, muted],
   );
